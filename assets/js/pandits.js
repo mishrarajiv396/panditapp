@@ -10,6 +10,16 @@
   var audio = { ctx: null, master: null, oscs: [], timer: null, btn: null, card: null };
 
   function init() {
+    var initialQ = '';
+    try {
+      initialQ = (new URLSearchParams(location.search).get('q') || '').trim();
+    } catch (e) { /* very old browser */ }
+    if (initialQ) {
+      state.q = initialQ.toLowerCase();
+      var searchBox = $('#panditSearch');
+      if (searchBox) searchBox.value = initialQ;
+    }
+
     $$('[data-ico]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico')); });
     $$('[data-ico-inline]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico-inline')); });
     $$('[data-band]').forEach(function (el) { el.innerHTML = A.icon('spark') + '<span>' + el.textContent + '</span>'; });

@@ -235,8 +235,10 @@
     '</svg>';
 
   /* ----------------------------------------------------------------- header */
+  /* Eight primary links keep the bar inside its 1180px container. Every other
+     page (about, rashifal, cities, matching, reviews, policies) lives in the
+     facilities menu, the footer and the mobile "More" list. */
   var NAV = [
-    ['index.html', 'Home'],
     ['poojas.html', 'Poojas'],
     ['services.html', 'Services'],
     ['puja-guide.html', 'Puja Guide'],
@@ -244,11 +246,18 @@
     ['kundli.html', 'Kundli'],
     ['panchang.html', 'Panchang'],
     ['calendar.html', 'Calendar'],
+    ['shop.html', 'Samagri']
+  ];
+
+  /* Shown only inside the mobile menu, so the desktop row stays aligned. */
+  var NAV_EXTRA = [
+    ['index.html', 'Home'],
+    ['about.html', 'About'],
     ['horoscope.html', 'Rashifal'],
     ['cities.html', 'Cities'],
     ['matching.html', 'Matching'],
-    ['shop.html', 'Samagri'],
-    ['about.html', 'About']
+    ['reviews.html', 'Reviews'],
+    ['policies.html', 'Policies & support']
   ];
 
   function currentPage() {
@@ -374,6 +383,10 @@
       var active = (n[0] === page) || (page === '' && n[0] === 'index.html');
       return '<a href="' + n[0] + '"' + (active ? ' class="active"' : '') + '>' + n[1] + '</a>';
     }).join('');
+    links += '<span class="nav__more" aria-hidden="true">More</span>' + NAV_EXTRA.map(function (n) {
+      var active = (n[0] === page) || (page === '' && n[0] === 'index.html');
+      return '<a class="nav__extra' + (active ? ' active' : '') + '" href="' + n[0] + '">' + n[1] + '</a>';
+    }).join('');
     var html =
       '<div class="topbar"><div class="container topbar__in">' +
       '<div class="topbar__ticker"><span class="dot"></span><span id="tickerText">' + esc(topbarText()) + '</span></div>' +
@@ -387,6 +400,10 @@
       '<span class="brand__text"><strong>Vedic Pooja</strong><small>Gurugram · NCR · Bharat</small></span></a>' +
       '<nav class="nav" id="mainNav" aria-label="Main">' + links + '</nav>' +
       '<div class="head-actions">' +
+      '<button type="button" class="head-search" id="globalSearchOpen" data-gs-open aria-label="Search the website" aria-haspopup="dialog" aria-expanded="false" title="Search (Ctrl K)">' +
+      '<span class="head-search__icon">' + icon('search') + '</span>' +
+      '<span class="head-search__text">Search anything…</span>' +
+      '</button>' +
       '<button type="button" class="lang-switch" id="langToggle" aria-label="Switch language">हिंदी</button>' +
       '<button class="icon-btn" id="cartOpen" aria-label="Open samagri cart, 0 items">' + icon('cart') + '<span class="cart-count" id="cartCount" aria-hidden="true">0</span></button>' +
       '<a class="icon-btn icon-btn--account" id="accountLink" href="account.html" aria-label="My account">' + icon('user') + '<span class="account-dot" id="accountDot" aria-hidden="true" hidden></span></a>' +

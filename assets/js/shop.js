@@ -8,6 +8,16 @@
   var state = { q: '', cat: 'all', sort: 'recommended' };
 
   function init() {
+    var initialQ = '';
+    try {
+      initialQ = (new URLSearchParams(location.search).get('q') || '').trim();
+    } catch (e) { /* very old browser */ }
+    if (initialQ) {
+      state.q = initialQ.toLowerCase();
+      var searchBox = $('#shopSearch');
+      if (searchBox) searchBox.value = initialQ;
+    }
+
     $$('[data-ico]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico')); });
     $$('[data-ico-inline]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico-inline')); });
     $$('[data-search-icon]').forEach(function (el) { el.innerHTML = A.icon('search'); });
