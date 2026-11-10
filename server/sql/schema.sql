@@ -283,6 +283,34 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------------
+-- Customer reviews (public page /reviews.html, moderated in the admin console)
+-- Nothing is published until an admin sets status = 'approved'.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reviews (
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED DEFAULT NULL,
+  name        VARCHAR(120) NOT NULL,
+  city        VARCHAR(120) DEFAULT NULL,
+  pooja_id    VARCHAR(64) DEFAULT NULL,
+  pooja_name  VARCHAR(190) DEFAULT NULL,
+  pandit_id   VARCHAR(64) DEFAULT NULL,
+  pandit_name VARCHAR(190) DEFAULT NULL,
+  rating      TINYINT UNSIGNED NOT NULL DEFAULT 5,
+  title       VARCHAR(190) DEFAULT NULL,
+  message     TEXT NOT NULL,
+  status      VARCHAR(40) NOT NULL DEFAULT 'pending',
+  admin_note  VARCHAR(255) DEFAULT NULL,
+  created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_reviews_status (status),
+  KEY idx_reviews_rating (rating),
+  KEY idx_reviews_created (created_at),
+  KEY idx_reviews_pooja (pooja_id),
+  KEY idx_reviews_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------------
 -- Editable site settings (owner details, seva text, etc.)
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS site_settings (

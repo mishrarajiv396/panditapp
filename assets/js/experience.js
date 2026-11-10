@@ -311,6 +311,7 @@
         { label: 'City directory', desc: 'Every district and famous place', href: 'cities.html', icon: 'pin', keys: 'city district famous place temple tirth travel' },
         { label: 'Free puja guide', desc: 'Step-by-step Satyanarayan vidhi', href: 'puja-guide.html', icon: 'book', keys: 'guide vidhi satyanarayan steps free' },
         { label: 'About & Seva', desc: 'Our standards, dakshina and UPI details', href: 'about.html', icon: 'info', keys: 'about seva dakshina upi contact' },
+        { label: 'Reviews', desc: 'What families say after the ritual', href: 'reviews.html', icon: 'star', keys: 'review rating feedback testimonial stars' },
         { label: 'Policies & support', desc: 'Privacy, refunds and cancellation', href: 'policies.html', icon: 'shield', keys: 'policy privacy refund cancellation support' }
       ]
     }

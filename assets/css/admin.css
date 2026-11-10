@@ -509,6 +509,10 @@
 
 .admin-link { color: var(--maroon); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(109, 31, 44, .3); }
 
+.admin-stars { display: inline-flex; gap: 1px; color: var(--gold); line-height: 1; }
+.admin-star { font-size: .82rem; opacity: .25; }
+.admin-star.is-on { opacity: 1; }
+
 /* ------------------------------------------------------------------ toast */
 .admin-toast {
   position: fixed;

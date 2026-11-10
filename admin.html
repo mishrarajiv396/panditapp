@@ -61,6 +61,9 @@
         <button class="admin-nav__item" data-tab="messages" type="button">
           <span class="admin-nav__ico">💬</span><span>Messages</span><span class="admin-nav__count" id="navMessages">0</span>
         </button>
+        <button class="admin-nav__item" data-tab="reviews" type="button">
+          <span class="admin-nav__ico">⭐</span><span>Reviews</span><span class="admin-nav__count" id="navReviews">0</span>
+        </button>
         <span class="admin-nav__sep" aria-hidden="true"></span>
         <button class="admin-nav__item" data-tab="account" type="button">
           <span class="admin-nav__ico">⚙️</span><span>Account &amp; settings</span>
@@ -153,6 +156,27 @@
           <table class="admin-table">
             <thead><tr><th>From</th><th>Contact</th><th>Message</th><th>Received</th><th>Status</th><th>Actions</th></tr></thead>
             <tbody id="messagesBody"><tr><td colspan="6" class="admin-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panelReviews" hidden>
+        <div class="admin-toolbar">
+          <p class="admin-toolbar__note">Customer reviews from <b>reviews.html</b>. Nothing appears on the website until it is approved here.</p>
+          <div class="admin-toolbar__group">
+            <select id="reviewFilter" aria-label="Filter reviews">
+              <option value="pending">Pending approval</option>
+              <option value="">All reviews</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button class="admin-btn admin-btn--ghost admin-btn--mini" type="button" id="exportReviews">Export CSV</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Reviewer</th><th>Rating</th><th>Review</th><th>Pooja</th><th>Received</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="reviewsBody"><tr><td colspan="7" class="admin-empty">Loading…</td></tr></tbody>
           </table>
         </div>
       </section>

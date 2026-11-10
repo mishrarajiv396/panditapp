@@ -155,9 +155,14 @@ data to MySQL whenever the API is reachable:
   completed bookings are rejected). Every booking also has **Add to calendar**
   (downloads an `.ics` with a one-day reminder) and **Receipt** (opens a
   printable / Save-as-PDF summary).
+- **Reviews** (`reviews.html`) — reads approved reviews from `GET /api/reviews`
+  (with an average, star breakdown, rating/pooja filters and pagination) and
+  submits new ones through `POST /api/reviews`. Submissions are rate-limited,
+  honeypot-filtered and stored as `pending`; nothing is published until an
+  admin approves it in the **Reviews** tab of the dashboard.
 - `assets/js/api.js` now loads on every page that renders the shared shell, so
   the header booking dialog works from anywhere. `sw.js` cache version is
-  `vp-static-v41`.
+  `vp-static-v42`.
 
 ### Customer accounts
 

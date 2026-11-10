@@ -3,7 +3,7 @@
    load. The cache is only used when the network is unavailable. */
 'use strict';
 
-var VERSION = 'vp-static-v41';
+var VERSION = 'vp-static-v42';
 var RUNTIME = 'vp-runtime-v2';
 
 var CORE = [
@@ -21,6 +21,7 @@ var CORE = [
   './matching.html',
   './pandits.html',
   './shop.html',
+  './reviews.html',
   './about.html',
   './policies.html',
   './login.html',
@@ -61,6 +62,7 @@ var CORE = [
   './assets/js/booking.js',
   './assets/js/shop.js',
   './assets/js/about.js',
+  './assets/js/reviews.js',
   './assets/js/puja-data.js',
   './assets/js/puja-i18n.js',
   './assets/js/vendor/qrcode.js',

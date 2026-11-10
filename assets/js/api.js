@@ -195,6 +195,20 @@
       return request('/contact', { method: 'POST', body: message });
     },
 
+    /* --------------------------------------------------------------- reviews */
+    reviews: function (params) {
+      params = params || {};
+      var query = Object.keys(params).filter(function (key) {
+        return params[key] !== '' && params[key] !== null && params[key] !== undefined;
+      }).map(function (key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+      }).join('&');
+      return request('/reviews' + (query ? '?' + query : ''));
+    },
+    createReview: function (review) {
+      return request('/reviews', { method: 'POST', body: review, token: userToken() });
+    },
+
     /* -------------------------------------------------------- customer auth */
     registerUser: function (details) {
       return request('/auth/register', { method: 'POST', body: details });

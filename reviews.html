@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reviews — Families, Pandits &amp; Poojas | Vedic Pooja</title>
+<meta name="description" content="Read moderated reviews from families who booked verified pandits, poojas and samagri through Vedic Pooja — and share your own experience in a few lines.">
+<link rel="canonical" href="https://vedicpooja.in/reviews.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Reviews</span></div>
+      <h1>What families say after the <em>aarti.</em></h1>
+      <p>Honest words from homes, offices and NRI families who booked a ritual with us. Every review is read by a person before it is published — no paid ratings, no edited stars.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+
+      <div class="review-summary" id="reviewSummary" aria-live="polite">
+        <div class="review-summary__score">
+          <b id="reviewAverage">—</b>
+          <div class="review-summary__stars" id="reviewAverageStars"></div>
+          <span id="reviewCount">Loading reviews…</span>
+        </div>
+        <div class="review-summary__bars" id="reviewBars"></div>
+        <div class="review-summary__cta">
+          <a class="btn btn--primary" href="#write-review">Write a review</a>
+          <span class="tiny muted">Published after a quick moderation check.</span>
+        </div>
+      </div>
+
+      <div class="review-filters" id="reviewFilters" role="group" aria-label="Filter reviews by rating">
+        <button type="button" class="review-chip is-active" data-rating="">All ratings</button>
+        <button type="button" class="review-chip" data-rating="5">5 ★</button>
+        <button type="button" class="review-chip" data-rating="4">4 ★</button>
+        <button type="button" class="review-chip" data-rating="3">3 ★</button>
+        <button type="button" class="review-chip" data-rating="2">2 ★</button>
+        <button type="button" class="review-chip" data-rating="1">1 ★</button>
+        <label class="review-filters__pooja">
+          <span class="sr-only">Filter by pooja</span>
+          <select id="reviewPoojaFilter" aria-label="Filter reviews by pooja">
+            <option value="">All poojas &amp; services</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid grid-3 review-grid" id="reviewList"></div>
+
+      <div class="review-empty" id="reviewEmpty" hidden>
+        <div class="review-empty__ico" data-ico="star"></div>
+        <h2 id="reviewEmptyTitle">No reviews here yet.</h2>
+        <p id="reviewEmptyText">Be the first family to share how your ritual went — it takes less than a minute.</p>
+        <a class="btn btn--primary" href="#write-review">Write the first review</a>
+      </div>
+
+      <p class="review-status-line" id="reviewListStatus" role="status" hidden></p>
+
+      <div class="center mt-3">
+        <button class="btn btn--ghost" type="button" id="reviewMore" hidden>Load more reviews</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="write-review">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Your turn</span>
+        <h2>How did your ritual go?</h2>
+        <p>A few honest lines help the next family decide. Tell us what worked, what could be better, and who performed the pooja.</p>
+      </div>
+
+      <div class="review-write">
+        <div class="card">
+          <div class="card__body">
+            <form id="reviewForm" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="rvName">Your name</label>
+                  <input id="rvName" name="name" type="text" maxlength="120" placeholder="Ananya Sharma" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="rvCity">City / area <span class="opt">(optional)</span></label>
+                  <input id="rvCity" name="city" type="text" maxlength="120" placeholder="DLF Phase 5, Gurugram" autocomplete="address-level2">
+                </div>
+                <div class="field field--full">
+                  <label for="rvPooja">Which pooja or service?</label>
+                  <select id="rvPooja" name="poojaId">
+                    <option value="">General experience / not sure</option>
+                  </select>
+                </div>
+                <div class="field field--full">
+                  <fieldset class="review-stars">
+                    <legend>Your rating</legend>
+                    <div class="review-stars__row">
+                      <input type="radio" id="rvStar5" name="rating" value="5" checked>
+                      <label for="rvStar5" title="5 stars" aria-label="5 stars">★</label>
+                      <input type="radio" id="rvStar4" name="rating" value="4">
+                      <label for="rvStar4" title="4 stars" aria-label="4 stars">★</label>
+                      <input type="radio" id="rvStar3" name="rating" value="3">
+                      <label for="rvStar3" title="3 stars" aria-label="3 stars">★</label>
+                      <input type="radio" id="rvStar2" name="rating" value="2">
+                      <label for="rvStar2" title="2 stars" aria-label="2 stars">★</label>
+                      <input type="radio" id="rvStar1" name="rating" value="1">
+                      <label for="rvStar1" title="1 star" aria-label="1 star">★</label>
+                    </div>
+                    <small id="rvRatingLabel" class="review-stars__label">5 out of 5</small>
+                  </fieldset>
+                </div>
+                <div class="field field--full">
+                  <label for="rvTitle">Headline <span class="opt">(optional)</span></label>
+                  <input id="rvTitle" name="title" type="text" maxlength="190" placeholder="Pandit ji arrived early and the samagri was complete">
+                </div>
+                <div class="field field--full">
+                  <label for="rvMessage">Your experience</label>
+                  <textarea id="rvMessage" name="message" maxlength="2000" rows="5" placeholder="What was the occasion, how did the pandit conduct the vidhi, was the samagri complete, how was the booking and payment experience?" required></textarea>
+                  <small><span id="rvCount">0</span>/2000 characters · minimum 10</small>
+                </div>
+                <div class="field field--full review-honeypot" aria-hidden="true">
+                  <label for="rvWebsite">Website</label>
+                  <input id="rvWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="form-note mt-2" id="rvNote">Your phone number and email are never published. Reviews with links or abusive language are rejected.</div>
+              <button class="btn btn--primary btn--wide mt-2" type="submit" id="rvSubmit">Submit for review</button>
+              <p class="review-status" id="rvStatus" role="status" hidden></p>
+            </form>
+          </div>
+        </div>
+
+        <aside class="review-side">
+          <div class="card">
+            <div class="card__body">
+              <span class="chip chip--green" data-ico-chip="shield">Moderated</span>
+              <h3 class="mt-2">What happens after you submit</h3>
+              <ol class="review-steps">
+                <li>We read the review and match it with the booking reference.</li>
+                <li>Phone numbers, addresses and links are removed before publishing.</li>
+                <li>Approved reviews appear on this page, usually within 24 hours.</li>
+              </ol>
+              <p class="small muted">We never edit the meaning of a review. If something went wrong, we would rather fix it than hide it.</p>
+              <a class="link-arrow mt-2" href="https://wa.me/918889685370" target="_blank" rel="noopener">Something went wrong? Message the owner <span data-ico-inline="arrow"></span></a>
+            </div>
+          </div>
+
+          <div class="card review-side__quote">
+            <div class="card__body">
+              <span class="kicker kicker--tight">Our promise</span>
+              <p class="small">No paid reviews. No rating edits. No deleting a review because the stars are low — only spam and personal data are removed.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta-card reveal">
+        <div>
+          <span class="kicker">Ready when you are</span>
+          <h2 class="mb-10">Book the pandit, then tell us how it went.</h2>
+          <p class="muted">Every all-inclusive booking covers the pandit, samagri, dakshina and Punya-Flow collection.</p>
+        </div>
+        <div class="flex-row-end">
+          <a class="btn btn--ghost" href="pandits.html">Meet the pandits</a>
+          <a class="btn btn--primary" href="poojas.html">Explore poojas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/reviews.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

@@ -9,7 +9,7 @@ This project is already prepared for Render:
 - `DB_SSL=true` is supported by the app for managed MySQL providers.
 
 Render does **not** provide MySQL, so the database lives at an external
-provider. The free Aiven MySQL plan works well.
+provider. **TiDB Cloud Starter** is free, MySQL-compatible and needs no card.
 
 ---
 
@@ -32,24 +32,37 @@ If Git asks you to sign in, complete the GitHub login in the browser.
 
 ---
 
-## 2. Create a free MySQL database (Aiven)
+## 2. Create a free MySQL database (TiDB Cloud Starter)
 
-1. Sign up at <https://aiven.io>.
-2. **Create service → MySQL**, choose the **Free** plan and the region closest
-   to your users (for India, Mumbai).
-3. Wait until the service status is **Running**.
-4. Open the service and copy these values:
+Aiven retired its free MySQL plan on 6 November 2026, so this guide uses
+**TiDB Cloud Starter** — MySQL-compatible, free, no card required
+(5 GiB storage + 50M request units per month).
 
-   | Render variable | Aiven value |
+1. Sign up at <https://tidbcloud.com> (GitHub or Google login works).
+2. **Create Cluster → Starter**, pick the region closest to your users
+   (Singapore or Mumbai), and give it a name like `panditapp`.
+3. Wait until the cluster status is **Active** (1–2 minutes).
+4. Click **Connect** and copy the connection details. TiDB shows a host, port
+   `4000`, a user that looks like `3pTAoNNegb47Uc8.root`, and a generated
+   password. The default database is `test`.
+
+   | Render variable | TiDB value |
    | --- | --- |
-   | `DB_HOST` | Host |
-   | `DB_PORT` | Port (not 3306; Aiven uses a custom port) |
-   | `DB_USER` | User (`avnadmin`) |
-   | `DB_PASSWORD` | Password |
-   | `DB_NAME` | Database (`defaultdb`, or `panditapp` if you created it) |
-   | `DB_SSL` | `true` |
+   | `DB_HOST` | Host (`gateway01.<region>.prod.aws.tidbcloud.com`) |
+   | `DB_PORT` | `4000` |
+   | `DB_USER` | User (includes the cluster prefix, e.g. `3pTAoNNegb47Uc8.root`) |
+   | `DB_PASSWORD` | The password shown once when the user is created |
+   | `DB_NAME` | `panditapp` |
+   | `DB_SSL` | `true` (TiDB refuses unencrypted connections) |
 
-The app creates its tables inside the database automatically on first boot.
+   > Save the password immediately — TiDB Cloud does not show it again. If it
+   > is lost, create a new database user and use those credentials.
+
+5. Allow access from Render: TiDB Cloud Starter accepts public connections by
+   default, so no IP allow-list entry is needed. If you enable one, add
+   `0.0.0.0/0`.
+
+The app creates its tables inside `panditapp` automatically on first boot.
 
 ---
 
@@ -105,9 +118,9 @@ seeds the catalogue once. Later deploys keep the existing data.
 
 - The free Render web service sleeps after inactivity, so the first request
   after a quiet period can take 30–60 seconds.
-- Aiven's free MySQL plan has connection/storage limits; upgrade if the site
-  gets real traffic.
-- Keep `DB_SSL=true` for Aiven. The app uses TLS but does not verify the
+- TiDB Cloud Starter's free tier has storage and request-unit limits; upgrade if
+  the site gets real traffic.
+- Keep `DB_SSL=true` for TiDB. The app uses TLS but does not verify the
   provider's CA certificate; for stricter verification, mount the CA and add
   `DB_SSL_CA` support.
 - Never put database passwords or JWT secrets in the repository.

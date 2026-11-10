@@ -130,6 +130,7 @@ router.get('/stats', asyncHandler(async (req, res) => {
       applications: (await db.one('SELECT COUNT(*) AS n FROM pandit_applications')).n,
       newOrders: (await db.one("SELECT COUNT(*) AS n FROM orders WHERE status = 'new'")).n,
       newMessages: (await db.one("SELECT COUNT(*) AS n FROM contact_messages WHERE status = 'new'")).n,
+      pendingReviews: (await db.one("SELECT COUNT(*) AS n FROM reviews WHERE status = 'pending'")).n,
       recentBookings: recent
     }
   });
@@ -299,6 +300,59 @@ router.patch('/messages/:id', asyncHandler(async (req, res) => {
   });
   if (!result.affectedRows) return res.status(404).json({ error: 'Message not found' });
   res.json({ data: { id: Number(req.params.id), status } });
+}));
+
+/* --------------------------------------------------------------- reviews */
+router.get('/reviews', asyncHandler(async (req, res) => {
+  const where = ['1 = 1'];
+  const params = {};
+  if (req.query.status) {
+    where.push('status = :status');
+    params.status = cleanString(req.query.status, 40);
+  }
+  const { limit, offset } = limitOffset(req.query, 100, 500);
+  const rows = await db.query(
+    `SELECT * FROM reviews WHERE ${where.join(' AND ')}
+      ORDER BY created_at DESC, id DESC LIMIT ${limit} OFFSET ${offset}`,
+    params
+  );
+  res.json({ data: rows, limit, offset });
+}));
+
+router.patch('/reviews/:id', asyncHandler(async (req, res) => {
+  const id = toInt(req.params.id, 0);
+  if (!id) return res.status(404).json({ error: 'Review not found' });
+
+  const body = req.body || {};
+  const fields = [];
+  const params = { id };
+
+  if (body.status !== undefined) {
+    const status = cleanString(body.status, 40);
+    if (['pending', 'approved', 'rejected'].indexOf(status) < 0) {
+      return res.status(400).json({ error: 'status must be pending, approved or rejected' });
+    }
+    fields.push('status = :status');
+    params.status = status;
+  }
+  if (body.adminNote !== undefined) {
+    fields.push('admin_note = :adminNote');
+    params.adminNote = cleanString(body.adminNote, 255);
+  }
+
+  if (!fields.length) return res.status(400).json({ error: 'No supported fields to update' });
+
+  const result = await db.query(`UPDATE reviews SET ${fields.join(', ')} WHERE id = :id`, params);
+  if (!result.affectedRows) return res.status(404).json({ error: 'Review not found' });
+  res.json({ data: { id, status: params.status || null } });
+}));
+
+router.delete('/reviews/:id', asyncHandler(async (req, res) => {
+  const id = toInt(req.params.id, 0);
+  if (!id) return res.status(404).json({ error: 'Review not found' });
+  const result = await db.query('DELETE FROM reviews WHERE id = :id', { id });
+  if (!result.affectedRows) return res.status(404).json({ error: 'Review not found' });
+  res.json({ data: { id, deleted: true } });
 }));
 
 /* --------------------------------------------------------------- settings */

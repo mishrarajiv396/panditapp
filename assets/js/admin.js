@@ -19,8 +19,10 @@
     applications: [],
     orders: [],
     messages: [],
+    reviews: [],
     search: '',
     paymentFilter: '',
+    reviewFilter: 'pending',
     admin: null,
     autoRefresh: true,
     activeBooking: null
@@ -223,6 +225,7 @@
       $('navApplications').textContent = stats.applications;
       $('navOrders').textContent = stats.newOrders;
       $('navMessages').textContent = stats.newMessages;
+      if ($('navReviews')) $('navReviews').textContent = stats.pendingReviews || 0;
     });
   }
 
@@ -235,12 +238,14 @@
       api('/admin/bookings?limit=200').then(function (rows) { state.bookings = rows; }),
       api('/admin/applications?limit=200').then(function (rows) { state.applications = rows; }),
       api('/admin/orders?limit=200').then(function (rows) { state.orders = rows; }),
-      api('/admin/messages?limit=200').then(function (rows) { state.messages = rows; })
+      api('/admin/messages?limit=200').then(function (rows) { state.messages = rows; }),
+      api('/admin/reviews?limit=200').then(function (rows) { state.reviews = rows; })
     ]).then(function () {
       renderBookings();
       renderApplications();
       renderOrders();
       renderMessages();
+      renderReviews();
       setUpdated();
     }).catch(function (err) {
       if (!silent) toast(err.message || 'Could not load dashboard', 'error');
@@ -309,7 +314,8 @@
     var map = {
       new: 'pending', contacted: 'wait', verified: 'verified',
       rejected: 'cancel', packed: 'wait', shipped: 'wait',
-      delivered: 'paid', cancelled: 'cancel', read: 'muted', replied: 'paid'
+      delivered: 'paid', cancelled: 'cancel', read: 'muted', replied: 'paid',
+      pending: 'pending', approved: 'verified'
     };
     return '<span class="admin-pill admin-pill--' + (map[status] || 'muted') + '">' + esc(status || 'new') + '</span>';
   }
@@ -391,6 +397,64 @@
         '<td><b>' + esc(row.name) + '</b></td>' +
         '<td>' + esc(row.email || row.phone || '—') + '</td>' +
         '<td><div class="admin-msg">' + esc(row.message) + '</div></td>' +
+        '<td>' + dateTime(row.created_at) + '</td>' +
+        '<td>' + statusPill(row.status) + '</td>' +
+        '<td><div class="admin-actions">' + actions + '</div></td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  /* -------------------------------------------------------------- reviews */
+  function starRow(rating) {
+    var score = Math.max(0, Math.min(5, Number(rating) || 0));
+    var out = '';
+    for (var i = 1; i <= 5; i++) {
+      out += '<span class="admin-star' + (i <= score ? ' is-on' : '') + '">★</span>';
+    }
+    return '<span class="admin-stars" aria-label="' + score + ' out of 5">' + out + '</span>';
+  }
+
+  function renderReviews() {
+    var body = $('reviewsBody');
+    if (!body) return;
+
+    var rows = state.reviews.filter(function (row) {
+      return !state.reviewFilter || row.status === state.reviewFilter;
+    });
+
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="7" class="admin-empty">' +
+        (state.reviewFilter === 'pending' ? 'No reviews waiting for approval.' : 'No reviews found.') +
+        '</td></tr>';
+      return;
+    }
+
+    body.innerHTML = rows.map(function (row) {
+      var actions = '';
+      if (row.status !== 'approved') {
+        actions += '<button class="admin-btn admin-btn--mini admin-btn--ok" data-review-action="approved" data-id="' + esc(row.id) + '">Approve</button>';
+      }
+      if (row.status !== 'rejected') {
+        actions += '<button class="admin-btn admin-btn--mini admin-btn--gold" data-review-action="rejected" data-id="' + esc(row.id) + '">Reject</button>';
+      }
+      if (row.status !== 'pending') {
+        actions += '<button class="admin-btn admin-btn--mini admin-btn--ghost" data-review-action="pending" data-id="' + esc(row.id) + '">Unpublish</button>';
+      }
+      actions += '<button class="admin-btn admin-btn--mini admin-btn--danger" data-review-delete="' + esc(row.id) + '">Delete</button>';
+
+      var who = '<b>' + esc(row.name) + '</b>' + (row.city ? '<span class="admin-sub">' + esc(row.city) + '</span>' : '');
+      var pooja = row.pooja_name
+        ? esc(row.pooja_name) + (row.pandit_name ? '<span class="admin-sub">' + esc(row.pandit_name) + '</span>' : '')
+        : (row.pandit_name ? esc(row.pandit_name) : '—');
+
+      return '<tr>' +
+        '<td>' + who + '</td>' +
+        '<td>' + starRow(row.rating) + '<span class="admin-sub">' + Number(row.rating) + '/5</span></td>' +
+        '<td><div class="admin-msg">' +
+          (row.title ? '<b>' + esc(row.title) + '</b> ' : '') +
+          esc(row.message) +
+        '</div></td>' +
+        '<td>' + pooja + '</td>' +
         '<td>' + dateTime(row.created_at) + '</td>' +
         '<td>' + statusPill(row.status) + '</td>' +
         '<td><div class="admin-actions">' + actions + '</div></td>' +
@@ -586,6 +650,28 @@
         { label: 'Status', key: 'status' }
       ]);
     });
+
+    var exportReviews = $('exportReviews');
+    if (exportReviews) {
+      exportReviews.addEventListener('click', function () {
+        var rows = state.reviews.filter(function (row) {
+          return !state.reviewFilter || row.status === state.reviewFilter;
+        });
+        downloadCsv('reviews-' + stamp() + '.csv', rows, [
+          { label: 'ID', key: 'id' },
+          { label: 'Received', value: function (r) { return dateTime(r.created_at); } },
+          { label: 'Name', key: 'name' },
+          { label: 'City', key: 'city' },
+          { label: 'Rating', key: 'rating' },
+          { label: 'Title', key: 'title' },
+          { label: 'Review', key: 'message' },
+          { label: 'Pooja', key: 'pooja_name' },
+          { label: 'Pandit', key: 'pandit_name' },
+          { label: 'Status', key: 'status' },
+          { label: 'Admin note', key: 'admin_note' }
+        ]);
+      });
+    }
   }
 
   /* ------------------------------------------------------------- account */
@@ -809,6 +895,29 @@
         patch('/admin/messages/' + encodeURIComponent(msg.getAttribute('data-id')), {
           status: msg.getAttribute('data-msg-action')
         }, 'Message updated');
+        return;
+      }
+
+      var review = event.target.closest('[data-review-action]');
+      if (review) {
+        patch('/admin/reviews/' + encodeURIComponent(review.getAttribute('data-id')), {
+          status: review.getAttribute('data-review-action')
+        }, 'Review ' + review.getAttribute('data-review-action'));
+        return;
+      }
+
+      var reviewDelete = event.target.closest('[data-review-delete]');
+      if (reviewDelete) {
+        var rid = reviewDelete.getAttribute('data-review-delete');
+        if (!window.confirm('Delete this review permanently? This cannot be undone.')) return;
+        reviewDelete.disabled = true;
+        api('/admin/reviews/' + encodeURIComponent(rid), { method: 'DELETE' }).then(function () {
+          toast('Review deleted', 'ok');
+          return loadAll(true);
+        }).catch(function (err) {
+          reviewDelete.disabled = false;
+          toast(err.message || 'Could not delete review', 'error');
+        });
       }
     });
   }
@@ -820,6 +929,7 @@
       applications: 'Pandit applications',
       orders: 'Shop orders',
       messages: 'Messages',
+      reviews: 'Reviews',
       account: 'Account & settings'
     };
     var panels = {
@@ -827,6 +937,7 @@
       applications: 'panelApplications',
       orders: 'panelOrders',
       messages: 'panelMessages',
+      reviews: 'panelReviews',
       account: 'panelAccount'
     };
 
@@ -866,6 +977,14 @@
       state.paymentFilter = event.target.value;
       renderBookings();
     });
+
+    var reviewFilter = $('reviewFilter');
+    if (reviewFilter) {
+      reviewFilter.addEventListener('change', function (event) {
+        state.reviewFilter = event.target.value;
+        renderReviews();
+      });
+    }
 
     $('refreshBtn').addEventListener('click', function () { loadAll(); });
     $('themeToggle').addEventListener('click', toggleTheme);
