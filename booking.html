@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book a Pooja — Verified Pandit, Samagri &amp; Muhurat | Vedic Pooja</title>
+<meta name="description" content="Book a Vedic pooja in three steps. Choose your ritual, pick a shubh muhurat, add your gotra and gate details, select a verified pandit and pay securely.">
+<link rel="canonical" href="https://vedicpooja.in/booking.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <a href="poojas.html">Poojas</a> <span>/</span> <span>Book</span></div>
+      <h1>Book your pooja</h1>
+      <p>Three calm steps. A verified pandit, complete samagri and a muhurat calculated for your city. Free cancellation up to 24 hours before the ritual.</p>
+      <div class="hero-chip-row">
+        <span class="chip chip--on-dark" data-head-chip="shield">Background-verified pandits</span>
+        <span class="chip chip--on-dark" data-head-chip="box">Samagri included</span>
+        <span class="chip chip--on-dark" data-head-chip="gate">Gate pass handled</span>
+        <span class="chip chip--on-dark" data-head-chip="rupee">No cash dakshina</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="book-layout">
+        <div>
+          <div class="stepper" id="bookingStepper">
+            <div class="stepper__item active" data-step-label="1"><span class="n">1</span>Ritual &amp; muhurat</div>
+            <span class="stepper__sep"></span>
+            <div class="stepper__item" data-step-label="2"><span class="n">2</span>Home &amp; pandit</div>
+            <span class="stepper__sep"></span>
+            <div class="stepper__item" data-step-label="3"><span class="n">3</span>Extras &amp; payment</div>
+          </div>
+
+          <form id="bookingForm" novalidate>
+            <!-- ================================================= STEP 1 -->
+            <div class="book-step" data-step="1">
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">1</span><div><h3>Choose your ritual</h3><p>All-inclusive: pandit, samagri, flowers and dakshina.</p></div></div>
+                <div class="form-grid">
+                  <div class="field field--full">
+                    <label for="poojaSelect">Pooja</label>
+                    <select id="poojaSelect" name="pooja" required></select>
+                    <small id="poojaHint">—</small>
+                  </div>
+                  <div class="field">
+                    <label for="bookingCity">City of ritual</label>
+                    <select id="bookingCity" name="city" required></select>
+                  </div>
+                  <div class="field">
+                    <label for="bookingDate">Date</label>
+                    <input id="bookingDate" name="date" type="date" required>
+                  </div>
+                  <div class="field field--full" id="dateNote"></div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">2</span><div><h3>Pick a shubh muhurat</h3><p>Calculated from your city’s sunrise, tithi and choghadiya.</p></div></div>
+                <div class="chip-row mb-2" id="shubhDates"></div>
+                <div class="slot-grid" id="muhuratSlots"></div>
+                <div class="note-strip mt-2" id="muhuratNote">
+                  <span data-ico-inline="clock"></span>
+                  <span>Rahu Kaal is automatically avoided. If you have a family muhurat, choose “Pandit will confirm” and add the time in the notes.</span>
+                </div>
+              </div>
+
+              <div class="booking-actions">
+                <a class="btn btn--ghost" href="poojas.html">Browse all poojas</a>
+                <button class="btn btn--primary" type="button" data-next="2">Continue to details <span data-arrow></span></button>
+              </div>
+            </div>
+
+            <!-- ================================================= STEP 2 -->
+            <div class="book-step hide" data-step="2">
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">3</span><div><h3>Where should we come?</h3><p>Gate codes and directions are shared with the pandit one hour before.</p></div></div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="bookName">Full name</label>
+                    <input id="bookName" name="name" required placeholder="Your name" autocomplete="name">
+                  </div>
+                  <div class="field">
+                    <label for="bookPhone">WhatsApp number</label>
+                    <input id="bookPhone" name="phone" type="tel" required placeholder="+91 88896 85370" autocomplete="tel" pattern="[0-9+\(\)\- ]{10,18}">
+                  </div>
+                  <div class="field field--full">
+                    <label for="bookAddress">Full address <span class="opt">flat, tower, society, sector</span></label>
+                    <textarea id="bookAddress" name="address" required placeholder="e.g. Tower C, 1204, DLF Magnolias, Golf Course Road, Sector 42"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="bookSociety">Society / building</label>
+                    <input id="bookSociety" name="society" placeholder="DLF Magnolias">
+                  </div>
+                  <div class="field">
+                    <label for="bookPin">Pincode</label>
+                    <input id="bookPin" name="pin" inputmode="numeric" pattern="[0-9]{5,6}" placeholder="122002">
+                  </div>
+                  <div class="field">
+                    <label for="bookGate">Gate / tower access <span class="opt">optional</span></label>
+                    <input id="bookGate" name="gate" placeholder="Gate 2, visitor parking">
+                  </div>
+                  <div class="field">
+                    <label for="bookLanguage">Ritual language</label>
+                    <select id="bookLanguage" name="language"></select>
+                  </div>
+                </div>
+                <div class="field mt-2">
+                  <label class="choice choice--wide choice--center">
+                    <input type="checkbox" id="gateConsent" checked>
+                    <span class="choice__box"></span>
+                    <span class="choice__text"><b>Generate my society gate pass</b><span>We support MyGate, NoBrokerHood and paper visitor passes. The pandit receives a one-time code.</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">4</span><div><h3>Gotra &amp; family details</h3><p>Used in the sankalpa — the formal intention of the ritual.</p></div></div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="bookGotra">Family gotra</label>
+                    <div class="flex-8">
+                      <input id="bookGotra" name="gotra" value="Kashyap" list="gotraList" placeholder="Kashyap">
+                      <button class="btn btn--ghost btn--sm flex-none" type="button" id="gotraFinder">Find</button>
+                    </div>
+                    <datalist id="gotraList"></datalist>
+                    <small>Not sure? Kashyap is the traditional default. You can confirm with the pandit later.</small>
+                  </div>
+                  <div class="field">
+                    <label for="bookTradition">Tradition preference</label>
+                    <select id="bookTradition" name="tradition">
+                      <option>No preference — pandit’s expertise</option>
+                    </select>
+                  </div>
+                  <div class="field field--full">
+                    <label for="bookNotes">Anything we should know? <span class="opt">optional</span></label>
+                    <textarea id="bookNotes" name="notes" placeholder="Family deity, health concerns, a specific muhurat, elderly guests, parking notes…"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">5</span><div><h3>Choose your pandit</h3><p>All pandits are background-verified and rated 4.5+. Or let us assign the best match.</p></div></div>
+                <div class="choice-grid" id="panditChoices"></div>
+                <button class="btn btn--ghost btn--sm mt-2" type="button" id="showAllPandits">Show all 12 pandits</button>
+              </div>
+
+              <div class="booking-actions">
+                <button class="btn btn--ghost" type="button" data-back="1">Back</button>
+                <button class="btn btn--primary" type="button" data-next="3">Continue to extras <span data-arrow></span></button>
+              </div>
+            </div>
+
+            <!-- ================================================= STEP 3 -->
+            <div class="book-step hide" data-step="3">
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">6</span><div><h3>Make it yours</h3><p>Optional add-ons, all delivered or arranged before the ritual.</p></div></div>
+                <div class="choice-grid" id="extraChoices"></div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__head"><span class="n">7</span><div><h3>Payment &amp; invoice</h3><p>Secure checkout. GST invoice emailed before the ritual.</p></div></div>
+                <div class="form-grid">
+                  <div class="field field--full">
+                    <label>Payment method</label>
+                    <div class="choice-grid">
+                      <label class="choice"><input type="radio" name="payment" value="UPI" checked><span class="choice__box"></span><span class="choice__text"><b>UPI</b><span>Google Pay, PhonePe, Paytm</span></span></label>
+                      <label class="choice"><input type="radio" name="payment" value="Card"><span class="choice__box"></span><span class="choice__text"><b>Card</b><span>Visa, Mastercard, RuPay</span></span></label>
+                      <label class="choice"><input type="radio" name="payment" value="Netbanking"><span class="choice__box"></span><span class="choice__text"><b>Netbanking</b><span>All major banks</span></span></label>
+                      <label class="choice"><input type="radio" name="payment" value="25% now"><span class="choice__box"></span><span class="choice__text"><b>Pay 25% now</b><span>Balance after the ritual</span></span></label>
+                    </div>
+                    <p class="pay-now-line" id="payNowLine" role="status"></p>
+                  </div>
+                  <div class="field">
+                    <label for="bookGst">GSTIN <span class="opt">optional, for corporate invoice</span></label>
+                    <input id="bookGst" name="gstin" placeholder="06ABCDE1234F1Z5">
+                  </div>
+                  <div class="field">
+                    <label for="bookCompany">Company / invoice name <span class="opt">optional</span></label>
+                    <input id="bookCompany" name="company" placeholder="Company Pvt. Ltd.">
+                  </div>
+                  <div class="field field--full">
+                    <label class="choice">
+                      <input type="checkbox" id="policyConsent">
+                      <span class="choice__box"></span>
+                      <span class="choice__text"><b>I accept the cancellation and rescheduling policy</b><span>Free cancellation up to 24 hours before the slot. Within 24 hours, samagri and travel costs are retained. One free reschedule, subject to availability.</span></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="booking-actions">
+                <button class="btn btn--ghost" type="button" data-back="2">Back</button>
+                <button class="btn btn--primary btn--lg" type="submit" id="confirmBooking">Confirm booking <span data-arrow></span></button>
+              </div>
+              <p class="tiny muted center mt-2">Payment goes directly to <b>Rajiv Lochan Mishra</b> over UPI. We verify the reference before the muhurat and confirm on WhatsApp — card and netbanking links are sent on request.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================================================= SUMMARY -->
+        <aside class="book-summary">
+          <div class="summary-card">
+            <div class="summary-card__head">
+              <span class="kicker kicker--tight">Your sankalpa</span>
+              <h3 id="sumPooja">Choose a pooja</h3>
+              <p class="small" id="sumMeta">—</p>
+            </div>
+            <div class="summary-lines">
+              <div class="summary-line"><span>Muhurat</span><b id="sumMuhurat">—</b></div>
+              <div class="summary-line"><span>City</span><b id="sumCity">Gurugram</b></div>
+              <div class="summary-line"><span>Pandit</span><b id="sumPandit">Best match</b></div>
+              <div class="summary-line"><span>Ritual fee</span><b id="sumBase">₹0</b></div>
+              <div class="summary-line"><span>Add-ons</span><b id="sumExtras">₹0</b></div>
+              <div class="summary-line"><span>GST (18%)</span><b id="sumGst">₹0</b></div>
+              <div class="summary-line total"><span>Total</span><b id="sumTotal">₹0</b></div>
+            </div>
+            <div class="summary-card__pad">
+              <div class="note-strip"> <span data-ico-inline="leaf"></span><span>Includes Punya-Flow waste pickup, digital receipt and a 10-minute punctuality promise.</span></div>
+              <div class="mt-2 pill-row">
+                <span class="chip chip--sm">Free cancellation</span>
+                <span class="chip chip--sm">No hidden dakshina</span>
+                <span class="chip chip--sm">GST invoice</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section form-section--pad mt-2">
+            <div class="flex-info">
+              <span data-ico-inline="wa" class="maroon"></span>
+              <div><b class="small">Need help booking?</b><p class="tiny muted mt-1">WhatsApp +91 88896 85370 · 6 AM – 10 PM IST. Average reply 8 minutes.</p></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/vendor/qrcode.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/booking.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>City Directory — Every Indian District &amp; Famous Place | Vedic Pooja</title>
+<meta name="description" content="Find live panchang, tithi and muhurat for every Indian district and famous place — all 36 states and union territories, plus NRI hubs. Search 1,057 cities, districts and tirths with exact coordinates and time zones.">
+<link rel="canonical" href="https://vedicpooja.in/cities.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>City directory</span></div>
+      <h1>Every district. Every famous place.</h1>
+      <p>Live panchang, tithi and muhurat for <span data-city-count>1,057</span> places across all 36 Indian states and union territories — plus NRI hubs. Each entry carries its own WGS-84 coordinates and IANA time zone, so sunrise is calculated for that exact spot.</p>
+      <div class="hero__cta mt-2">
+        <a class="btn btn--gold btn--sm" href="#directory">Explore the directory</a>
+        <a class="btn btn--light btn--sm" href="panchang.html">Open today’s panchang</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="directory">
+    <div class="container">
+      <div class="trustbar reveal mt-0" id="cityStats">
+        <div><span class="trustbar__icon" data-ico="pin"></span><div><b>—</b><span>Places covered</span></div></div>
+        <div><span class="trustbar__icon" data-ico="compass"></span><div><b>—</b><span>Districts</span></div></div>
+        <div><span class="trustbar__icon" data-ico="star"></span><div><b>—</b><span>Famous places</span></div></div>
+        <div><span class="trustbar__icon" data-ico="globe"></span><div><b>—</b><span>States &amp; countries</span></div></div>
+      </div>
+
+      <div class="toolbar mt-4">
+        <div class="search">
+          <span data-ico-inline="search"></span>
+          <input id="dirCitySearch" type="search" placeholder="Search 1,057 cities, districts &amp; places…" aria-label="Search the city directory" autocomplete="off">
+        </div>
+        <div class="select-wrap">
+          <select id="cityState" aria-label="Filter by state or country"></select>
+        </div>
+        <div class="select-wrap">
+          <select id="cityKind" aria-label="Filter by place type">
+            <option value="all">All places</option>
+            <option value="district">Districts</option>
+            <option value="famous">Famous places &amp; tirths</option>
+            <option value="city">Metro &amp; NRI cities</option>
+            <option value="nri">NRI hubs only</option>
+          </select>
+        </div>
+        <span class="result-count" id="cityResultCount"></span>
+      </div>
+
+      <div class="chip-row mb-3" id="cityQuick" aria-label="Quick filters">
+        <button type="button" class="chip chip--sm" data-kind="all">All places</button>
+        <button type="button" class="chip chip--sm" data-kind="district">Districts</button>
+        <button type="button" class="chip chip--sm" data-kind="famous">Famous places</button>
+        <button type="button" class="chip chip--sm" data-kind="nri">NRI</button>
+      </div>
+
+      <p class="small muted mb-3" id="cityHint">Tap any place to see its live panchang, coordinates and local time.</p>
+
+      <div class="city-grid" id="cityGrid"></div>
+
+      <div class="empty-state hide" id="cityEmpty">
+        <div class="big">🧭</div>
+        <p>No place matches that search.</p>
+        <p class="tiny mt-1">Try a district name, a state, or a famous tirth such as “Kedarnath”.</p>
+        <button class="btn btn--ghost btn--sm mt-2" id="cityReset">Clear filters</button>
+      </div>
+
+      <div class="center mt-3">
+        <button class="btn btn--ghost" id="cityMore" type="button">Load more places</button>
+      </div>
+
+      <div class="note-strip mt-4">
+        <span data-ico-inline="info"></span>
+        <span><b>Why coordinates matter.</b> Tithi, nakshatra and Rahu Kaal change with sunrise. Using a district’s own latitude and longitude keeps the panchang accurate even when you are far from a metro city.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Built for all of Bharat</span>
+        <h2>From Kutch to Kavaratti.</h2>
+        <p>Every administrative district, every major tirth, hill station, beach and heritage town — in one searchable directory.</p>
+      </div>
+      <div class="grid grid-3">
+        <a class="note-strip" href="panchang.html"><span data-ico-inline="sun"></span><span><b>Daily panchang</b><br>Tithi, nakshatra, Rahu Kaal and choghadiya for your selected place.</span></a>
+        <a class="note-strip" href="kundli.html"><span data-ico-inline="compass"></span><span><b>Free kundli</b><br>Birth chart calculated for the exact place and minute you were born.</span></a>
+        <a class="note-strip" href="horoscope.html"><span data-ico-inline="star"></span><span><b>Daily rashifal</b><br>Moon-sign transit readings based on today’s real planetary positions.</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/cities.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

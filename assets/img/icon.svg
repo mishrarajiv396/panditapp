@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vedic Pooja">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a2c3b"/>
+      <stop offset="1" stop-color="#4a121c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="196" fill="none" stroke="#c9a227" stroke-width="6" opacity=".55"/>
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#c9a227" stroke-width="3" opacity=".35" stroke-dasharray="8 12"/>
+  <path d="M136 286h240c4 68-50 122-120 122s-124-54-120-122Z" fill="#f1d9a8"/>
+  <path d="M190 330c50 20 82 20 132 0" stroke="#8a5a1f" stroke-width="6" opacity=".45" fill="none" stroke-linecap="round"/>
+  <path d="M120 286h272" stroke="#c9a227" stroke-width="14" stroke-linecap="round"/>
+  <path d="M256 92c30 42 30 80 0 110-30-30-30-68 0-110Z" fill="#f0a13a"/>
+  <path d="M256 118c15 24 15 46 0 64-15-18-15-40 0-64Z" fill="#fbe2a8"/>
+</svg>

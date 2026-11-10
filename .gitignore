@@ -1,0 +1,9 @@
+# Node backend
+server/node_modules/
+server/.env
+server/.mysql/
+
+# Local logs / OS noise
+*.log
+.DS_Store
+Thumbs.db

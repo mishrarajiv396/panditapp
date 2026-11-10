@@ -1,0 +1,28 @@
+{
+  "name": "Vedic Pooja — Pandits, Panchang & Puja Guide",
+  "short_name": "Vedic Pooja",
+  "description": "Verified pandits, 86 all-inclusive poojas, astrology and Vastu consultations, live panchang and a free step-by-step Satyanarayan puja guide.",
+  "id": "/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fbf6ee",
+  "theme_color": "#6d1f2c",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["lifestyle", "education", "reference"],
+  "icons": [
+    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Satyanarayan Puja Guide", "short_name": "Puja Guide", "url": "./puja-guide.html", "description": "8-step vidhi, mantras, samagri, katha and havan" },
+    { "name": "Seva & UPI", "short_name": "Seva", "url": "./puja-guide.html#seva", "description": "Seva details and the owner's UPI QR" },
+    { "name": "Today’s Panchang", "short_name": "Panchang", "url": "./panchang.html", "description": "Tithi, nakshatra, Rahu Kaal and muhurat" },
+    { "name": "Book a Pooja", "short_name": "Book", "url": "./poojas.html", "description": "Browse rituals and verified pandits" },
+    { "name": "Services", "short_name": "Services", "url": "./services.html", "description": "Astrology, Vastu, numerology and pooja paath" }
+  ]
+}

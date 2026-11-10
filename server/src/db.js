@@ -1,0 +1,41 @@
+'use strict';
+
+const mysql = require('mysql2/promise');
+const config = require('./config');
+
+const pool = mysql.createPool({
+  host: config.db.host,
+  port: config.db.port,
+  user: config.db.user,
+  password: config.db.password,
+  database: config.db.database,
+  ssl: config.db.ssl ? { rejectUnauthorized: false } : undefined,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  charset: 'utf8mb4',
+  dateStrings: true,
+  decimalNumbers: true,
+  namedPlaceholders: true
+});
+
+async function query(sql, params) {
+  const [rows] = await pool.query(sql, params);
+  return rows;
+}
+
+async function one(sql, params) {
+  const rows = await query(sql, params);
+  return rows[0] || null;
+}
+
+async function ping() {
+  const conn = await pool.getConnection();
+  try {
+    await conn.ping();
+  } finally {
+    conn.release();
+  }
+}
+
+module.exports = { pool, query, one, ping };

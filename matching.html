@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kundli Matching — Free 36 Guna Ashtakoot Report | Vedic Pooja</title>
+<meta name="description" content="Check marriage compatibility with a computed Ashtakoot 36-guna report — Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakoot and Nadi, plus Manglik and dosha analysis.">
+<link rel="canonical" href="https://vedicpooja.in/matching.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Kundli matching</span></div>
+      <h1>Two charts. Thirty-six gunas.</h1>
+      <p>A computed Ashtakoot report using both Moon charts — the way classical Jyotish actually matches a couple. Free, private, and explained without fear.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="match-layout">
+        <div>
+          <div class="match-forms">
+            <div class="form-section">
+              <div class="form-section__head"><span class="n">1</span><div><h3>Groom’s birth details</h3><p>Moon sign and nakshatra drive the score.</p></div></div>
+              <div class="form-grid form-grid--single">
+                <div class="field"><label for="gName">Full name</label><input id="gName" placeholder="e.g. Aarav Mehta" autocomplete="name"></div>
+                <div class="form-grid">
+                  <div class="field"><label for="gDate">Date of birth</label><input id="gDate" type="date" max="2026-12-31"></div>
+                  <div class="field"><label for="gTime">Time of birth</label><input id="gTime" type="time" value="10:30"></div>
+                </div>
+                <div class="field"><label for="gCity">Place of birth</label><select id="gCity"></select></div>
+                <label class="choice">
+                  <input type="checkbox" id="gUnknown">
+                  <span class="choice__box"></span>
+                  <span class="choice__text"><b>Birth time unknown</b><span>We’ll use 12:00 PM — Moon sign and nakshatra remain reliable.</span></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section__head"><span class="n">2</span><div><h3>Bride’s birth details</h3><p>Same care, same Lahiri ayanamsa.</p></div></div>
+              <div class="form-grid form-grid--single">
+                <div class="field"><label for="bName">Full name</label><input id="bName" placeholder="e.g. Meera Sharma" autocomplete="name"></div>
+                <div class="form-grid">
+                  <div class="field"><label for="bDate">Date of birth</label><input id="bDate" type="date" max="2026-12-31"></div>
+                  <div class="field"><label for="bTime">Time of birth</label><input id="bTime" type="time" value="10:30"></div>
+                </div>
+                <div class="field"><label for="bCity">Place of birth</label><select id="bCity"></select></div>
+                <label class="choice">
+                  <input type="checkbox" id="bUnknown">
+                  <span class="choice__box"></span>
+                  <span class="choice__text"><b>Birth time unknown</b><span>We’ll use 12:00 PM — Moon sign and nakshatra remain reliable.</span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="match-actions">
+            <button class="btn btn--primary" type="button" id="matchRun">Check compatibility <span id="matchArrow"></span></button>
+            <button class="btn btn--ghost" type="button" id="matchSample">Load a sample couple</button>
+            <p class="tiny muted flex-full">Calculated in your browser. We never upload or store birth details.</p>
+          </div>
+        </div>
+
+        <aside>
+          <div class="panel">
+            <div class="panel__head"><h3>The 36 gunas</h3><span class="chip chip--gold">Ashtakoot</span></div>
+            <div class="panel__body">
+              <ul class="koot-key">
+                <li><span>Varna</span><b>1</b></li>
+                <li><span>Vashya</span><b>2</b></li>
+                <li><span>Tara</span><b>3</b></li>
+                <li><span>Yoni</span><b>4</b></li>
+                <li><span>Graha Maitri</span><b>5</b></li>
+                <li><span>Gana</span><b>6</b></li>
+                <li><span>Bhakoot</span><b>7</b></li>
+                <li><span>Nadi</span><b>8</b></li>
+              </ul>
+              <div class="note-strip mt-3">
+                <span data-ico-inline="info"></span>
+                <span><b>18+ is traditionally considered workable.</b> No score is a verdict on a relationship. Bhakoot and Nadi doshas have well-established pooja remedies, and a senior astrologer should read both charts before any decision.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card mt-2">
+            <div class="summary-card__head">
+              <span class="kicker kicker--tight">A human reading</span>
+              <h3>Talk to a jyotish acharya</h3>
+              <p class="small muted">A 30-minute private call on compatibility, manglik status and practical remedies.</p>
+            </div>
+            <div class="summary-card__body">
+              <a class="btn btn--primary btn--wide" href="about.html#contact">Book a consultation</a>
+              <a class="btn btn--ghost btn--wide mt-2" href="kundli.html">Generate a full kundli</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- ============================================================ RESULT -->
+      <div id="matchEmpty" class="match-empty mt-4">
+        <div class="match-empty__ring"><span>36</span><small>gunas</small></div>
+        <div>
+          <h2 class="h2--md">Your compatibility report appears here</h2>
+          <p class="small muted mt-1">Enter both birth details and tap “Check compatibility”. You’ll see each of the eight kootas, the Manglik position in both charts, and which doshas need a remedy.</p>
+          <div class="chip-row mt-2">
+            <span class="chip">Varna &amp; Vashya</span>
+            <span class="chip">Tara &amp; Yoni</span>
+            <span class="chip">Graha Maitri</span>
+            <span class="chip">Gana, Bhakoot, Nadi</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="matchResult" class="hide mt-4">
+        <div class="panel match-hero" id="matchPrint">
+          <div class="match-hero__score">
+            <div class="score-ring" id="matchRing" style="--pct:0"><div><b id="matchTotal">0</b><span>out of 36</span></div></div>
+            <div class="chip chip--gold mt-2" id="matchLabel">—</div>
+          </div>
+          <div class="match-hero__copy">
+            <span class="kicker kicker--tight">Ashtakoot report</span>
+            <h2 id="matchNames">—</h2>
+            <p class="muted mt-1" id="matchVerdict">—</p>
+            <div class="match-badges" id="matchBadges"></div>
+            <div class="match-pair" id="matchPair"></div>
+          </div>
+          <div class="match-hero__actions no-print">
+            <button class="btn btn--ghost btn--sm" type="button" id="matchPrintBtn">Print report</button>
+            <a class="btn btn--primary btn--sm" href="booking.html">Book a pandit</a>
+          </div>
+        </div>
+
+        <div class="grid grid-2 mt-2 align-start">
+          <div class="panel">
+            <div class="panel__head"><h3>Koota by koota</h3><span class="small" id="matchMax">36 points</span></div>
+            <div class="panel__body" id="matchKoots"></div>
+          </div>
+          <div>
+            <div class="panel">
+              <div class="panel__head"><h3>Manglik &amp; doshas</h3><span class="small">Both charts</span></div>
+              <div class="panel__body"><div class="dosha-list" id="matchDoshas"></div></div>
+            </div>
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>What to do next</h3></div>
+              <div class="panel__body" id="matchNext"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mt-2">
+          <div class="panel__head"><h3>Reading the report responsibly</h3><span class="chip chip--green">No fear-selling</span></div>
+          <div class="panel__body">
+            <div class="grid grid-2" id="matchRemedies"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <span class="kicker kicker--center">Before you decide</span>
+        <h2>What the 36 gunas actually measure</h2>
+        <p>Ashtakoot is a Moon-based compatibility screen. It is one input — not a replacement for the two people, their families, or a full chart reading.</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card feature reveal"><div class="feature__icon" data-ico="moon"></div><h3>Moon, not sun signs</h3><p>Vedic matching uses the Moon’s nakshatra and rashi at birth — the mind and emotional temperament — rather than the Western sun sign.</p></article>
+        <article class="card feature reveal"><div class="feature__icon" data-ico="heart"></div><h3>Eight complementary tests</h3><p>Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakoot and Nadi together weigh temperament, instinct, mind and health.</p></article>
+        <article class="card feature reveal"><div class="feature__icon" data-ico="shield"></div><h3>Doshas have remedies</h3><p>Manglik, Bhakoot and Nadi doshas are traditionally addressed with Mangal Shanti, Navgrah Shanti and simple lifestyle remedies.</p></article>
+      </div>
+      <div class="note-strip mt-4 mw-760">
+        <span data-ico-inline="alert"></span>
+        <span><b>A note on low scores.</b> A single number can feel heavy. Our astrologers read the full chart before advising anything — and we will tell you plainly when a score is being over-interpreted.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/matching.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

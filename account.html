@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My account · Vedic Pooja</title>
+<meta name="description" content="Your Vedic Pooja account: upcoming poojas, past bookings, pandit details, gate OTPs, samagri orders and security settings.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+<link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="account-body" data-auth-page="account">
+
+<main class="account-main">
+  <div class="container">
+
+    <!-- ------------------------------------------------------------- loading -->
+    <div class="acct-loading" id="accountLoading" aria-live="polite" aria-label="Loading your account">
+      <div class="acct-skeleton"></div>
+      <div class="acct-skeleton"></div>
+      <div class="acct-skeleton"></div>
+    </div>
+
+    <!-- --------------------------------------------------------------- error -->
+    <div class="acct-card" id="accountError" hidden>
+      <div class="acct-empty">
+        <div class="acct-empty__ico">⚠️</div>
+        <b>We couldn’t load your account</b>
+        <p id="accountErrorText">Check that the app is running, then try again.</p>
+        <button class="btn btn--primary btn--sm" type="button" id="accountRetry">Try again</button>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------- content -->
+    <div id="accountContent" hidden>
+
+      <p class="acct-note-line" id="accountNotice" hidden></p>
+
+      <section class="account-hero" id="accountHero" hidden>
+        <div class="account-hero__top">
+          <div class="account-id">
+            <div class="account-avatar" id="accountAvatar" aria-hidden="true">B</div>
+            <div class="account-id__text">
+              <small>Namaste, welcome back</small>
+              <h1 id="accountName">Bhakt</h1>
+              <p id="accountMeta">—</p>
+              <p id="accountSince">Member since —</p>
+            </div>
+          </div>
+          <div class="account-hero__actions">
+            <a class="btn btn--primary" href="poojas.html">Book a pooja</a>
+            <a class="btn btn--ghost" href="shop.html">Samagri shop</a>
+            <button class="btn btn--ghost" type="button" data-signout>Sign out</button>
+          </div>
+        </div>
+
+        <div class="account-stats">
+          <div class="account-stat">
+            <span>Total bookings</span>
+            <b id="statBookings">0</b>
+          </div>
+          <div class="account-stat">
+            <span>Upcoming poojas</span>
+            <b id="statUpcoming">0</b>
+          </div>
+          <div class="account-stat">
+            <span>Seva contributed</span>
+            <b id="statSpent">₹0</b>
+          </div>
+        </div>
+      </section>
+
+      <nav class="account-tabs" aria-label="Account sections">
+        <button class="account-tab is-active" type="button" data-acct-tab="overview">
+          🪔 Overview
+        </button>
+        <button class="account-tab" type="button" data-acct-tab="profile">
+          Profile
+        </button>
+        <button class="account-tab" type="button" data-acct-tab="security">
+          Security
+        </button>
+      </nav>
+
+      <!-- ---------------------------------------------------------- overview -->
+      <div class="account-layout" data-acct-panel="overview">
+        <div>
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Your pooja bookings</h2>
+                <p>Every muhurat, pandit and gate code in one place.</p>
+              </div>
+              <a href="poojas.html">Book another →</a>
+            </div>
+            <div class="acct-bookings" id="bookingList"></div>
+          </section>
+
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Samagri orders</h2>
+                <p>Pooja-in-a-box kits and ritual essentials.</p>
+              </div>
+              <a href="shop.html">Shop samagri →</a>
+            </div>
+            <div class="acct-orders" id="orderList"></div>
+          </section>
+        </div>
+
+        <aside class="acct-side">
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Quick links</h2>
+                <p>Everything you use most.</p>
+              </div>
+            </div>
+            <div class="acct-links">
+              <a href="puja-guide.html"><span>📖</span> Satyanarayan puja guide <em>→</em></a>
+              <a href="panchang.html"><span>🌤️</span> Today’s panchang <em>→</em></a>
+              <a href="calendar.html"><span>📅</span> Festival calendar <em>→</em></a>
+              <a href="kundli.html"><span>🔯</span> Kundli generator <em>→</em></a>
+              <a href="policies.html#privacy"><span>🔐</span> Privacy policy <em>→</em></a>
+            </div>
+          </section>
+
+          <section class="acct-card">
+            <div class="acct-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+              <span>Bookings made earlier with the same mobile number or email are linked to your account automatically.</span>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <!-- ----------------------------------------------------------- profile -->
+      <div class="account-layout" data-acct-panel="profile" hidden>
+        <div>
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Your details</h2>
+                <p>These are used for bookings, samagri delivery and support.</p>
+              </div>
+            </div>
+
+            <form class="acct-form" id="profileForm" novalidate>
+              <label class="auth-field">
+                <span class="auth-field__label">Full name</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                  </span>
+                  <input type="text" id="profileName" name="name" autocomplete="name" maxlength="120" required>
+                </span>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <label class="auth-field">
+                <span class="auth-field__label">Email address</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+                  </span>
+                  <input type="email" id="profileEmail" name="email" autocomplete="email" maxlength="190" required>
+                </span>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <label class="auth-field">
+                <span class="auth-field__label">Mobile number</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2"/></svg>
+                  </span>
+                  <span class="auth-field__prefix">+91</span>
+                  <input type="tel" id="profilePhone" name="phone" autocomplete="tel-national" data-phone required>
+                </span>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <p class="acct-note-line" id="profileNote" hidden></p>
+
+              <div class="acct-actions">
+                <button class="auth-submit" type="submit" id="profileSave">
+                  <span>Save changes</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <aside class="acct-side">
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Signed in as</h2>
+                <p id="sessionEmail">—</p>
+              </div>
+            </div>
+            <div class="acct-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-3.5 8-9.5V5l-8-3-8 3v7.5C4 18.5 12 22 12 22Z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Changing your email or mobile number updates how you sign in next time.</span>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <!-- ---------------------------------------------------------- security -->
+      <div class="account-layout" data-acct-panel="security" hidden>
+        <div>
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Change password</h2>
+                <p>Use at least 8 characters with a letter and a number.</p>
+              </div>
+            </div>
+
+            <form class="acct-form" id="securityForm" novalidate>
+              <label class="auth-field">
+                <span class="auth-field__label">Current password</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                  </span>
+                  <input type="password" id="currentPassword" name="currentPassword" autocomplete="current-password" placeholder="Your current password" maxlength="72" required>
+                  <button class="auth-pw" type="button" data-pw-toggle aria-label="Show password" aria-pressed="false"></button>
+                </span>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <label class="auth-field">
+                <span class="auth-field__label">New password</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                  </span>
+                  <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" placeholder="Create a strong password" maxlength="72" required>
+                  <button class="auth-pw" type="button" data-pw-toggle aria-label="Show password" aria-pressed="false"></button>
+                </span>
+                <div class="auth-strength" id="securityStrength" data-score="0" aria-hidden="true">
+                  <div class="auth-strength__bars"><i></i><i></i><i></i><i></i></div>
+                  <small class="auth-strength__label" data-strength-label>Use 8+ characters with a letter and a number</small>
+                </div>
+                <small class="auth-hint auth-hint--caps" data-caps hidden>Caps Lock is on</small>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <label class="auth-field">
+                <span class="auth-field__label">Confirm new password</span>
+                <span class="auth-field__wrap">
+                  <span class="auth-field__ico">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="m9.5 15.5 1.8 1.8 3.4-3.6"/></svg>
+                  </span>
+                  <input type="password" id="confirmPassword" name="confirm" autocomplete="new-password" placeholder="Repeat the new password" maxlength="72" required>
+                  <button class="auth-pw" type="button" data-pw-toggle aria-label="Show password" aria-pressed="false"></button>
+                </span>
+                <small class="auth-field__error" hidden></small>
+              </label>
+
+              <p class="acct-note-line" id="securityNote" hidden></p>
+
+              <div class="acct-actions">
+                <button class="auth-submit" type="submit" id="securitySave">
+                  <span>Update password</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg>
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <aside class="acct-side">
+          <section class="acct-card">
+            <div class="acct-card__head">
+              <div>
+                <h2>Session &amp; safety</h2>
+                <p>Your account stays signed in for 30 days on this device.</p>
+              </div>
+            </div>
+            <div class="acct-links">
+              <a href="forgot-password.html"><span>🔑</span> Forgot your password? <em>→</em></a>
+              <a href="policies.html#privacy"><span>🛡️</span> How we protect your data <em>→</em></a>
+            </div>
+            <div class="acct-actions mt-2">
+              <button class="btn btn--ghost btn--sm" type="button" data-signout>Sign out of this device</button>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

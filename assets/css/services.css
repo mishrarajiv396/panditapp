@@ -1,0 +1,155 @@
+/* Services — Astrology, Vastu, Numerology and Pooja Paath */
+
+.svc-jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;position:relative;z-index:1}
+.svc-jump a{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.88);font-size:.78rem;letter-spacing:.02em;transition:.2s
+}
+.svc-jump a:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff}
+.svc-jump svg{width:14px;height:14px;color:var(--gold-soft)}
+
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.svc-card{
+  position:relative;display:flex;flex-direction:column;gap:12px;padding:26px 22px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+  color:inherit;text-decoration:none;overflow:hidden
+}
+.svc-card::after{
+  content:'';position:absolute;right:-40px;top:-60px;width:130px;height:130px;border-radius:50%;
+  border:1px solid rgba(201,162,39,.22);box-shadow:0 0 0 18px rgba(201,162,39,.04)
+}
+.svc-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:rgba(201,162,39,.45)}
+.svc-card__icon{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#fbefd9,#f2d9a8);color:var(--maroon)
+}
+.svc-card__icon svg{width:23px;height:23px}
+.svc-card h3{font-size:1.12rem;position:relative;z-index:1}
+.svc-card p{font-size:.84rem;color:var(--ink-soft);line-height:1.65;flex:1}
+.svc-card__more{
+  display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--maroon)
+}
+.svc-card__more svg{width:14px;height:14px;transition:transform .2s}
+.svc-card:hover .svc-card__more svg{transform:translateX(4px)}
+
+.svc-block{scroll-margin-top:120px}
+.svc-block + .svc-block{margin-top:78px}
+.svc-block__head{display:flex;align-items:flex-start;gap:18px;margin-bottom:26px}
+.svc-block__badge{
+  flex:none;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+  background:var(--maroon);color:var(--gold-soft);box-shadow:0 14px 26px -16px rgba(66,15,24,.75)
+}
+.svc-block__badge svg{width:26px;height:26px}
+.svc-block__head h2{font-size:clamp(1.6rem,2.6vw,2.15rem);margin-bottom:6px}
+.svc-block__head p{color:var(--ink-soft);font-size:.92rem;max-width:720px}
+.svc-cols{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:start}
+.svc-prose p{color:var(--ink-soft);font-size:.92rem;line-height:1.75;margin-bottom:16px}
+.svc-prose h3{font-size:1.12rem;margin:26px 0 12px}
+.svc-prose h3:first-child{margin-top:0}
+.svc-list{display:grid;gap:11px;margin:18px 0 0}
+.svc-list li{display:flex;gap:11px;font-size:.88rem;color:var(--ink-soft);align-items:flex-start;line-height:1.55}
+.svc-list li svg{width:16px;height:16px;color:var(--green);flex:none;margin-top:3px}
+.svc-list b{color:var(--ink)}
+.svc-aside{
+  position:relative;padding:28px 26px;border-radius:var(--radius);border:1px solid var(--line);
+  background:linear-gradient(165deg,#fffaf2,#f8eeda);box-shadow:var(--shadow-sm)
+}
+.svc-aside h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:8px}
+.svc-aside p{font-size:.84rem;color:var(--ink-soft);line-height:1.65;margin-bottom:18px}
+.svc-aside .price{font-size:1.5rem;margin-bottom:4px}
+.svc-aside__note{font-size:.72rem;color:var(--ink-faint);margin-bottom:18px}
+.svc-aside .btn{width:100%;justify-content:center}
+.svc-aside .btn + .btn{margin-top:10px}
+.svc-aside__list{display:grid;gap:9px;margin:0 0 20px;padding:0;list-style:none}
+.svc-aside__list li{display:flex;gap:9px;font-size:.8rem;color:var(--ink-soft)}
+.svc-aside__list svg{width:14px;height:14px;color:var(--green);flex:none;margin-top:2px}
+
+/* Numerology calculator */
+.num-panel{
+  display:grid;grid-template-columns:.9fr 1.1fr;gap:0;border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm)
+}
+.num-form{padding:32px 30px;border-right:1px solid var(--line);background:linear-gradient(170deg,#fffaf2,#faf1e0)}
+.num-form h3{font-size:1.3rem;margin-bottom:6px}
+.num-form > p{font-size:.82rem;color:var(--ink-soft);margin-bottom:20px;line-height:1.6}
+.num-form .field + .field{margin-top:14px}
+.num-form .btn{width:100%;justify-content:center;margin-top:18px}
+.num-form .form-note{margin-top:12px}
+.num-out{padding:32px 30px;min-height:320px;display:flex;flex-direction:column;justify-content:center}
+.num-empty{text-align:center;color:var(--ink-faint);max-width:320px;margin-inline:auto}
+.num-empty .big{font-size:2.4rem;margin-bottom:10px;opacity:.55}
+.num-empty p{font-size:.84rem;line-height:1.65}
+.num-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.num-head h3{font-size:1.15rem}
+.num-head span{font-size:.72rem;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase}
+.num-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.num-score{
+  text-align:center;padding:14px 8px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(201,162,39,.06)
+}
+.num-score b{display:block;font-family:var(--serif);font-size:2rem;line-height:1;color:var(--maroon)}
+.num-score span{display:block;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px}
+.num-read{border-left:2px solid var(--gold);padding-left:16px;margin-bottom:16px}
+.num-read h4{font-size:.95rem;margin-bottom:4px}
+.num-read p{font-size:.84rem;color:var(--ink-soft);line-height:1.65}
+.num-meta{display:flex;flex-wrap:wrap;gap:8px}
+.num-meta span{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;
+  background:rgba(109,31,44,.06);border:1px solid var(--line);font-size:.72rem;color:var(--ink-soft)
+}
+.num-meta svg{width:12px;height:12px;color:var(--saffron)}
+.num-err{font-size:.8rem;color:#a11b2c;background:rgba(161,27,44,.07);border:1px solid rgba(161,27,44,.18);padding:10px 12px;border-radius:10px;margin-top:14px}
+
+/* Pooja Paath categories */
+.paath-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.paath-card{
+  display:flex;align-items:center;gap:15px;padding:20px 20px;border-radius:14px;
+  border:1px solid var(--line);background:var(--surface);text-decoration:none;color:inherit;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease
+}
+.paath-card:hover{transform:translateY(-3px);border-color:rgba(201,162,39,.45);box-shadow:var(--shadow-sm)}
+.paath-card__icon{
+  flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(109,31,44,.07);color:var(--maroon);font-size:1.15rem
+}
+.paath-card__icon svg{width:20px;height:20px}
+.paath-card b{display:block;font-size:.94rem;line-height:1.3}
+.paath-card span{display:block;font-size:.72rem;color:var(--ink-faint);margin-top:4px}
+.paath-card__arrow{margin-left:auto;color:var(--maroon);flex:none}
+.paath-card__arrow svg{width:16px;height:16px;transition:transform .2s}
+.paath-card:hover .paath-card__arrow svg{transform:translateX(4px)}
+
+.svc-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
+.svc-step{
+  position:relative;padding:26px 24px 24px;border-radius:var(--radius);border:1px solid var(--line);
+  background:var(--surface);box-shadow:var(--shadow-sm)
+}
+.svc-step::before{
+  counter-increment:step;content:counter(step,decimal-leading-zero);
+  font-family:var(--serif);font-size:1.5rem;color:var(--gold);display:block;margin-bottom:10px
+}
+.svc-step h3{font-size:1rem;margin-bottom:8px}
+.svc-step p{font-size:.83rem;color:var(--ink-soft);line-height:1.65}
+
+@media (max-width:1024px){
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .svc-cols{grid-template-columns:1fr;gap:30px}
+  .num-panel{grid-template-columns:1fr}
+  .num-form{border-right:0;border-bottom:1px solid var(--line)}
+  .paath-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:720px){
+  .svc-grid{grid-template-columns:1fr}
+  .svc-block + .svc-block{margin-top:56px}
+  .svc-block__head{gap:13px}
+  .svc-block__badge{width:46px;height:46px;border-radius:13px}
+  .svc-block__badge svg{width:21px;height:21px}
+  .num-scores{grid-template-columns:repeat(3,1fr)}
+  .paath-grid{grid-template-columns:1fr}
+  .svc-steps{grid-template-columns:1fr}
+  .svc-aside{padding:24px 20px}
+  .num-form,.num-out{padding:26px 20px}
+}

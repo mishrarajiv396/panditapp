@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Rashifal — All 12 Moon Signs, Computed | Vedic Pooja</title>
+<meta name="description" content="Today’s rashifal for all 12 moon signs, computed from the real Moon transit, tithi, nakshatra and yoga for your city — not random text. Includes lucky colour, number, direction, mantra and favourable choghadiya windows.">
+<link rel="canonical" href="https://vedicpooja.in/horoscope.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Daily rashifal</span></div>
+      <h1>Daily rashifal, calculated.</h1>
+      <p>Not a copy-pasted horoscope. Each reading is built from the Moon’s real transit through your moon sign, the day’s tithi, nakshatra and yoga for your chosen city — the same engine that powers our panchang and kundli.</p>
+      <div class="hero__cta mt-2">
+        <a class="btn btn--gold btn--sm" href="#rashifal">Read today’s rashifal</a>
+        <a class="btn btn--light btn--sm" href="kundli.html">Find my moon sign</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="rashifal">
+    <div class="container">
+      <div class="toolbar">
+        <div class="cal-nav">
+          <button type="button" id="rashPrev" aria-label="Previous day"></button>
+          <button type="button" id="rashNext" aria-label="Next day"></button>
+        </div>
+        <div class="field field--min">
+          <input type="date" id="rashDate" class="pan-date" aria-label="Rashifal date">
+        </div>
+        <button class="btn btn--ghost btn--sm" type="button" id="rashToday">Today</button>
+        <div class="search search--city">
+          <span data-ico-inline="search"></span>
+          <input type="search" id="rashCitySearch" placeholder="Search 1,057 cities, districts &amp; places…" autocomplete="off" aria-label="Search rashifal city">
+        </div>
+        <div class="select-wrap">
+          <select id="rashCity" aria-label="Choose city"></select>
+        </div>
+        <span class="result-count" id="rashWeekday">—</span>
+      </div>
+
+      <div class="rash-summary reveal" id="rashSummary">
+        <div class="rash-summary__date"><b>—</b><span>—</span></div>
+        <div class="rash-summary__rows" id="rashSummaryRows"></div>
+      </div>
+
+      <div class="sec-head sec-head--center reveal mt-4">
+        <span class="kicker kicker--center">Your moon sign</span>
+        <h2>Choose your rashi</h2>
+        <p>Your Vedic rashi is the sign the Moon occupied at your birth. If you do not know it, generate a free kundli — the Moon sign is shown on the first page.</p>
+      </div>
+
+      <div class="rashi-grid" id="rashiGrid"></div>
+
+      <div class="panel mt-4 rashi-detail" id="rashiDetail" aria-live="polite"></div>
+
+      <div class="note-strip mt-4">
+        <span data-ico-inline="info"></span>
+        <span><b>How this is calculated.</b> The Moon’s sidereal longitude (Lahiri ayanamsa) gives today’s transit sign. From your moon sign, the Moon falls in one of twelve houses; each house has a classical theme and a strength weight. Tithi, nakshatra and yoga then refine the tone. No random numbers and no fear-based predictions.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/horoscope.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

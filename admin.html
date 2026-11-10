@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#420f18">
+  <title>Admin · Satyanarayan Puja</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ------------------------------------------------------------ login -->
+  <div class="admin-login" id="loginView">
+    <div class="admin-login__glow admin-login__glow--one"></div>
+    <div class="admin-login__glow admin-login__glow--two"></div>
+    <div class="admin-login__card">
+      <a class="admin-brand" href="index.html">
+        <img src="assets/img/icon.svg" alt="" width="46" height="46">
+        <span><strong>Satyanarayan Puja</strong><small>Seva dashboard</small></span>
+      </a>
+      <h1>Welcome back</h1>
+      <p class="admin-login__sub">Bookings, payments, pandit applications and shop orders — all in one place.</p>
+      <form id="loginForm" novalidate>
+        <label class="admin-field">
+          <span>Email</span>
+          <input type="email" id="loginEmail" name="email" autocomplete="username" placeholder="admin@panditapp.local" required>
+        </label>
+        <label class="admin-field">
+          <span>Password</span>
+          <input type="password" id="loginPassword" name="password" autocomplete="current-password" placeholder="Your admin password" required>
+        </label>
+        <p class="admin-error" id="loginError" role="alert" hidden></p>
+        <button class="admin-btn admin-btn--primary admin-btn--wide" type="submit" id="loginBtn">Sign in</button>
+      </form>
+      <p class="admin-login__hint">Default demo login: <b>admin@panditapp.local</b> / <b>Admin@2026</b><br>Change it from <b>Account &amp; settings</b> after your first sign-in.</p>
+      <a class="admin-back" href="index.html">← Back to website</a>
+    </div>
+  </div>
+
+  <!-- --------------------------------------------------------- dashboard -->
+  <div class="admin-shell" id="appView" hidden>
+    <aside class="admin-side">
+      <a class="admin-brand admin-brand--light" href="index.html">
+        <img src="assets/img/icon.svg" alt="" width="42" height="42">
+        <span><strong>Satyanarayan</strong><small>Admin console</small></span>
+      </a>
+      <nav class="admin-nav" aria-label="Admin sections">
+        <button class="admin-nav__item is-active" data-tab="bookings" type="button">
+          <span class="admin-nav__ico">🪔</span><span>Bookings</span><span class="admin-nav__count" id="navBookings">0</span>
+        </button>
+        <button class="admin-nav__item" data-tab="applications" type="button">
+          <span class="admin-nav__ico">🧑‍🏫</span><span>Pandit applications</span><span class="admin-nav__count" id="navApplications">0</span>
+        </button>
+        <button class="admin-nav__item" data-tab="orders" type="button">
+          <span class="admin-nav__ico">📦</span><span>Shop orders</span><span class="admin-nav__count" id="navOrders">0</span>
+        </button>
+        <button class="admin-nav__item" data-tab="messages" type="button">
+          <span class="admin-nav__ico">💬</span><span>Messages</span><span class="admin-nav__count" id="navMessages">0</span>
+        </button>
+        <span class="admin-nav__sep" aria-hidden="true"></span>
+        <button class="admin-nav__item" data-tab="account" type="button">
+          <span class="admin-nav__ico">⚙️</span><span>Account &amp; settings</span>
+        </button>
+      </nav>
+      <div class="admin-side__foot">
+        <a href="index.html">View website</a>
+        <button type="button" id="logoutBtn">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-top">
+        <div>
+          <p class="admin-eyebrow">Om Shri Ganeshaya Namah</p>
+          <h1 id="pageTitle">Bookings</h1>
+        </div>
+        <div class="admin-top__actions">
+          <span class="admin-updated" id="lastUpdated"></span>
+          <span class="admin-live" id="liveBadge"><i></i> Live</span>
+          <button class="admin-icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+          <button class="admin-btn admin-btn--ghost" type="button" id="refreshBtn">Refresh</button>
+        </div>
+      </header>
+
+      <section class="admin-stats" aria-label="Summary" id="statsRow">
+        <article class="admin-stat admin-stat--maroon"><span>Total bookings</span><b id="statBookings">0</b><small id="statToday">0 today</small></article>
+        <article class="admin-stat admin-stat--gold"><span>Awaiting payment check</span><b id="statPending">0</b><small>UPI references to verify</small></article>
+        <article class="admin-stat admin-stat--green"><span>Verified revenue</span><b id="statRevenue">₹0</b><small>Paid + verified bookings</small></article>
+        <article class="admin-stat admin-stat--saffron"><span>New enquiries</span><b id="statEnquiries">0</b><small>Applications + orders + messages</small></article>
+      </section>
+
+      <section class="admin-panel" id="panelBookings">
+        <div class="admin-toolbar">
+          <div class="admin-search">
+            <span>⌕</span>
+            <input type="search" id="bookingSearch" placeholder="Search name, phone, booking ID or pooja…">
+          </div>
+          <div class="admin-toolbar__group">
+            <select id="bookingFilter" aria-label="Filter payment status">
+              <option value="">All payment states</option>
+              <option value="Awaiting verification">Awaiting verification</option>
+              <option value="Pending">Pending</option>
+              <option value="Paid">Paid</option>
+              <option value="Verified">Verified</option>
+            </select>
+            <button class="admin-btn admin-btn--ghost admin-btn--mini" type="button" id="exportBookings">Export CSV</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Booking</th><th>Customer</th><th>Pooja</th><th>Date</th><th>Amount</th><th>Payment</th><th>Actions</th></tr></thead>
+            <tbody id="bookingsBody"><tr><td colspan="7" class="admin-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panelApplications" hidden>
+        <div class="admin-toolbar">
+          <p class="admin-toolbar__note">Pandit join requests from <b>pandits.html</b>. Verify identity before marking as verified.</p>
+          <button class="admin-btn admin-btn--ghost admin-btn--mini" type="button" id="exportApplications">Export CSV</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Applicant</th><th>Contact</th><th>City</th><th>Experience</th><th>Tradition</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="applicationsBody"><tr><td colspan="7" class="admin-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panelOrders" hidden>
+        <div class="admin-toolbar">
+          <p class="admin-toolbar__note">Samagri shop orders. Update the status as the order moves from packing to delivery.</p>
+          <button class="admin-btn admin-btn--ghost admin-btn--mini" type="button" id="exportOrders">Export CSV</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="ordersBody"><tr><td colspan="6" class="admin-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panelMessages" hidden>
+        <div class="admin-toolbar">
+          <p class="admin-toolbar__note">Contact and enquiry messages from the website.</p>
+          <button class="admin-btn admin-btn--ghost admin-btn--mini" type="button" id="exportMessages">Export CSV</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>From</th><th>Contact</th><th>Message</th><th>Received</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="messagesBody"><tr><td colspan="6" class="admin-empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panelAccount" hidden>
+        <div class="admin-account">
+          <article class="admin-card">
+            <header class="admin-card__head">
+              <div class="admin-avatar" id="accountAvatar">A</div>
+              <div>
+                <h2>Your profile</h2>
+                <p>Name and email used to sign in to this dashboard.</p>
+              </div>
+            </header>
+            <form id="profileForm" class="admin-form" novalidate>
+              <label class="admin-field">
+                <span>Display name</span>
+                <input type="text" id="profileName" autocomplete="name" maxlength="120" placeholder="Site Admin">
+              </label>
+              <label class="admin-field">
+                <span>Email</span>
+                <input type="email" id="profileEmail" autocomplete="email" maxlength="190" placeholder="admin@panditapp.local">
+              </label>
+              <p class="admin-note" id="profileNote" role="status" hidden></p>
+              <button class="admin-btn admin-btn--primary" type="submit" id="profileSave">Save profile</button>
+            </form>
+          </article>
+
+          <article class="admin-card">
+            <header class="admin-card__head">
+              <div class="admin-card__ico">🔒</div>
+              <div>
+                <h2>Change password</h2>
+                <p>At least 8 characters, with one letter and one number.</p>
+              </div>
+            </header>
+            <form id="passwordForm" class="admin-form" novalidate>
+              <label class="admin-field">
+                <span>Current password</span>
+                <input type="password" id="currentPassword" autocomplete="current-password" placeholder="Your current password">
+              </label>
+              <label class="admin-field">
+                <span>New password</span>
+                <input type="password" id="newPassword" autocomplete="new-password" placeholder="Create a strong password">
+              </label>
+              <div class="admin-strength" id="passwordStrength" aria-hidden="true">
+                <i></i><i></i><i></i><i></i>
+              </div>
+              <label class="admin-field">
+                <span>Confirm new password</span>
+                <input type="password" id="confirmPassword" autocomplete="new-password" placeholder="Repeat the new password">
+              </label>
+              <p class="admin-note" id="passwordNote" role="status" hidden></p>
+              <button class="admin-btn admin-btn--primary" type="submit" id="passwordSave">Update password</button>
+            </form>
+          </article>
+
+          <article class="admin-card">
+            <header class="admin-card__head">
+              <div class="admin-card__ico">🎨</div>
+              <div>
+                <h2>Appearance</h2>
+                <p>Personalise the dashboard on this device.</p>
+              </div>
+            </header>
+            <div class="admin-theme-row">
+              <div><b>Dark mode</b><span>Warm, low-light temple palette.</span></div>
+              <button class="admin-switch" id="themeSwitch" type="button" role="switch" aria-checked="false"><span></span></button>
+            </div>
+            <div class="admin-theme-row">
+              <div><b>Auto-refresh</b><span>Reload data every 60 seconds.</span></div>
+              <button class="admin-switch is-on" id="autoSwitch" type="button" role="switch" aria-checked="true"><span></span></button>
+            </div>
+          </article>
+
+          <article class="admin-card">
+            <header class="admin-card__head">
+              <div class="admin-card__ico">🛡️</div>
+              <div>
+                <h2>Session</h2>
+                <p>Signed in as <b id="sessionEmail">—</b>.</p>
+              </div>
+            </header>
+            <div class="admin-account__actions">
+              <a class="admin-btn admin-btn--ghost" href="index.html">Open website</a>
+              <button class="admin-btn admin-btn--danger" id="accountSignOut" type="button">Sign out</button>
+            </div>
+            <p class="admin-note admin-note--quiet">Tip: press <kbd>/</kbd> to search, <kbd>Esc</kbd> to close a dialog.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ---------------------------------------------------- booking detail -->
+  <div class="admin-modal" id="detailModal" hidden>
+    <div class="admin-modal__backdrop" data-close-modal></div>
+    <div class="admin-modal__card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <header class="admin-modal__head">
+        <div>
+          <p class="admin-eyebrow" id="detailEyebrow">Booking</p>
+          <h2 id="detailTitle">Booking details</h2>
+        </div>
+        <button class="admin-modal__close" type="button" data-close-modal aria-label="Close">×</button>
+      </header>
+      <div class="admin-modal__body" id="detailBody"></div>
+      <footer class="admin-modal__foot" id="detailFoot"></footer>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hindu Festival Calendar — Tithi, Muhurat &amp; Pooja Dates | Vedic Pooja</title>
+<meta name="description" content="A computed Hindu festival calendar for 1,000+ Indian and NRI cities and districts - Diwali, Holi, Navratri, Janmashtami, Shivratri and every major tithi, with tithi, nakshatra and muhurat for each day.">
+<link rel="canonical" href="https://vedicpooja.in/calendar.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Calendar</span></div>
+      <h1>The festival calendar, computed.</h1>
+      <p>Every date on this calendar is derived from the Moon’s tithi and the Sun’s sidereal ingress — not a copied list. Change the city and the timings follow your horizon.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="toolbar">
+        <div class="cal-nav">
+          <button type="button" id="calPrev" aria-label="Previous month"></button>
+          <button type="button" id="calNext" aria-label="Next month"></button>
+        </div>
+        <div class="select-wrap">
+          <select id="calCity" aria-label="Choose city"></select>
+        </div>
+        <button class="btn btn--ghost btn--sm" type="button" id="calToday">Today</button>
+        <div class="select-wrap">
+          <select id="calJump" aria-label="Jump to a festival"><option value="">Jump to a festival…</option></select>
+        </div>
+        <span class="result-count" id="calCount">—</span>
+      </div>
+
+      <div class="cal-layout">
+        <div>
+          <div class="cal-wrap">
+            <div class="cal-head">
+              <div class="cal-title">
+                <span class="cal-title__icon" id="calTitleIcon"></span>
+                <div>
+                  <h2 id="calMonthTitle">—</h2>
+                  <p class="small muted" id="calMonthSub">—</p>
+                </div>
+              </div>
+              <div class="cal-legend cal-legend--flush">
+                <span><i class="dot-gold"></i>Festival</span>
+                <span><i class="dot-green"></i>Ekadashi</span>
+                <span><i class="dot-red"></i>Purnima / Amavasya</span>
+              </div>
+            </div>
+            <div class="cal-dow">
+              <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="cal-legend">
+              <span><i class="dot-gold"></i>Major festival</span>
+              <span><i class="dot-green"></i>Ekadashi vrat</span>
+              <span><i class="dot-red"></i>Purnima / Amavasya</span>
+              <span><i class="dot-saffron"></i>Shubh muhurat</span>
+            </div>
+          </div>
+
+          <div class="cal-detail" id="calDetail"></div>
+        </div>
+
+        <aside>
+          <div class="panel">
+            <div class="panel__head"><h3 id="calFestHead">Festivals this month</h3><span class="chip chip--gold" id="calFestCount">—</span></div>
+            <div class="panel__body" id="calFestList"></div>
+          </div>
+
+          <div class="panel mt-2">
+            <div class="panel__head"><h3>Next shubh muhurats</h3><span class="small">Next 21 days</span></div>
+            <div class="panel__body" id="calMuhurats"></div>
+          </div>
+
+          <div class="panel mt-2" id="calReminders">
+            <div class="panel__head"><h3>Festival reminders</h3><span class="chip chip--gold">.ics</span></div>
+            <div class="panel__body">
+              <p class="small muted">Save the computed festivals to your phone calendar. Each date includes a reminder one day before — no app, no login, works offline.</p>
+              <button class="btn btn--primary btn--wide" type="button" id="calIcsYear">Add festivals</button>
+              <button class="btn btn--ghost btn--wide mt-2" type="button" id="calIcsNext">Add next 90 days</button>
+              <p class="tiny muted mt-2" id="calIcsStatus" role="status"></p>
+            </div>
+          </div>
+
+          <div class="summary-card mt-2">
+            <div class="summary-card__head">
+              <span class="kicker kicker--tight">Book the date</span>
+              <h3>Hold a festival muhurat</h3>
+              <p class="small muted">Satyanarayan, Lakshmi pooja or a griha pravesh — pandit, samagri and dakshina included.</p>
+            </div>
+            <div class="summary-card__body">
+              <a class="btn btn--primary btn--wide" href="poojas.html">Browse poojas</a>
+              <a class="btn btn--ghost btn--wide mt-2" href="panchang.html">Open today’s panchang</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <span class="kicker kicker--center">Plan ahead</span>
+        <h2>The big festivals of <span id="calYearLabel">2026</span></h2>
+        <p>Regional observance can differ by a day. We show the date on which the tithi prevails at the traditional observance hour for your chosen city.</p>
+      </div>
+      <div class="grid grid-3" id="calHighlights"></div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="band reveal">
+        <div>
+          <span class="kicker kicker--gold">Festival at home</span>
+          <h2>Pooja-in-a-box, delivered before the muhurat.</h2>
+          <p>Festival kits with numbered samagri pouches, fresh 5 AM flowers and a verified pandit — or a guided self-pooja booklet if you prefer to perform it yourself.</p>
+          <ul class="band__list">
+            <li data-band>Diwali, Navratri, Satyanarayan &amp; Griha Pravesh kits</li>
+            <li data-band>Regional traditions and language-matched pandits</li>
+            <li data-band>Punya-Flow pickup of flowers and havan ash</li>
+          </ul>
+        </div>
+        <div class="band__cta">
+          <a class="btn btn--gold" href="shop.html">Shop festival kits</a>
+          <a class="btn btn--light" href="booking.html">Book a pandit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/calendar.js"></script>
+<script src="assets/js/reminders.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

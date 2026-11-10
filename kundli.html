@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free Kundli Generator — All 9 Grahas, D9 &amp; Dasha | Vedic Pooja</title>
+<meta name="description" content="Generate a free Vedic birth chart with all nine grahas, navamsa, Vimshottari dasha, Manglik, Kaal Sarp and Sade Sati checks — computed with the Lahiri ayanamsa.">
+<link rel="canonical" href="https://vedicpooja.in/kundli.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Kundli</span></div>
+      <h1>Your kundli, computed properly.</h1>
+      <p>A complete Vedic birth chart with all nine grahas, navamsa, Vimshottari dasha and dosha checks. Lahiri/Chitrapaksha ayanamsa. Free, private and instant — nothing leaves your browser.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="k-layout">
+        <!-- ==================================================== FORM -->
+        <aside>
+          <div class="form-section">
+            <div class="form-section__head"><span class="n">1</span><div><h3>Birth details</h3><p>Accurate time gives an accurate lagna.</p></div></div>
+            <form id="kundliForm" novalidate>
+              <div class="form-grid form-grid--single">
+                <div class="field">
+                  <label for="kName">Full name</label>
+                  <input id="kName" name="name" required placeholder="e.g. Aarav Mehta" autocomplete="name">
+                </div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="kDate">Date of birth</label>
+                    <input id="kDate" name="date" type="date" required max="2026-12-31">
+                  </div>
+                  <div class="field">
+                    <label for="kTime">Time of birth</label>
+                    <input id="kTime" name="time" type="time" required value="10:30">
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="kCity">Place of birth</label>
+                  <div class="city-search">
+                    <span class="city-search__icon" data-ico-inline="search"></span>
+                    <input id="kCitySearch" type="search" placeholder="Search 1,057 cities, districts &amp; places…" autocomplete="off" aria-label="Search birth city">
+                  </div>
+                  <select id="kCity" name="city"></select>
+                  <small class="city-meta" id="kCityMeta">—</small>
+                  <small>Don’t see your city? Choose the nearest major city — the difference is usually under a minute.</small>
+                </div>
+                <div class="field">
+                  <label for="kGender">Gender <span class="opt">optional, for the report</span></label>
+                  <select id="kGender" name="gender">
+                    <option value="">Prefer not to say</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Non-binary</option>
+                  </select>
+                </div>
+                <label class="choice">
+                  <input type="checkbox" id="kUnknownTime">
+                  <span class="choice__box"></span>
+                  <span class="choice__text"><b>I don’t know my exact birth time</b><span>We’ll use 12:00 PM. Your Moon sign and nakshatra stay reliable; the lagna and house placements may shift.</span></span>
+                </label>
+              </div>
+              <button class="btn btn--primary btn--wide mt-3" type="submit">Generate my kundli <span id="kSubmitArrow"></span></button>
+              <button class="btn btn--ghost btn--wide mt-2" type="button" id="kSample">Load a sample chart</button>
+              <p class="tiny muted center mt-2">No signup. No data stored on a server.</p>
+            </form>
+          </div>
+
+          <div class="form-section mt-2">
+            <div class="form-section__head"><span class="n">2</span><div><h3>What you’ll receive</h3><p>Rooted in classical Jyotish, not generic sun signs.</p></div></div>
+            <ul class="tick-list mt-0">
+              <li data-tick>North Indian D1 chart with all 9 grahas and degrees</li>
+              <li data-tick>D9 navamsa chart and lagna</li>
+              <li data-tick>Nakshatra, pada and Moon-sign based remedies</li>
+              <li data-tick>Vimshottari mahadasha &amp; antardasha timeline</li>
+              <li data-tick>Manglik, Kaal Sarp, Sade Sati, Gajakesari checks</li>
+            </ul>
+            <div class="note-strip mt-2" id="kPrivacyNote">
+              <span data-ico-inline="lock"></span>
+              <span>Everything is calculated in your browser. We do not transmit or store your birth details.</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ==================================================== RESULT -->
+        <div>
+          <div id="kundliEmpty" class="panel">
+            <div class="panel__head"><h2>Your chart appears here</h2><span class="chip chip--gold">Free forever</span></div>
+            <div class="panel__body">
+              <div class="media-frame media-frame--sample">
+                <div class="kundli-mini opacity-55" id="kSampleChart"></div>
+                <div class="media-caption media-caption--static-sm"><span>Sample D1 chart</span><span>North Indian style</span></div>
+              </div>
+              <div class="grid grid-3 mt-3 gap-10">
+                <div class="k-meta k-meta--stack"><div><span>Grahas</span><b>9 planets</b></div></div>
+                <div class="k-meta k-meta--stack"><div><span>Divisional</span><b>D1 + D9</b></div></div>
+                <div class="k-meta k-meta--stack"><div><span>Dasha</span><b>Vimshottari</b></div></div>
+              </div>
+              <p class="small muted mt-3">Enter your birth details on the left, or load the sample chart to explore what a report looks like. A senior astrologer can walk you through it on a 30-minute call.</p>
+              <a class="btn btn--ghost btn--sm mt-2" href="about.html#contact">Ask an astrologer</a>
+            </div>
+          </div>
+
+          <div id="kundliResult" class="hide">
+            <div class="panel" id="kReport">
+              <div class="panel__head">
+                <div><span class="kicker kicker--tight-4">Janma Kundli</span><h2 id="kResultName">—</h2><p class="small" id="kResultBirth">—</p></div>
+                <button class="btn btn--ghost btn--sm no-print" type="button" id="kPrint">Print<span data-print-icon></span></button>
+              </div>
+              <div class="panel__body">
+                <div class="grid grid-2">
+                  <div class="chart-card"><h3>D1 · Rashi chart</h3><div class="sub">Birth chart · North Indian</div><div id="kChartD1"></div></div>
+                  <div class="chart-card"><h3>D9 · Navamsa</h3><div class="sub">Marriage &amp; inner strength</div><div id="kChartD9"></div></div>
+                </div>
+                <div class="k-meta" id="kMeta"></div>
+              </div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Panchang at birth</h3><span class="small" id="kBirthPlace">—</span></div>
+              <div class="panel__body panel__body--flush">
+                <div class="pan-rows" id="kBirthPanchang"></div>
+              </div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Graha positions</h3><span class="small">Sidereal · Lahiri</span></div>
+              <div class="panel__body panel__body--flush" id="kPlanets"></div>
+            </div>
+
+            <div class="grid grid-2 mt-2">
+              <div class="panel">
+                <div class="panel__head"><h3>Doshas &amp; yogas</h3></div>
+                <div class="panel__body"><div class="dosha-list" id="kDoshas"></div></div>
+              </div>
+              <div class="panel">
+                <div class="panel__head"><h3>Dasha timeline</h3><span class="small" id="kDashaCurrent">—</span></div>
+                <div class="panel__body"><div class="dasha-track" id="kDashas"></div></div>
+              </div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Remedies &amp; guidance</h3><span class="chip chip--green">Practical, not fear-based</span></div>
+              <div class="panel__body"><div class="grid grid-2" id="kRemedies"></div></div>
+            </div>
+
+            <div class="cta-card cta-card--pad mt-3 no-print">
+              <div>
+                <span class="kicker">Want a human reading?</span>
+                <h2 class="h2--lg">Talk it through with a senior acharya.</h2>
+                <p class="muted mt-1">A 30-minute private consultation on your chart, current dasha and practical remedies. No fear-selling, no forced gemstones.</p>
+              </div>
+              <div class="flex-col-8">
+                <a class="btn btn--primary" href="about.html#contact">Book a consultation</a>
+                <a class="btn btn--ghost" href="matching.html">Match two kundlis</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/vendor/astronomy.min.js"></script>
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/chart.js"></script>
+<script src="assets/js/kundli.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

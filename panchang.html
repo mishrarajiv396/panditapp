@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Today’s Panchang — Tithi, Nakshatra, Rahu Kaal &amp; Choghadiya | Vedic Pooja</title>
+<meta name="description" content="Daily Vedic panchang for 1,000+ Indian and NRI cities and districts - tithi, nakshatra, yoga, karana, sunrise, sunset, moonrise, Rahu Kaal, Gulika, Yamaganda, Abhijit muhurat, choghadiya, hora and every tithi explained with its festivals.">
+<link rel="canonical" href="https://vedicpooja.in/panchang.html">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <section class="page-head">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Panchang</span></div>
+      <h1>Today’s panchang</h1>
+      <p>Tithi, nakshatra, yoga, karana, moonrise and every inauspicious window — calculated from your city’s sunrise using the Lahiri ayanamsa. Every tithi is explained below with its deity, nature, guidance and festivals.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="toolbar">
+        <div class="cal-nav">
+          <button type="button" id="panPrev" aria-label="Previous day" data-prev></button>
+          <button type="button" id="panNext" aria-label="Next day" data-next></button>
+        </div>
+        <div class="field field--min">
+          <input type="date" id="panDate" class="pan-date" aria-label="Panchang date">
+        </div>
+        <button class="btn btn--ghost btn--sm" type="button" id="panToday">Today</button>
+        <div class="search search--city">
+          <span data-ico-inline="search"></span>
+          <input type="search" id="panCitySearch" placeholder="Search 1,057 cities, districts &amp; places…" autocomplete="off" aria-label="Search panchang city">
+        </div>
+        <div class="select-wrap">
+          <select id="panCity" aria-label="Choose city"></select>
+        </div>
+        <span class="result-count" id="panWeekday">—</span>
+      </div>
+
+      <div class="pan-layout">
+        <div>
+          <div class="panel">
+            <div class="pan-hero">
+              <div class="pan-date-big">
+                <div class="d" id="panDay">—</div>
+                <div class="m" id="panMonth">—</div>
+                <div class="w" id="panWeekdayPill">—</div>
+              </div>
+              <div class="pan-hero__main">
+                <h3 id="panTithiBig">—</h3>
+                <p id="panNakBig">—</p>
+                <div class="pan-hero__meta">
+                  <span data-meta="sunrise">—</span>
+                  <span data-meta="sunset">—</span>
+                  <span data-meta="moon">—</span>
+                  <span data-meta="month">—</span>
+                </div>
+              </div>
+            </div>
+            <div class="tithi-focus" id="panTithiFocus"></div>
+            <div class="pan-rows" id="panRows"></div>
+          </div>
+
+          <div class="panel mt-2">
+            <div class="panel__head"><h2>Day windows</h2><span class="small">Sunrise to sunset · avoid red for new beginnings</span></div>
+            <div class="panel__body">
+              <div class="timeline" id="panTimeline"></div>
+              <div class="legend">
+                <span><i class="tl-rahu"></i>Rahu Kaal</span>
+                <span><i class="tl-gulika"></i>Gulika</span>
+                <span><i class="tl-yama"></i>Yamaganda</span>
+                <span><i class="tl-abhijit"></i>Abhijit</span>
+                <span><i class="tl-normal"></i>Neutral</span>
+              </div>
+              <div class="note-strip mt-3" id="panMuhuratNote">
+                <span data-ico-inline="spark"></span>
+                <span><b>Abhijit muhurat</b> is the day’s built-in victory window. It is traditionally used when no other muhurat is available, except on Wednesdays.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel mt-2">
+            <div class="panel__head"><h2>Choghadiya</h2><span class="small">Day slots · good for travel, business &amp; ceremonies</span></div>
+            <div class="panel__body">
+              <div class="chogh-list" id="panChoghadiya"></div>
+              <p class="tiny muted mt-2">Amrit, Shubh, Labh and Char are considered auspicious. Kaal, Rog and Udveg are better for routine work.</p>
+            </div>
+          </div>
+
+          <div class="panel mt-2">
+            <div class="panel__head"><h2>Hora</h2><span class="small">24 planetary hours · day and night</span></div>
+            <div class="panel__body">
+              <div class="hora-list" id="panHora"></div>
+              <p class="tiny muted mt-2">Hora follows the weekday lord and repeats Sun → Venus → Mercury → Moon → Saturn → Jupiter → Mars. Choose a hora that matches the planet you wish to strengthen.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="panel">
+            <div class="panel__head"><h3>At a glance</h3><span class="chip chip--gold" id="panCityChip">Gurugram</span></div>
+            <div class="pan-rows">
+              <div class="pan-row"><span class="k">Sunrise</span><span class="v" id="glSunrise">—</span></div>
+              <div class="pan-row"><span class="k">Sunset</span><span class="v" id="glSunset">—</span></div>
+              <div class="pan-row"><span class="k">Moonrise</span><span class="v" id="glMoonrise">—</span></div>
+              <div class="pan-row"><span class="k">Moonset</span><span class="v" id="glMoonset">—</span></div>
+              <div class="pan-row"><span class="k">Rahu Kaal</span><span class="v text-danger" id="glRahu">—</span></div>
+              <div class="pan-row"><span class="k">Abhijit</span><span class="v text-green" id="glAbhijit">—</span></div>
+              <div class="pan-row"><span class="k">Brahma muhurat</span><span class="v" id="glBrahma">—</span></div>
+              <div class="pan-row"><span class="k">Panchak</span><span class="v" id="glPanchak">—</span></div>
+              <div class="pan-row"><span class="k">Bhadra</span><span class="v" id="glBhadra">—</span></div>
+              <div class="pan-row"><span class="k">Day length</span><span class="v" id="glDay">—</span></div>
+            </div>
+          </div>
+
+          <div class="panel mt-2">
+            <div class="panel__head"><h3>Upcoming festivals</h3><a class="link-arrow" href="calendar.html">Calendar</a></div>
+            <div class="panel__body" id="panFestivals"></div>
+          </div>
+
+          <div class="summary-card mt-2">
+            <div class="summary-card__head">
+              <span class="kicker kicker--tight">Book the muhurat</span>
+              <h3>Hold this date with a pandit</h3>
+              <p class="small muted">Samagri, flowers and a verified pandit from <b>₹1,499</b>.</p>
+            </div>
+            <div class="summary-card__body">
+              <a class="btn btn--primary btn--wide" href="booking.html" id="panBook">Book a pooja</a>
+              <a class="btn btn--ghost btn--wide mt-2" href="matching.html">Check kundli matching</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel__head">
+          <div>
+            <h2>All 30 tithis explained</h2>
+            <p class="small">Meaning, deity, nature and guidance for every tithi, with the festivals that can fall on it and its next computed date in <span id="panGuideCity">your city</span>.</p>
+          </div>
+          <span class="chip chip--gold">Computed, not copied</span>
+        </div>
+        <div class="panel__body">
+          <div class="tithi-guide" id="panTithiGuide"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/panchang.js"></script>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>

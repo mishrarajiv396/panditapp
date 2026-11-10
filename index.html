@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vedic Pooja — Verified Pandits &amp; Authentic Poojas in Gurugram</title>
+<meta name="description" content="Book background-verified pandits for Satyanarayan Katha, Griha Pravesh, Rudrabhishek and 86 Vedic poojas across Gurugram and NCR. Astrology, Vastu and numerology consultations, live panchang, kundli, matching and pooja-in-a-box samagri.">
+<link rel="canonical" href="https://vedicpooja.in/">
+<meta name="theme-color" content="#6d1f2c">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+
+<main>
+  <!-- ============================================================ HERO -->
+  <section class="hero">
+    <div class="hero__mandala" aria-hidden="true"></div>
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="container hero__in">
+      <div class="hero__copy">
+        <div class="hero__eyebrow"><span class="line"></span>Gurugram · NCR · Bharat</div>
+        <h1>Every ritual, <em>performed right.</em></h1>
+        <p class="hero__sub">Background-verified pandits, complete pooja-in-a-box samagri, live panchang and society gate-pass support — one transparent price, no last-minute bargaining. Rooted in tradition, engineered for modern homes.</p>
+        <div class="hero__cta">
+          <a class="btn btn--gold btn--lg" href="poojas.html">Book a pooja</a>
+          <a class="btn btn--light btn--lg" href="kundli.html">Generate free kundli</a>
+        </div>
+        <div class="hero__trust">
+          <div><b>4.9/5</b> from 2,300+ families</div>
+          <div><b>300+</b> verified pandits</div>
+          <div><b>Samagri</b> included, always</div>
+          <div><b>Gate pass</b> handled by us</div>
+        </div>
+      </div>
+
+      <aside class="panch-card" id="homePanchang" aria-live="polite">
+        <div class="panch-card__head">
+          <div>
+            <small>Today’s panchang</small>
+            <div class="panch-card__date" id="panchDate">—</div>
+            <small id="panchPlace">Gurugram, Haryana</small>
+          </div>
+          <select id="panchCity" aria-label="Choose city"></select>
+        </div>
+        <div class="panch-card__cityline">
+          <input type="search" id="panchCitySearch" placeholder="Search 1,057 cities, districts &amp; places…" autocomplete="off" aria-label="Search city">
+          <small id="panchCityMeta">—</small>
+        </div>
+        <div class="panch-card__grid">
+          <div class="panch-card__cell"><span>Tithi</span><b id="pcTithi">—</b></div>
+          <div class="panch-card__cell"><span>Nakshatra</span><b id="pcNak">—</b></div>
+          <div class="panch-card__cell"><span>Rahu Kaal</span><b id="pcRahu" class="text-danger">—</b></div>
+          <div class="panch-card__cell"><span>Abhijit Muhurat</span><b id="pcAbhijit">—</b></div>
+        </div>
+        <div class="panch-card__footer">
+          <div class="rahu">Sunrise <b id="pcSunrise">—</b> · Sunset <b id="pcSunset">—</b></div>
+          <a class="link-arrow" href="panchang.html">Full panchang</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================================================ TRUSTBAR -->
+  <div class="container">
+    <div class="trustbar" id="homeStats">
+      <div><div class="trustbar__icon" data-ico="shield"></div><div><b>100%</b><span>Verified pandits</span></div></div>
+      <div><div class="trustbar__icon" data-ico="box"></div><div><b>86</b><span>All-inclusive poojas</span></div></div>
+      <div><div class="trustbar__icon" data-ico="clock"></div><div><b>10 min</b><span>Punctuality promise</span></div></div>
+      <div><div class="trustbar__icon" data-ico="leaf"></div><div><b>Zero</b><span>Waste to landfill</span></div></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ DAILY WISDOM -->
+  <section class="section section--tight daily-wisdom" id="daily-wisdom" aria-labelledby="dailyWisdomTitle">
+    <div class="container">
+      <div class="daily-card reveal" id="dailyWisdom">
+        <div class="daily-card__head">
+          <div>
+            <span class="kicker">Daily wisdom · रोज़ का सुभाषित</span>
+            <h2 id="dailyWisdomTitle">One line to carry through the day</h2>
+          </div>
+          <div class="daily-card__meta">
+            <span class="daily-day" id="dwDay">Day 1 / 365</span>
+            <span class="daily-date" id="dwDate"></span>
+          </div>
+        </div>
+        <div class="daily-card__body">
+          <span class="daily-theme" id="dwTheme">धर्मः · Dharma</span>
+          <p class="daily-sanskrit" id="dwSanskrit" lang="sa"></p>
+          <div class="daily-meaning">
+            <p class="daily-hi" id="dwHindi" lang="hi"></p>
+            <p class="daily-en" id="dwEnglish"></p>
+          </div>
+        </div>
+        <div class="daily-card__foot">
+          <span class="daily-source" id="dwSource"></span>
+          <div class="daily-actions">
+            <button type="button" class="btn btn--ghost btn--sm" id="dwCopy">Copy</button>
+            <a class="btn btn--whatsapp btn--sm" id="dwShare" href="https://wa.me/" target="_blank" rel="noopener">Share on WhatsApp</a>
+          </div>
+        </div>
+        <div class="daily-progress" aria-hidden="true"><span id="dwProgress"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FEATURES -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Why families choose us</span>
+        <h2>Old-world devotion. New-world reliability.</h2>
+        <p>We removed the eight things that make booking a pooja stressful — and kept everything that makes it sacred.</p>
+      </div>
+      <div class="grid grid-4" id="featureGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ POOJAS -->
+  <section class="section section--cream" id="rituals">
+    <div class="container">
+      <div class="sec-head sec-head--row reveal">
+        <div>
+          <span class="kicker">The ritual catalogue</span>
+          <h2>Poojas for every chapter of life</h2>
+          <p>From a 30-minute desk blessing to a four-hour Griha Pravesh — each package includes the pandit, samagri, flowers and dakshina.</p>
+        </div>
+        <a class="btn btn--ghost" href="poojas.html">Explore all 86 poojas</a>
+      </div>
+      <div class="grid grid-3" id="featuredPoojas"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="sec-head sec-head--row reveal">
+        <div>
+          <span class="kicker">Beyond the ritual</span>
+          <h2>Astrology, Vastu and numerology, read properly.</h2>
+          <p>Not an app-generated sun sign — a senior acharya reads your birth chart, your home or your name, and tells you what is actually being tested and when the window opens.</p>
+        </div>
+        <a class="btn btn--ghost" href="services.html">Explore all services</a>
+      </div>
+      <div class="grid grid-4">
+        <a class="card card--hover feature reveal" href="services.html#astrology">
+          <div class="feature__icon" data-ico="star"></div>
+          <h3>Astrology</h3>
+          <p>Career, marriage, children and gemstone guidance from a properly cast birth chart, with a written remedy and favourable window.</p>
+        </a>
+        <a class="card card--hover feature reveal" href="services.html#vastu">
+          <div class="feature__icon" data-ico="compass"></div>
+          <h3>Vastu Shastra</h3>
+          <p>Direction, element and layout corrections for a home, office, shop or factory — with remedies that do not demand demolition.</p>
+        </a>
+        <a class="card card--hover feature reveal" href="services.html#numerology">
+          <div class="feature__icon" data-ico="chart"></div>
+          <h3>Numerology</h3>
+          <p>Mulank, bhagyank and namank, with lucky days, colours and numbers — plus a free calculator that runs in your browser.</p>
+        </a>
+        <a class="card card--hover feature reveal" href="services.html#pooja-paath">
+          <div class="feature__icon" data-ico="temple"></div>
+          <h3>Pooja Paath</h3>
+          <p>Nine living traditions — business, festival, grah shanti, marriage, Navratri, paath, personal, Ganga and homa.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ QUICK ENQUIRY -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="lead-shell reveal">
+        <div class="lead-shell__copy">
+          <span class="kicker">Need help choosing the right ritual?</span>
+          <h2 data-i18n="leadTitle">Choose the right ritual for your family.</h2>
+          <p data-i18n="leadSub">Share your location, puja type and preferred date and we will suggest the best muhurat and plan.</p>
+          <div class="lead-shell__grid">
+            <div class="mini-card"><strong>30 min</strong><span>Quick guidance</span></div>
+            <div class="mini-card"><strong>350+</strong><span>Families assisted</span></div>
+            <div class="mini-card"><strong>Live</strong><span>WhatsApp support</span></div>
+          </div>
+        </div>
+
+        <form class="lead-shell__form" id="leadForm">
+          <div class="field">
+            <label for="leadName" data-i18n="leadName">Your name</label>
+            <input id="leadName" name="leadName" type="text" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label for="leadPhone" data-i18n="leadPhone">WhatsApp number</label>
+            <input id="leadPhone" name="leadPhone" type="tel" placeholder="+91 88896 85370" required>
+          </div>
+          <div class="field">
+            <label for="leadCity" data-i18n="leadCity">City</label>
+            <input id="leadCity" name="leadCity" type="text" placeholder="Gurugram" required>
+          </div>
+          <div class="field">
+            <label for="leadPooja" data-i18n="leadPooja">Puja need</label>
+            <select id="leadPooja" name="leadPooja" required>
+              <option value="">Select a pooja</option>
+              <option>Satyanarayan Katha</option>
+              <option>Griha Pravesh</option>
+              <option>Rudrabhishek</option>
+              <option>Wedding / Vivah</option>
+              <option>Navgrah Shanti</option>
+              <option>Corporate blessing</option>
+              <option>Other / custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="leadDate" data-i18n="leadDate">Preferred date</label>
+            <input id="leadDate" name="leadDate" type="date">
+          </div>
+          <button type="submit" class="btn btn--primary w-full" data-i18n="leadSubmit">Send request</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PUJA GUIDE -->
+  <section class="section section--tight" id="puja-guide">
+    <div class="container">
+      <div class="band reveal">
+        <div>
+          <span class="kicker kicker--gold">Free · bilingual · offline-ready</span>
+          <h2>Satyanarayan Puja, step by step.</h2>
+          <p>Performing the vrat at home, or want the family to follow along? Our free guide walks you through eight clear steps — with Devanagari mantras, transliteration and meaning, a samagri list sized for your household, the five-adhyay katha, a havan counter and a printable sankalp.</p>
+          <ul class="band__list">
+            <li data-band>8 guided steps with an optional step timer and saved progress</li>
+            <li data-band>Samagri checklist that adjusts for your family size</li>
+            <li data-band>Printable sankalp with name and gotra — stored only on your device</li>
+          </ul>
+        </div>
+        <div class="band__cta">
+          <a class="btn btn--gold" href="puja-guide.html">Open the free puja guide</a>
+          <a class="btn btn--light" href="puja-guide.html#samagri">See the samagri list</a>
+          <p class="tiny tiny--on-dark center">No signup. Works offline. Mantras are pending final pandit review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">How it works</span>
+        <h2>Four steps. One calm ceremony.</h2>
+        <p>Book in under three minutes. We handle the pandit, the packaging, the gate and the cleanup.</p>
+      </div>
+      <div class="steps" id="howSteps"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ KUNDLI SPLIT -->
+  <section class="section section--band">
+    <div class="container split">
+      <div class="split__media reveal">
+        <div class="media-frame">
+          <span class="media-badge" data-badge>Free · no signup</span>
+          <div class="kundli-mini" id="homeChart"></div>
+          <div class="media-caption"><span>Sample North Indian chart</span><span>Lahiri ayanamsa</span></div>
+        </div>
+      </div>
+      <div class="split__copy reveal">
+        <span class="kicker">Your cosmic blueprint</span>
+        <h2>A kundli that explains, not frightens.</h2>
+        <p>Our engine computes planetary longitudes, the ascendant, navamsa, Vimshottari dasha and doshas using the Lahiri/Chitrapaksha ayanamsa — the same standard used by traditional panchangs.</p>
+        <ul class="tick-list">
+          <li data-tick>All nine grahas with house, nakshatra, pada and dignity</li>
+          <li data-tick>D9 navamsa chart and running mahadasha / antardasha</li>
+          <li data-tick>Manglik, Kaal Sarp, Sade Sati and Gajakesari checks</li>
+          <li data-tick>Practical remedies — never fear-based upselling</li>
+        </ul>
+        <div class="hero__cta mt-26">
+          <a class="btn btn--primary" href="kundli.html">Generate my kundli</a>
+          <a class="btn btn--ghost" href="matching.html">Match two kundlis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PANCHANG SPLIT -->
+  <section class="section">
+    <div class="container split split--reverse">
+      <div class="split__media reveal">
+        <div class="media-frame media-frame--dark">
+          <div class="panel panel--cream">
+            <div class="panel__head"><h3>Today at a glance</h3><span class="chip chip--gold" id="homeWeekday">—</span></div>
+            <div class="pan-rows" id="homePanchRows"></div>
+          </div>
+        </div>
+      </div>
+      <div class="split__copy reveal">
+        <span class="kicker">Timing is part of the ritual</span>
+        <h2>Panchang you can actually plan around.</h2>
+        <p>Tithi, nakshatra, yoga, karana, Rahu Kaal, Gulika, Yamaganda, Abhijit and Brahma muhurat — calculated for your city, not copied from a generic almanac.</p>
+        <p>Pick a shubh muhurat for your griha pravesh, wedding, bhoomi poojan or first business day, then book the pandit for that exact window.</p>
+        <div class="hero__cta mt-26">
+          <a class="btn btn--primary" href="panchang.html">Open today’s panchang</a>
+          <a class="btn btn--ghost" href="calendar.html">Festival calendar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CORPORATE -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="band reveal">
+        <div>
+          <span class="kicker kicker--gold">For offices &amp; societies</span>
+          <h2>Corporate poojas, minus the admin.</h2>
+          <p>GST invoicing, compliance-friendly dhoop, 7–10 AM or 6–8 PM slots, and desk-wise blessings for teams of 5 to 500.</p>
+          <ul class="band__list">
+            <li data-band>Annual pooja calendar with pre-approved muhurats</li>
+            <li data-band>Vendor onboarding, PO and GST documentation</li>
+            <li data-band>Society-safe smokeless havan and waste pickup</li>
+            <li data-band>Dedicated relationship manager on WhatsApp</li>
+          </ul>
+        </div>
+        <div class="band__cta">
+          <a class="btn btn--gold" href="about.html#corporate">Plan a corporate pooja</a>
+          <a class="btn btn--light" href="tel:+918889685370">Talk to our team</a>
+          <p class="tiny tiny--on-dark center">Trusted by 60+ offices in Gurugram</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ TESTIMONIALS -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">From our families</span>
+        <h2>Blessings, remembered fondly</h2>
+        <p>Real reviews from Gurugram homes, offices and NRI families who joined on live stream.</p>
+      </div>
+      <div class="grid grid-3" id="testimonials"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ COMPARISON -->
+  <section class="section" id="compare">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Compared honestly</span>
+        <h2>Everything a good astrology app should do.</h2>
+        <p>We studied what families actually ask for across popular astrology and pooja apps — then built the useful parts in, without the fear-selling.</p>
+      </div>
+      <div class="compare reveal" role="table" aria-label="Feature comparison with typical astrology apps">
+        <div class="compare__row compare__row--head" role="row">
+          <span role="columnheader">What you need</span>
+          <span role="columnheader">Typical astrology app</span>
+          <span role="columnheader" class="compare__us">Vedic Pooja</span>
+        </div>
+        <div class="compare__row" role="row"><span role="cell">Daily panchang</span><span role="cell">One generic city or a paywall</span><span role="cell" class="compare__us">Computed for <b data-city-count>1,057</b> districts &amp; famous places</span></div>
+        <div class="compare__row" role="row"><span role="cell">Kundli</span><span role="cell">Free teaser, paid full report</span><span role="cell" class="compare__us">Free chart, dasha, doshas &amp; navamsa</span></div>
+        <div class="compare__row" role="row"><span role="cell">Daily rashifal</span><span role="cell">Same text for every user</span><span role="cell" class="compare__us">Moon-transit reading per rashi, per city</span></div>
+        <div class="compare__row" role="row"><span role="cell">Booking a pooja</span><span role="cell">Not available</span><span role="cell" class="compare__us">Verified pandit + samagri + gate pass</span></div>
+        <div class="compare__row" role="row"><span role="cell">Muhurat planning</span><span role="cell">A single “lucky time”</span><span role="cell" class="compare__us">Rahu Kaal, Abhijit, choghadiya &amp; hora</span></div>
+        <div class="compare__row" role="row"><span role="cell">Language</span><span role="cell">English only</span><span role="cell" class="compare__us">Hindi &amp; English, Devanagari mantras</span></div>
+        <div class="compare__row" role="row"><span role="cell">Privacy</span><span role="cell">Sign-up and data sharing</span><span role="cell" class="compare__us">No signup; charts stay on your device</span></div>
+        <div class="compare__row" role="row"><span role="cell">Works offline</span><span role="cell">No</span><span role="cell" class="compare__us">Installable PWA with offline puja guide</span></div>
+      </div>
+      <p class="small muted center mt-3">Based on publicly listed features and our own product scope — not a paid ranking.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ CITIES -->
+  <section class="section section--tight">
+    <div class="container center">
+      <div class="sec-head sec-head--center reveal mb-26">
+        <span class="kicker kicker--center">Now serving</span>
+        <h2>Pandits near you</h2>
+        <p>Same-day availability across Gurugram, with verified pandits in <span data-city-count>1,057</span> Indian and NRI cities, districts and famous places — every state and union territory.</p>
+      </div>
+      <div class="city-strip reveal" id="cityStrip"></div>
+      <p class="small muted mt-3">Travelling or living abroad? <a class="link-arrow" href="booking.html?nri=1">Book a live-streamed pooja</a></p>
+    </div>
+  </section>
+
+  <!-- ============================================================ FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Good to know</span>
+        <h2>Questions families ask us</h2>
+      </div>
+      <div class="faq" id="homeFaq"></div>
+      <div class="center mt-3"><a class="btn btn--ghost" href="about.html#faq">Read all FAQs</a></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CTA -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta-card reveal">
+        <div>
+          <span class="kicker">Begin with a blessing</span>
+          <h2>Not sure which pooja you need?</h2>
+          <p class="muted mt-1">Tell us what’s happening — a new home, a wedding, a health concern, a business launch — and a senior acharya will suggest the right ritual and muhurat. No obligation, no fear-selling.</p>
+        </div>
+        <div>
+          <div class="note-strip note-strip--tight">
+            <span data-ico-inline="wa"></span>
+            <span><b>WhatsApp a pandit</b><br>Average reply time: 8 minutes, 6 AM – 10 PM IST.</span>
+          </div>
+          <a class="btn btn--primary btn--wide" href="https://wa.me/918889685370" target="_blank" rel="noopener">Ask on WhatsApp</a>
+          <a class="btn btn--ghost btn--wide mt-2" href="booking.html">Start a booking instead</a>
+          <p class="tiny muted center mt-2">Free cancellation up to 24 hours before the ritual.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/astro.js" defer></script>
+<script src="assets/js/data.js" defer></script>
+<script src="assets/js/site-settings.js" defer></script>
+<script src="assets/js/api.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/chart.js" defer></script>
+<script src="assets/js/home.js" defer></script>
+<script src="assets/js/daily-wisdom.js" defer></script>
+<script src="assets/js/experience.js" defer></script>
+</body>
+</html>

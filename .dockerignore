@@ -1,0 +1,12 @@
+.git
+.gitignore
+**/node_modules
+server/node_modules
+server/.mysql
+server/.env
+server/.env.*
+!server/.env.example
+*.log
+*.pid
+.vscode
+.idea
