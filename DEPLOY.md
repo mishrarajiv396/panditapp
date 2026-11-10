@@ -74,10 +74,16 @@ The app creates its tables inside `panditapp` automatically on first boot.
 4. Render reads `render.yaml` and shows the service.
 5. Fill the secret environment variables:
 
-   - `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+   - `DB_HOST` — TiDB host
+   - `DB_PORT` — `4000` for TiDB Cloud
+   - `DB_USER` — TiDB user (with the cluster prefix)
+   - `DB_PASSWORD` — TiDB password
+   - `DB_NAME` — `panditapp`
    - `ADMIN_EMAIL` — your admin login email
    - `ADMIN_PASSWORD` — a strong password (not the local demo password)
    - `ADMIN_NAME` — optional display name
+
+   `DB_SSL=true` and `JWT_SECRET` are already set by `render.yaml`.
 
 6. Click **Apply / Deploy**.
 7. Wait for the health check to pass at `/api/health`.

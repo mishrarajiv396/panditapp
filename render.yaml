@@ -12,7 +12,7 @@ services:
       - key: DB_HOST
         sync: false
       - key: DB_PORT
-        value: "3306"
+        sync: false
       - key: DB_USER
         sync: false
       - key: DB_PASSWORD
@@ -26,7 +26,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
-        value: admin@panditapp.local
+        sync: false
       - key: ADMIN_PASSWORD
         sync: false
       - key: ADMIN_NAME
