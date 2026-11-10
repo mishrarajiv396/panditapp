@@ -203,6 +203,8 @@ Full API reference and table list: `server/README.md`.
   — without that key the page returns 404, so it stays private. The key is kept
   in Render → *Environment* as `ADMIN_ACCESS_KEY`.
 - Step-by-step runbook: `DEPLOY.md`.
+- Public-repo services have no auto-deploy: after `git push`, open the Render
+  dashboard → service → **Manual Deploy → Deploy latest commit**.
 
 Static-only alternative (no database, demo data only):
 
