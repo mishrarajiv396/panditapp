@@ -55,13 +55,46 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'API route not found
 
 /* --------------------------------------------- serve the static site itself */
 const siteRoot = path.resolve(__dirname, '..', '..');
+
+// The admin dashboard is not linked anywhere publicly. When ADMIN_ACCESS_KEY is
+// set, /admin.html only opens with the secret link (?key=...) once; the key is
+// then kept in a short-lived httpOnly cookie so in-page navigation keeps working.
+const adminAccessKey = (process.env.ADMIN_ACCESS_KEY || '').trim();
+const ADMIN_COOKIE = 'pa_admin_gate';
+
+function readCookie(req, name) {
+  const raw = req.headers.cookie || '';
+  for (const part of raw.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    if (part.slice(0, idx).trim() === name) return decodeURIComponent(part.slice(idx + 1).trim());
+  }
+  return '';
+}
+
 app.use((req, res, next) => {
   // Never expose backend source, SQL or env files through the static server.
   if (/^\/(server|database)(\/|$)/i.test(req.path)) {
     return res.status(404).send('Not found');
   }
-  return next();
+  if (!adminAccessKey) return next();
+  if (!/^\/admin(\.html)?\/?$/i.test(req.path)) return next();
+
+  const given = String(req.query.key || '');
+  if (given && given === adminAccessKey) {
+    res.cookie(ADMIN_COOKIE, adminAccessKey, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: req.secure,
+      maxAge: 1000 * 60 * 60 * 8,
+      path: '/'
+    });
+    return next();
+  }
+  if (readCookie(req, ADMIN_COOKIE) === adminAccessKey) return next();
+  return res.status(404).type('html').send('<!doctype html><meta charset="utf-8"><title>Not found</title><h1>404</h1><p>Not found.</p>');
 });
+
 app.use(express.static(siteRoot, { dotfiles: 'deny', extensions: ['html'] }));
 
 /* ------------------------------------------------------------ error handler */

@@ -194,6 +194,18 @@ Full API reference and table list: `server/README.md`.
 
 ## 5. Deploy
 
+**Live site (free hosting): <https://panditapp.onrender.com/>**
+
+- Host: Render free web service (`panditapp`, Singapore), deployed from
+  `https://github.com/mishrarajiv396/panditapp` with the repo's `render.yaml`.
+- Database: TiDB Cloud Starter (MySQL-compatible, AWS Singapore, free).
+- Admin dashboard: `https://panditapp.onrender.com/admin.html?key=<ADMIN_ACCESS_KEY>`
+  — without that key the page returns 404, so it stays private. The key is kept
+  in Render → *Environment* as `ADMIN_ACCESS_KEY`.
+- Step-by-step runbook: `DEPLOY.md`.
+
+Static-only alternative (no database, demo data only):
+
 1. Drag the **contents** of `C:\PanditApp` into <https://app.netlify.com/drop>.
 2. Open the HTTPS link on Android Chrome and iPhone Safari.
 3. Chrome menu → **Add to Home screen** for the app-like icon.
@@ -282,7 +294,7 @@ Not tested on a real phone, real UPI app payment, iPhone Safari, Hindi voice qua
 - [ ] Test the installed PWA in airplane mode on the HTTPS/Netlify build.
 - [ ] Keep bank transaction alerts ON before sharing the link.
 - [ ] Replace or clearly mark demo content: the home page/pandits page currently claim "300+ verified pandits", ratings and testimonials, and `booking.html` is a demonstration checkout. **Pandit verification is a hard launch blocker.** A dismissible “Demo content” notice is now injected on `index.html`, `poojas.html`, `pandits.html`, `booking.html`, `shop.html` and `about.html` (see `injectDemoNotice()` in `assets/js/app.js`). Remove the notice only after the claims are rewritten or the pages are removed.
-- [ ] Update the `https://vedicpooja.in/...` canonical URLs to the real deployed domain (or remove them).
+- [x] Canonical URLs and `sitemap.xml` now point at the live site (`https://panditapp.onrender.com/`); update them if a custom domain is added.
 - [ ] Add a privacy/consent note if analytics or a payment gateway is added.
 
 ## 8. Phase 2

@@ -96,16 +96,19 @@ seeds the catalogue once. Later deploys keep the existing data.
 ## 4. After the first deploy
 
 1. Open `https://<your-service>.onrender.com/`.
-2. Open `/admin.html`, log in with `ADMIN_EMAIL` / `ADMIN_PASSWORD`, and
-   **change the admin password immediately**.
+2. Open `/admin.html?key=<ADMIN_ACCESS_KEY>`, log in with `ADMIN_EMAIL` /
+   `ADMIN_PASSWORD`, and **change the admin password immediately**.
+   The `ADMIN_ACCESS_KEY` link is the only way in: without it `/admin.html`
+   returns 404, so the dashboard is not reachable by strangers. Once opened, the
+   gate is remembered in an httpOnly cookie for 8 hours.
 3. Test:
    - Create a booking and look it up with the booking ID + OTP.
    - Create a shop order and confirm the server-side shipping price.
    - Send a contact form.
 4. Update `assets/js/site-settings.js` with the real owner phone, email and UPI
    if they differ, then push again.
-5. Replace the placeholder `https://vedicpooja.in/...` canonical URLs in the
-   HTML files and `sitemap.xml` with the real domain.
+5. If you move to a custom domain, replace the `https://panditapp.onrender.com/`
+   canonical URLs in the HTML files and `sitemap.xml` with the new domain.
 
 ---
 
