@@ -427,8 +427,11 @@ body.shell-ready::before{display:none}
 .review-steps li::marker{color:var(--gold);font-weight:600}
 .review-stars{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
 .review-stars legend{font-size:.76rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);padding:0;margin-bottom:6px}
-.review-stars__row{display:inline-flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.review-stars__row{display:inline-flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px;position:relative}
 .review-stars__row input{position:absolute;opacity:0;width:1px;height:1px}
+/* The generic .field input rule is wider than this one in source order, so keep
+   the hidden radio buttons at 1px or the review form stretches the page. */
+.field .review-stars__row input{width:1px;min-width:0;height:1px}
 .review-stars__row label{font-size:1.85rem;line-height:1;color:#d8c9ad;cursor:pointer;transition:color .15s}
 .review-stars__row input:checked ~ label,
 .review-stars__row label:hover,
@@ -1540,6 +1543,35 @@ input[type="date"].pan-date{padding:10px 13px;border-radius:10px;border:1px soli
 .nav{gap:2px;min-width:0}
 .nav a{font-size:.79rem;padding:11px 5px;letter-spacing:.005em}
 .nav .nav__more,.nav .nav__extra{display:none}
+/* Desktop overflow menu: keeps Home, About, Rashifal, Cities, Matching,
+   Reviews and Policies reachable without widening the header row. */
+.nav__more-wrap{position:relative;display:none;margin-left:2px}
+.nav__more-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:11px 7px;border:0;border-radius:999px;
+  background:none;cursor:pointer;font-family:var(--sans);font-size:.79rem;font-weight:500;
+  letter-spacing:.005em;color:var(--ink-soft);transition:color .2s,background .2s;
+}
+.nav__more-btn:hover,.nav__more-btn[aria-expanded="true"]{color:var(--maroon);background:rgba(109,31,44,.05)}
+.nav__more-btn.is-active{color:var(--maroon);font-weight:600}
+.nav__caret{
+  width:6px;height:6px;flex:none;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;
+  transform:translateY(-1px) rotate(45deg);transition:transform .2s;
+}
+.nav__more-btn[aria-expanded="true"] .nav__caret{transform:translateY(1px) rotate(225deg)}
+.nav__more-menu{
+  position:absolute;top:calc(100% + 18px);right:0;z-index:5;min-width:225px;display:grid;gap:2px;
+  padding:7px;background:#fffdf8;border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 22px 48px -26px rgba(66,15,24,.55);
+}
+.nav__more-menu[hidden]{display:none}
+.nav__more-menu a{
+  display:block;padding:9px 12px;border-radius:9px;font-size:.83rem;font-weight:500;
+  color:var(--ink-soft);white-space:nowrap;
+}
+.nav__more-menu a:hover{background:rgba(109,31,44,.06);color:var(--maroon)}
+.nav__more-menu a.active{color:var(--maroon);font-weight:600;background:rgba(201,162,39,.14)}
+.nav__more-menu a.active::after{display:none}
+@media (min-width:1241px){.nav__more-wrap{display:block}}
 @media (max-width:1240px){
   .nav.open .nav__more{
     display:block;margin:10px 0 2px;padding:11px 14px 0;border-top:1px solid var(--line);

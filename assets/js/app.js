@@ -235,13 +235,13 @@
     '</svg>';
 
   /* ----------------------------------------------------------------- header */
-  /* Eight primary links keep the bar inside its 1180px container. Every other
-     page (about, rashifal, cities, matching, reviews, policies) lives in the
-     facilities menu, the footer and the mobile "More" list. */
+  /* Six primary links plus a "More" menu keep the bar inside its 1180px
+     container. Everything else (home, about, puja guide, rashifal, cities,
+     matching, reviews, policies) lives in that menu on desktop and in the
+     expanded mobile list. */
   var NAV = [
     ['poojas.html', 'Poojas'],
     ['services.html', 'Services'],
-    ['puja-guide.html', 'Puja Guide'],
     ['pandits.html', 'Pandits'],
     ['kundli.html', 'Kundli'],
     ['panchang.html', 'Panchang'],
@@ -249,10 +249,11 @@
     ['shop.html', 'Samagri']
   ];
 
-  /* Shown only inside the mobile menu, so the desktop row stays aligned. */
+  /* Desktop "More" menu and mobile menu extras. */
   var NAV_EXTRA = [
     ['index.html', 'Home'],
     ['about.html', 'About'],
+    ['puja-guide.html', 'Puja Guide'],
     ['horoscope.html', 'Rashifal'],
     ['cities.html', 'Cities'],
     ['matching.html', 'Matching'],
@@ -377,16 +378,26 @@
   }
 
   function injectHeader() {
-    if ($('#siteHeader')) return;
+    if ($('#siteHead')) return;
     var page = currentPage();
+    function isActive(href) { return href === page || (page === '' && href === 'index.html'); }
+    function extraClass(n) { return (n[0] === page || (page === '' && n[0] === 'index.html')) ? ' active' : ''; }
     var links = NAV.map(function (n) {
-      var active = (n[0] === page) || (page === '' && n[0] === 'index.html');
-      return '<a href="' + n[0] + '"' + (active ? ' class="active"' : '') + '>' + n[1] + '</a>';
+      return '<a href="' + n[0] + '"' + (isActive(n[0]) ? ' class="active"' : '') + '>' + n[1] + '</a>';
     }).join('');
-    links += '<span class="nav__more" aria-hidden="true">More</span>' + NAV_EXTRA.map(function (n) {
-      var active = (n[0] === page) || (page === '' && n[0] === 'index.html');
-      return '<a class="nav__extra' + (active ? ' active' : '') + '" href="' + n[0] + '">' + n[1] + '</a>';
+    var moreMenu = NAV_EXTRA.map(function (n) {
+      return '<a href="' + n[0] + '"' + (extraClass(n) ? ' class="active"' : '') + '>' + n[1] + '</a>';
     }).join('');
+    var moreActive = NAV_EXTRA.some(function (n) { return isActive(n[0]); });
+    var mobileExtras = NAV_EXTRA.map(function (n) {
+      return '<a class="nav__extra' + extraClass(n) + '" href="' + n[0] + '">' + n[1] + '</a>';
+    }).join('');
+    links +=
+      '<div class="nav__more-wrap">' +
+      '<button type="button" class="nav__more-btn' + (moreActive ? ' is-active' : '') + '" id="navMoreBtn" aria-expanded="false" aria-controls="navMoreMenu">More<span class="nav__caret" aria-hidden="true"></span></button>' +
+      '<div class="nav__more-menu" id="navMoreMenu" hidden>' + moreMenu + '</div>' +
+      '</div>' +
+      '<span class="nav__more" aria-hidden="true">More</span>' + mobileExtras;
     var html =
       '<div class="topbar"><div class="container topbar__in">' +
       '<div class="topbar__ticker"><span class="dot"></span><span id="tickerText">' + esc(topbarText()) + '</span></div>' +
@@ -1108,6 +1119,38 @@
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closeNav();
+      });
+    }
+    /* Desktop "More" menu (hidden below 1241px where the burger takes over). */
+    var moreBtn = $('#navMoreBtn'), moreMenu = $('#navMoreMenu');
+    if (moreBtn && moreMenu) {
+      var closeMore = function () {
+        moreMenu.hidden = true;
+        moreBtn.setAttribute('aria-expanded', 'false');
+      };
+      var openMore = function () {
+        moreMenu.hidden = false;
+        moreBtn.setAttribute('aria-expanded', 'true');
+      };
+      moreBtn.addEventListener('click', function () {
+        if (moreMenu.hidden) openMore(); else closeMore();
+      });
+      moreMenu.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('a')) closeMore();
+      });
+      document.addEventListener('click', function (e) {
+        if (moreMenu.hidden) return;
+        if (moreMenu.contains(e.target) || moreBtn.contains(e.target)) return;
+        closeMore();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape' || moreMenu.hidden) return;
+        closeMore();
+        moreBtn.focus();
+      });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 1240) return;
+        closeMore();
       });
     }
     window.addEventListener('scroll', function () {
