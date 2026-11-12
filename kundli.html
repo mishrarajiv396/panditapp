@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Free Kundli Generator — All 9 Grahas, D9 &amp; Dasha | Vedic Pooja</title>
-<meta name="description" content="Generate a free Vedic birth chart with all nine grahas, navamsa, Vimshottari dasha, Manglik, Kaal Sarp and Sade Sati checks — computed with the Lahiri ayanamsa.">
+<title>Free Kundli Generator — 9 Grahas, D1–D60 Vargas &amp; Dasha | Vedic Pooja</title>
+<meta name="description" content="Generate a free Vedic birth chart with all nine grahas, navamsa, shodashavarga (D1–D60), bhava analysis, graha drishti, Vimshottari dasha and Manglik, Kaal Sarp and Sade Sati checks — computed with the Lahiri ayanamsa.">
 <link rel="canonical" href="https://panditapp.onrender.com/kundli.html">
 <meta name="theme-color" content="#6d1f2c">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -25,7 +25,7 @@
     <div class="container">
       <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Kundli</span></div>
       <h1>Your kundli, computed properly.</h1>
-      <p>A complete Vedic birth chart with all nine grahas, navamsa, Vimshottari dasha and dosha checks. Lahiri/Chitrapaksha ayanamsa. Free, private and instant — nothing leaves your browser.</p>
+      <p>A complete Vedic birth chart with all nine grahas, navamsa, shodashavarga (D1–D60), 12-bhava analysis, graha drishti, classical yogas, Vimshottari dasha and dosha checks. Lahiri/Chitrapaksha ayanamsa. Free, private and instant — nothing leaves your browser.</p>
     </div>
   </section>
 
@@ -87,10 +87,12 @@
             <div class="form-section__head"><span class="n">2</span><div><h3>What you’ll receive</h3><p>Rooted in classical Jyotish, not generic sun signs.</p></div></div>
             <ul class="tick-list mt-0">
               <li data-tick>North Indian D1 chart with all 9 grahas and degrees</li>
-              <li data-tick>D9 navamsa chart and lagna</li>
-              <li data-tick>Nakshatra, pada and Moon-sign based remedies</li>
+              <li data-tick>D9 navamsa plus all 16 vargas (D1–D60)</li>
+              <li data-tick>Nakshatra, pada, gana, yoni, nadi and naming syllables</li>
+              <li data-tick>12-bhava analysis with lords, occupants and significations</li>
+              <li data-tick>Graha drishti (aspects) and 18 classical yoga checks</li>
               <li data-tick>Vimshottari mahadasha &amp; antardasha timeline</li>
-              <li data-tick>Manglik, Kaal Sarp, Sade Sati, Gajakesari checks</li>
+              <li data-tick>Manglik, Kaal Sarp and Sade Sati checks</li>
             </ul>
             <div class="note-strip mt-2" id="kPrivacyNote">
               <span data-ico-inline="lock"></span>
@@ -145,9 +147,37 @@
               <div class="panel__body panel__body--flush" id="kPlanets"></div>
             </div>
 
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Janma nakshatra &amp; naming</h3><span class="small" id="kNakPada">—</span></div>
+              <div class="panel__body">
+                <div class="k-meta" id="kNakshatra"></div>
+                <div id="kNamakshara"></div>
+              </div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Bhava analysis · 12 houses</h3><span class="small">Whole-sign · from Lagna</span></div>
+              <div class="panel__body panel__body--flush" id="kBhavas"></div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Graha drishti · aspects</h3><span class="small">Parashari</span></div>
+              <div class="panel__body"><div class="aspect-list" id="kAspects"></div></div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Yogas in this chart</h3><span class="small" id="kYogaCount">—</span></div>
+              <div class="panel__body"><div class="dosha-list" id="kYogas"></div></div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Shodashavarga · 16 divisional charts</h3><span class="small">D1–D60 · Parashari</span></div>
+              <div class="panel__body panel__body--flush" id="kVargas"></div>
+            </div>
+
             <div class="grid grid-2 mt-2">
               <div class="panel">
-                <div class="panel__head"><h3>Doshas &amp; yogas</h3></div>
+                <div class="panel__head"><h3>Doshas &amp; afflictions</h3></div>
                 <div class="panel__body"><div class="dosha-list" id="kDoshas"></div></div>
               </div>
               <div class="panel">
@@ -159,6 +189,13 @@
             <div class="panel mt-2">
               <div class="panel__head"><h3>Remedies &amp; guidance</h3><span class="chip chip--green">Practical, not fear-based</span></div>
               <div class="panel__body"><div class="grid grid-2" id="kRemedies"></div></div>
+            </div>
+
+            <div class="panel mt-2">
+              <div class="panel__head"><h3>Method &amp; verification</h3><span class="chip chip--green">Computed in your browser</span></div>
+              <div class="panel__body panel__body--flush">
+                <div class="pan-rows" id="kMethod"></div>
+              </div>
             </div>
 
             <div class="cta-card cta-card--pad mt-3 no-print">

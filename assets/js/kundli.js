@@ -140,6 +140,12 @@
     renderDoshas(k);
     renderDashas(k);
     renderRemedies(k);
+    renderNakshatra(k);
+    renderBhavas(k);
+    renderAspects(k);
+    renderYogas(k);
+    renderVargas(k);
+    renderMethod(k);
   }
 
   function birthRow(k, v, sub) {
@@ -192,12 +198,6 @@
     rows.push(doshaRow('Sade Sati', dos.sadeSati,
       dos.sadeSati ? 'Saturn is in the ' + dos.sadeSatiPhase.toLowerCase() + ' phase relative to your Moon. Current transit phase, not a lifelong condition.' : 'Saturn is not transiting the 12th, 1st or 2nd from your Moon.',
       false));
-    rows.push(doshaRow('Gajakesari yoga', dos.gajkesari,
-      dos.gajkesari ? 'Jupiter is in a kendra from the Moon — a classical wisdom and reputation yoga.' : 'Jupiter is not in a kendra from the Moon in this chart.',
-      true));
-    rows.push(doshaRow('Budhaditya yoga', dos.budhaditya,
-      dos.budhaditya ? 'Sun and Mercury share a sign — sharp intellect and communication.' : 'Sun and Mercury are in different signs.',
-      true));
     $('#kDoshas').innerHTML = rows.join('');
     $('#kMeta').setAttribute('data-manglik', dos.manglik ? 'yes' : 'no');
   }
@@ -233,6 +233,139 @@
         '<div class="flex-spark"><span class="text-saffron">' + A.icon('spark') + '</span><b class="serif fs-1">' + A.esc(r.title) + '</b></div>' +
         '<p class="small muted mt-1">' + A.esc(r.text) + '</p></div></div>';
     }).join('');
+  }
+
+  function metaCell(label, value) {
+    return '<div><span>' + A.esc(label) + '</span><b>' + A.esc(value) + '</b></div>';
+  }
+
+  function renderNakshatra(k) {
+    var np = k.nakshatraProfile;
+    var lp = k.lagnaNakshatraProfile;
+    var nm = k.namakshara;
+    var padaEl = $('#kNakPada');
+    if (padaEl) padaEl.textContent = np.name + ' · pada ' + k.moonPada + ' of 4';
+
+    var meta = $('#kNakshatra');
+    if (meta) {
+      meta.innerHTML = [
+        ['Janma nakshatra', np.name],
+        ['Pada', k.moonPada + ' of 4'],
+        ['Nakshatra lord', np.lord],
+        ['Deity', np.deity],
+        ['Gana', np.gana],
+        ['Yoni', np.yoni],
+        ['Nadi', np.nadi],
+        ['Nature', np.nature],
+        ['Lagna nakshatra', lp.name + ' · pada ' + k.asc.pada]
+      ].map(function (m) { return metaCell(m[0], m[1]); }).join('');
+    }
+
+    var chips = nm.all.map(function (s, i) {
+      var active = i === k.moonPada - 1;
+      return '<span class="nak-chip' + (active ? ' is-active' : '') + '">' +
+        '<b>' + A.esc(nm.allHi[i]) + '</b><span>' + A.esc(s) + '</span><small>Pada ' + (i + 1) + '</small></span>';
+    }).join('');
+
+    var el = $('#kNamakshara');
+    if (el) {
+      el.innerHTML = '<div class="nak-chips">' + chips + '</div>' +
+        '<div class="nak-notes">' +
+          '<div><b>Nature · ' + A.esc(np.nature) + '</b><span>' + A.esc(np.natureText) + '</span></div>' +
+          '<div><b>Gana · ' + A.esc(np.gana) + '</b><span>' + A.esc(np.ganaText) + '</span></div>' +
+          '<div><b>Nadi · ' + A.esc(np.nadi) + '</b><span>' + A.esc(np.nadiText) + '</span></div>' +
+        '</div>' +
+        '<p class="small muted mt-2">The highlighted syllable is the traditional namakshara for the janma pada. Families often choose a first name beginning with it; the lagna nakshatra syllable is sometimes used for a spiritual name.</p>';
+    }
+  }
+
+  function renderBhavas(k) {
+    var el = $('#kBhavas');
+    if (!el) return;
+    var rows = k.bhavas.map(function (b) {
+      return '<tr><td><b>' + b.house + '</b><span class="bhava-name">' + A.esc(b.name) + '</span></td>' +
+        '<td>' + A.esc(b.signName) + '</td>' +
+        '<td>' + A.esc(b.lord) + '</td>' +
+        '<td>' + (b.planets.length ? b.planets.map(function (p) { return A.esc(p); }).join(', ') : '—') + '</td>' +
+        '<td><b>' + A.esc(b.meaning) + '</b><small>' + A.esc(b.text) + '</small></td></tr>';
+    }).join('');
+    el.innerHTML = '<div class="table-wrap table-wrap--prose"><table class="kundli-table">' +
+      '<thead><tr><th>House</th><th>Rashi</th><th>Lord</th><th>Grahas</th><th>Significations</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function renderAspects(k) {
+    var el = $('#kAspects');
+    if (!el) return;
+    el.innerHTML = k.aspects.map(function (a) {
+      var targets = a.planets.length ? ' · ' + a.planets.join(', ') : '';
+      return '<div class="aspect-row">' +
+        '<div class="aspect-from"><b>' + A.esc(a.name) + '</b><small>house ' + a.house + '</small></div>' +
+        '<div class="aspect-to"><span>' + a.houses.map(function (h) { return 'H' + h; }).join(' · ') + '</span>' +
+        '<small>' + A.esc(a.angles.join('°, ') + '°') + targets + '</small></div>' +
+        '</div>';
+    }).join('') +
+      '<p class="small muted mt-2">Every graha aspects the 7th house from itself. Mars adds the 4th and 8th, Jupiter the 5th and 9th, and Saturn the 3rd and 10th. Rahu and Ketu use the 5th, 7th and 9th followed by many North Indian schools.</p>';
+  }
+
+  function renderYogas(k) {
+    var el = $('#kYogas');
+    if (!el) return;
+    var present = k.yogas.filter(function (y) { return y.present; });
+    var absent = k.yogas.filter(function (y) { return !y.present; });
+    var count = $('#kYogaCount');
+    if (count) count.textContent = present.length + ' of ' + k.yogas.length + ' combinations';
+
+    var html = present.map(function (y) {
+      return '<div class="dosha ' + (y.category === 'caution' ? 'caution' : 'no') + '">' +
+        A.icon(y.category === 'caution' ? 'info' : 'check') +
+        '<div><b>' + A.esc(y.name) + ' yoga <span class="yoga-sa">' + A.esc(y.sanskrit) + '</span></b>' +
+        '<span>' + A.esc(y.text) + '</span></div></div>';
+    }).join('');
+
+    if (!present.length) {
+      html = '<div class="note-strip">' + A.icon('info') +
+        '<span>No major classical yoga is formed by these rules. A full reading also weighs planetary strength, dashas and transits.</span></div>';
+    }
+    if (absent.length) {
+      html += '<details class="yoga-details"><summary>Checked but not formed · ' + absent.length + '</summary>' +
+        '<div class="yoga-absent">' + absent.map(function (y) {
+          return '<div><b>' + A.esc(y.name) + '</b><span>' + A.esc(y.text) + '</span></div>';
+        }).join('') + '</div></details>';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderVargas(k) {
+    var el = $('#kVargas');
+    if (!el) return;
+    var abbr = ['Ar', 'Ta', 'Ge', 'Cn', 'Le', 'Vi', 'Li', 'Sc', 'Sg', 'Cp', 'Aq', 'Pi'];
+    var head = '<tr><th>Graha</th>' + k.vargas.list.map(function (v) {
+      return '<th title="' + A.esc(v.name + ' — ' + v.theme) + '">' + A.esc(v.short) + '</th>';
+    }).join('') + '</tr>';
+    var body = k.vargas.rows.map(function (r) {
+      return '<tr><td><b>' + A.esc(r.name) + '</b></td>' + r.signs.map(function (s) {
+        return '<td><span class="varga-sign" title="' + A.esc(V.RASHIS[s].n) + '">' + abbr[s] + '</span></td>';
+      }).join('') + '</tr>';
+    }).join('');
+    el.innerHTML = '<div class="table-wrap"><table class="varga-table"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' +
+      '<p class="varga-legend">Each cell is the rashi occupied in that divisional chart. Tap or hover a column header for its theme. ' +
+      'D1 Rashi · D2 Hora · D3 Drekkana · D4 Chaturthamsha · D7 Saptamsha · D9 Navamsa · D10 Dashamsha · D12 Dwadashamsha · D16 Shodashamsha · D20 Vimshamsha · D24 Chaturvimshamsha · D27 Bhamsha · D30 Trimshamsha · D40 Khavedamsha · D45 Akshavedamsha · D60 Shashtiamsha.</p>';
+  }
+
+  function renderMethod(k) {
+    var el = $('#kMethod');
+    if (!el) return;
+    el.innerHTML = [
+      birthRow('Ayanamsa', 'Lahiri / Chitrapaksha · ' + k.ayanamsa.toFixed(4) + '°', 'Sidereal zodiac; subtracted from tropical longitude'),
+      birthRow('Ephemeris', '<a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine</a> · MIT', 'Open-source apparent geocentric positions for the Sun–Saturn; mean node for Rahu and Ketu'),
+      birthRow('Houses', 'Whole-sign from Lagna', 'The rising rashi is the 1st bhava; each following rashi is the next house'),
+      birthRow('Vargas', 'Parashari rules · D1–D60', 'D2 hora and D30 trimshamsha use their classical unequal divisions'),
+      birthRow('Dasha', 'Vimshottari · 120-year cycle', 'Balance derived from the Moon’s nakshatra and pada at birth'),
+      birthRow('Nakshatra', '27 nakshatras · 4 padas', 'Namakshara syllables follow the traditional pada table'),
+      birthRow('Classical basis', 'Brihat Parashara Hora Shastra', 'Shodashavarga, graha drishti and Vimshottari rules; Lahiri ayanamsa from the Indian Astronomical Ephemeris'),
+      birthRow('How to verify', 'Compare with any standard panchang', 'A few arc-minutes of difference is normal; birth time and time zone matter most')
+    ].join('');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

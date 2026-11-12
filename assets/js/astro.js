@@ -787,6 +787,388 @@
     return panchang(p.y, p.m, p.d, place);
   }
 
+  /* ------------------------------------------- nakshatra naming & vargas */
+  /* Traditional namakshara: the four syllables assigned to each pada of the
+     27 nakshatras. Used across North India for choosing a child's name. */
+  var NAKSHATRA_SYLLABLES = [
+    ['Chu', 'Che', 'Cho', 'La'],
+    ['Li', 'Lu', 'Le', 'Lo'],
+    ['A', 'I', 'U', 'E'],
+    ['O', 'Va', 'Vi', 'Vu'],
+    ['Ve', 'Vo', 'Ka', 'Ki'],
+    ['Ku', 'Gha', 'Nga', 'Chha'],
+    ['Ke', 'Ko', 'Ha', 'Hi'],
+    ['Hu', 'He', 'Ho', 'Da'],
+    ['Di', 'Du', 'De', 'Do'],
+    ['Ma', 'Mi', 'Mu', 'Me'],
+    ['Mo', 'Ta', 'Ti', 'Tu'],
+    ['Te', 'To', 'Pa', 'Pi'],
+    ['Pu', 'Sha', 'Na', 'Tha'],
+    ['Pe', 'Po', 'Ra', 'Ri'],
+    ['Ru', 'Re', 'Ro', 'Ta'],
+    ['Ti', 'Tu', 'Te', 'To'],
+    ['Na', 'Ni', 'Nu', 'Ne'],
+    ['No', 'Ya', 'Yi', 'Yu'],
+    ['Ye', 'Yo', 'Bha', 'Bhi'],
+    ['Bhu', 'Dha', 'Pha', 'Dha'],
+    ['Bhe', 'Bho', 'Ja', 'Ji'],
+    ['Khi', 'Khu', 'Khe', 'Kho'],
+    ['Ga', 'Gi', 'Gu', 'Ge'],
+    ['Go', 'Sa', 'Si', 'Su'],
+    ['Se', 'So', 'Da', 'Di'],
+    ['Du', 'Tha', 'Jha', 'Na'],
+    ['De', 'Do', 'Cha', 'Chi']
+  ];
+  var NAKSHATRA_SYLLABLES_HI = [
+    ['चु', 'चे', 'चो', 'ला'],
+    ['ली', 'लू', 'ले', 'लो'],
+    ['अ', 'ई', 'उ', 'ए'],
+    ['ओ', 'वा', 'वी', 'वू'],
+    ['वे', 'वो', 'का', 'की'],
+    ['कू', 'घ', 'ङ', 'छ'],
+    ['के', 'को', 'हा', 'ही'],
+    ['हू', 'हे', 'हो', 'डा'],
+    ['डी', 'डू', 'डे', 'डो'],
+    ['मा', 'मी', 'मू', 'मे'],
+    ['मो', 'टा', 'टी', 'टू'],
+    ['टे', 'टो', 'पा', 'पी'],
+    ['पू', 'ष', 'ण', 'ठ'],
+    ['पे', 'पो', 'रा', 'री'],
+    ['रू', 'रे', 'रो', 'ता'],
+    ['ती', 'तू', 'ते', 'तो'],
+    ['ना', 'नी', 'नू', 'ने'],
+    ['नो', 'या', 'यी', 'यू'],
+    ['ये', 'यो', 'भा', 'भी'],
+    ['भू', 'धा', 'फा', 'ढा'],
+    ['भे', 'भो', 'जा', 'जी'],
+    ['खी', 'खू', 'खे', 'खो'],
+    ['गा', 'गी', 'गू', 'गे'],
+    ['गो', 'सा', 'सी', 'सू'],
+    ['से', 'सो', 'दा', 'दी'],
+    ['दू', 'थ', 'झ', 'ञ'],
+    ['दे', 'दो', 'च', 'ची']
+  ];
+
+  var NAKSHATRA_NATURE = {
+    Kshipra: 'Swift and healing — quick results, medicine, travel and learning.',
+    Ugra: 'Fierce and forceful — courage, transformation and decisive action.',
+    Mishra: 'Mixed — a blend of gentle and sharp influences.',
+    Dhruva: 'Fixed and steady — endurance, loyalty and lasting results.',
+    Mridu: 'Soft and gentle — art, romance, kindness and refinement.',
+    Tikshna: 'Sharp and penetrating — research, strategy and intensity.',
+    Chara: 'Movable and changeable — adaptability, motion and exploration.'
+  };
+  var GANA_MEANING = {
+    Deva: 'Divine temperament — gentle, generous and idealistic.',
+    Manushya: 'Human temperament — ambitious, practical and mixed.',
+    Rakshasa: 'Fierce temperament — intense, protective and strong-willed.'
+  };
+  var NADI_MEANING = {
+    Adi: 'Adi (Vata) — movement, breath and the nervous system.',
+    Madhya: 'Madhya (Pitta) — heat, digestion and transformation.',
+    Antya: 'Antya (Kapha) — structure, immunity and calm.'
+  };
+
+  function nakshatraProfile(idx) {
+    idx = ((idx % 27) + 27) % 27;
+    var n = NAKSHATRAS[idx];
+    return {
+      index: idx, name: n.n, lord: n.lord, deity: n.deity, symbol: n.symbol,
+      gana: n.gana, yoni: n.yoni, nadi: n.nadi, nature: n.nature,
+      natureText: NAKSHATRA_NATURE[n.nature] || '',
+      ganaText: GANA_MEANING[n.gana] || '',
+      nadiText: NADI_MEANING[n.nadi] || '',
+      syllables: NAKSHATRA_SYLLABLES[idx], syllablesHi: NAKSHATRA_SYLLABLES_HI[idx]
+    };
+  }
+
+  /* The sixteen Parashari vargas shown in a shodashavarga table. */
+  var VARGAS = [
+    { d: 1, name: 'Rashi', short: 'D1', theme: 'Body & birth chart' },
+    { d: 2, name: 'Hora', short: 'D2', theme: 'Wealth' },
+    { d: 3, name: 'Drekkana', short: 'D3', theme: 'Siblings & courage' },
+    { d: 4, name: 'Chaturthamsha', short: 'D4', theme: 'Home & property' },
+    { d: 7, name: 'Saptamsha', short: 'D7', theme: 'Children' },
+    { d: 9, name: 'Navamsa', short: 'D9', theme: 'Marriage & dharma' },
+    { d: 10, name: 'Dashamsha', short: 'D10', theme: 'Career' },
+    { d: 12, name: 'Dwadashamsha', short: 'D12', theme: 'Parents' },
+    { d: 16, name: 'Shodashamsha', short: 'D16', theme: 'Vehicles & comforts' },
+    { d: 20, name: 'Vimshamsha', short: 'D20', theme: 'Spiritual practice' },
+    { d: 24, name: 'Chaturvimshamsha', short: 'D24', theme: 'Learning' },
+    { d: 27, name: 'Bhamsha', short: 'D27', theme: 'Strengths & weaknesses' },
+    { d: 30, name: 'Trimshamsha', short: 'D30', theme: 'Misfortunes' },
+    { d: 40, name: 'Khavedamsha', short: 'D40', theme: 'Maternal legacy' },
+    { d: 45, name: 'Akshavedamsha', short: 'D45', theme: 'Paternal legacy' },
+    { d: 60, name: 'Shashtiamsha', short: 'D60', theme: 'Past karma' }
+  ];
+
+  /* Divisional sign of a sidereal longitude under the standard Parashari
+     rules. D2 and D30 are unequal divisions and are handled separately. */
+  function vargaSign(lon, D) {
+    var L = norm(lon);
+    var sign = Math.floor(L / 30);
+    var deg = L - sign * 30;
+    var odd = sign % 2 === 0;            // Aries, Gemini, … are odd signs
+    var movable = sign % 3 === 0;
+    var fixed = sign % 3 === 1;
+    var start, part;
+
+    switch (D) {
+      case 2:
+        if (odd) return deg < 15 ? 4 : 3;       // Leo then Cancer
+        return deg < 15 ? 3 : 4;                // Cancer then Leo
+      case 3:
+        return (sign + Math.min(2, Math.floor(deg / 10)) * 4) % 12;
+      case 4:
+        return (sign + Math.min(3, Math.floor(deg / 7.5)) * 3) % 12;
+      case 7:
+        start = odd ? sign : (sign + 6) % 12;
+        return (start + Math.min(6, Math.floor(deg / (30 / 7)))) % 12;
+      case 9:
+        return Math.floor(L / (30 / 9)) % 12;
+      case 10:
+        start = odd ? sign : (sign + 8) % 12;
+        return (start + Math.min(9, Math.floor(deg / 3))) % 12;
+      case 12:
+        return (sign + Math.min(11, Math.floor(deg / 2.5))) % 12;
+      case 16:
+        start = movable ? 0 : fixed ? 4 : 8;
+        return (start + Math.min(15, Math.floor(deg / (30 / 16)))) % 12;
+      case 20:
+        start = movable ? 0 : fixed ? 8 : 4;
+        return (start + Math.min(19, Math.floor(deg / 1.5))) % 12;
+      case 24:
+        start = odd ? 4 : 3;
+        return (start + Math.min(23, Math.floor(deg / 1.25))) % 12;
+      case 27:
+        start = sign % 4 === 0 ? 0 : sign % 4 === 1 ? 3 : sign % 4 === 2 ? 6 : 9;
+        return (start + Math.min(26, Math.floor(deg / (30 / 27)))) % 12;
+      case 30:
+        if (odd) {
+          if (deg < 5) return 0;      // Mars — Aries
+          if (deg < 10) return 10;    // Saturn — Aquarius
+          if (deg < 18) return 8;     // Jupiter — Sagittarius
+          if (deg < 25) return 2;     // Mercury — Gemini
+          return 6;                   // Venus — Libra
+        }
+        if (deg < 5) return 1;        // Venus — Taurus
+        if (deg < 12) return 5;       // Mercury — Virgo
+        if (deg < 20) return 11;      // Jupiter — Pisces
+        if (deg < 25) return 9;       // Saturn — Capricorn
+        return 7;                     // Mars — Scorpio
+      case 40:
+        start = odd ? 0 : 6;
+        return (start + Math.min(39, Math.floor(deg / 0.75))) % 12;
+      case 45:
+        start = movable ? 0 : fixed ? 4 : 8;
+        return (start + Math.min(44, Math.floor(deg / (30 / 45)))) % 12;
+      case 60:
+        return (sign + Math.min(59, Math.floor(deg / 0.5))) % 12;
+      default:
+        return sign;
+    }
+  }
+
+  function vargas(planets, asc) {
+    var rows = [{
+      key: 'Asc', name: 'Lagna',
+      signs: VARGAS.map(function (v) { return vargaSign(asc.lon, v.d); })
+    }];
+    planets.forEach(function (p) {
+      rows.push({
+        key: p.key, name: p.name,
+        signs: VARGAS.map(function (v) { return vargaSign(p.lon, v.d); })
+      });
+    });
+    return { list: VARGAS, rows: rows };
+  }
+
+  /* Baladi avastha — the planet's "age" by degree inside its sign. */
+  var AVASTHA = [
+    { name: 'Bala', en: 'Infant', text: 'Immature expression — potential is still developing.' },
+    { name: 'Kumara', en: 'Child', text: 'Growing expression — curious, learning and playful.' },
+    { name: 'Yuva', en: 'Adult', text: 'Full strength — the planet gives its results openly.' },
+    { name: 'Vriddha', en: 'Old', text: 'Weakened expression — results come with effort or delay.' },
+    { name: 'Mrita', en: 'Dormant', text: 'Latent expression — the planet works quietly or needs support.' }
+  ];
+
+  function avastha(deg, sign) {
+    var part = Math.floor(deg / 6);
+    if (part > 4) part = 4;
+    if (part < 0) part = 0;
+    if (sign % 2 === 1) part = 4 - part;   // even signs count in reverse
+    return AVASTHA[part];
+  }
+
+  var BHAVA_META = [
+    { name: 'Tanu Bhava', sanskrit: 'तनु भाव', meaning: 'Body & self', karaka: 'Sun', text: 'Physical body, health, personality, vitality and first impressions.' },
+    { name: 'Dhana Bhava', sanskrit: 'धन भाव', meaning: 'Wealth & speech', karaka: 'Jupiter', text: 'Savings, family resources, food, speech, values and what you hold dear.' },
+    { name: 'Sahaja Bhava', sanskrit: 'सहज भाव', meaning: 'Courage & siblings', karaka: 'Mars', text: 'Younger siblings, courage, communication, short journeys, skills and self-effort.' },
+    { name: 'Sukha Bhava', sanskrit: 'सुख भाव', meaning: 'Home & mother', karaka: 'Moon', text: 'Mother, home, property, vehicles, inner peace and early education.' },
+    { name: 'Putra Bhava', sanskrit: 'पुत्र भाव', meaning: 'Children & creativity', karaka: 'Jupiter', text: 'Children, romance, creative expression, intelligence, mantra and purva punya.' },
+    { name: 'Shatru Bhava', sanskrit: 'शत्रु भाव', meaning: 'Obstacles & service', karaka: 'Mars / Saturn', text: 'Illness, debt, enemies, competition, daily service, discipline and litigation.' },
+    { name: 'Kalatra Bhava', sanskrit: 'कलत्र भाव', meaning: 'Marriage & partners', karaka: 'Venus', text: 'Marriage, business partners, contracts, public dealing and one-to-one relationships.' },
+    { name: 'Ayur Bhava', sanskrit: 'आयु भाव', meaning: 'Longevity & transformation', karaka: 'Saturn', text: 'Longevity, inheritance, occult study, research, chronic conditions and deep change.' },
+    { name: 'Dharma Bhava', sanskrit: 'धर्म भाव', meaning: 'Fortune & dharma', karaka: 'Jupiter / Sun', text: 'Fortune, guru, father, higher learning, pilgrimage, ethics and long journeys.' },
+    { name: 'Karma Bhava', sanskrit: 'कर्म भाव', meaning: 'Career & status', karaka: 'Sun / Mercury / Saturn', text: 'Career, authority, public reputation, action in the world and karmic duty.' },
+    { name: 'Labha Bhava', sanskrit: 'लाभ भाव', meaning: 'Gains & network', karaka: 'Jupiter', text: 'Income, gains, elder siblings, friends, aspirations and fulfilment of desires.' },
+    { name: 'Vyaya Bhava', sanskrit: 'व्यय भाव', meaning: 'Loss & moksha', karaka: 'Saturn', text: 'Expenditure, foreign lands, sleep, seclusion, letting go and spiritual liberation.' }
+  ];
+
+  function bhavas(planets, ascSign) {
+    var out = [];
+    for (var h = 1; h <= 12; h++) {
+      var sign = (ascSign + h - 1) % 12;
+      var meta = BHAVA_META[h - 1];
+      out.push({
+        house: h, sign: sign, signName: RASHIS[sign].s, signEn: RASHIS[sign].n,
+        lord: RASHIS[sign].lord, name: meta.name, sanskrit: meta.sanskrit,
+        meaning: meta.meaning, karaka: meta.karaka, text: meta.text,
+        planets: planets.filter(function (p) { return p.house === h; }).map(function (p) { return p.name; })
+      });
+    }
+    return out;
+  }
+
+  /* Graha drishti: every planet aspects the 7th from itself. Mars adds the
+     4th and 8th, Jupiter the 5th and 9th, Saturn the 3rd and 10th. The nodes
+     are given the 5th, 7th and 9th in many North Indian schools. */
+  var DRISHTI = {
+    Su: [7], Mo: [7], Ma: [4, 7, 8], Me: [7], Ju: [5, 7, 9],
+    Ve: [7], Sa: [3, 7, 10], Ra: [5, 7, 9], Ke: [5, 7, 9]
+  };
+
+  function aspects(planets) {
+    return planets.map(function (p) {
+      var angles = DRISHTI[p.key] || [7];
+      var houses = angles.map(function (a) { return ((p.house - 1 + a - 1) % 12) + 1; });
+      var targets = [];
+      houses.forEach(function (h) {
+        planets.forEach(function (q) {
+          if (q.house === h && q.key !== p.key) targets.push(q.name);
+        });
+      });
+      return {
+        key: p.key, name: p.name, house: p.house, angles: angles,
+        houses: houses, planets: targets, node: p.key === 'Ra' || p.key === 'Ke'
+      };
+    });
+  }
+
+  var KENDRA = [1, 4, 7, 10];
+  var TRIKONA = [1, 5, 9];
+  var BENEFICS = ['Jupiter', 'Venus', 'Mercury'];
+
+  function lordOfHouse(ascSign, house) {
+    return RASHIS[(ascSign + house - 1) % 12].lord;
+  }
+  function planetNamed(planets, name) {
+    return planets.filter(function (p) { return p.name === name; })[0];
+  }
+  function planetsInHouse(planets, house) {
+    return planets.filter(function (p) { return p.house === house; });
+  }
+  function relativeHouse(base, n) {
+    return ((base - 1 + n - 1) % 12) + 1;
+  }
+  function aspectsHouse(p, house) {
+    return (DRISHTI[p.key] || [7]).some(function (a) {
+      return ((p.house - 1 + a - 1) % 12) + 1 === house;
+    });
+  }
+  function linked(a, b) {
+    if (!a || !b || a.key === b.key) return false;
+    return a.house === b.house || (aspectsHouse(a, b.house) && aspectsHouse(b, a.house));
+  }
+  function isBenefic(p) { return BENEFICS.indexOf(p.name) >= 0; }
+  function strongDignity(p) { return p.dignity === 'Exalted' || p.dignity === 'Own sign'; }
+
+  function yogas(planets, ascSign, moonP) {
+    var out = [];
+    function add(name, sanskrit, present, text, category) {
+      out.push({ name: name, sanskrit: sanskrit, present: !!present, text: text, category: category || 'yoga' });
+    }
+
+    var p = {};
+    planets.forEach(function (x) { p[x.key] = x; });
+    var moonHouse = p.Mo.house;
+    function fromMoon(h) { return ((h - moonHouse + 12) % 12) + 1; }
+
+    /* Panch Mahapurusha — a strong planet in a kendra. */
+    [
+      { key: 'Ma', name: 'Ruchaka', sa: 'रुचक', text: 'Mars in its own or exaltation sign in a kendra — courage, command and physical vitality.' },
+      { key: 'Me', name: 'Bhadra', sa: 'भद्र', text: 'Mercury in its own or exaltation sign in a kendra — sharp intellect, commerce and communication.' },
+      { key: 'Ju', name: 'Hamsa', sa: 'हंस', text: 'Jupiter in its own or exaltation sign in a kendra — wisdom, ethics, teaching and respect.' },
+      { key: 'Ve', name: 'Malavya', sa: 'मालव्य', text: 'Venus in its own or exaltation sign in a kendra — grace, art, comfort and relationship ease.' },
+      { key: 'Sa', name: 'Sasa', sa: 'शश', text: 'Saturn in its own or exaltation sign in a kendra — discipline, organisation and authority.' }
+    ].forEach(function (m) {
+      var pl = p[m.key];
+      add(m.name, m.sa, KENDRA.indexOf(pl.house) >= 0 && strongDignity(pl), m.text, 'mahapurusha');
+    });
+
+    add('Gajakesari', 'गजकेसरी', KENDRA.indexOf(fromMoon(p.Ju.house)) >= 0,
+      'Jupiter in a kendra from the Moon — wisdom, reputation and a protective influence.', 'raja');
+    add('Budhaditya', 'बुधादित्य', p.Su.sign === p.Me.sign,
+      'Sun and Mercury in the same sign — analytical intelligence and clear communication.', 'raja');
+    add('Chandra-Mangala', 'चंद्र-मंगल', linked(p.Mo, p.Ma),
+      'Moon and Mars conjunct or in mutual aspect — earning drive, courage and wealth through effort.', 'dhana');
+
+    var in2 = planets.filter(function (x) { return fromMoon(x.house) === 2 && x.key !== 'Su'; });
+    var in12 = planets.filter(function (x) { return fromMoon(x.house) === 12 && x.key !== 'Su'; });
+    var withMoon = planetsInHouse(planets, moonHouse).filter(function (x) { return x.key !== 'Mo' && x.key !== 'Su'; });
+
+    add('Sunapha', 'सुनफा', in2.length > 0,
+      'Planets in the 2nd from the Moon — self-earned resources, confidence and steady support.', 'chandra');
+    add('Anapha', 'अनफा', in12.length > 0,
+      'Planets in the 12th from the Moon — generosity, refinement and a reflective inner life.', 'chandra');
+    add('Durudhara', 'दुरुधरा', in2.length > 0 && in12.length > 0,
+      'Planets on both sides of the Moon — balance between receiving and giving, comfort and company.', 'chandra');
+    add('Kemadruma', 'केमद्रुम', in2.length === 0 && in12.length === 0 && withMoon.length === 0,
+      'The Moon has no planets in the 2nd, 12th or with it. Traditionally a caution about emotional self-reliance, not a curse; a strong Moon or Jupiter moderates it.', 'caution');
+
+    var adhi = [6, 7, 8].every(function (n) {
+      return planetsInHouse(planets, relativeHouse(moonHouse, n)).some(isBenefic);
+    });
+    add('Adhi', 'अधि', adhi,
+      'Natural benefics occupy the 6th, 7th and 8th from the Moon — leadership, prosperity and lasting status.', 'raja');
+
+    var amala = planetsInHouse(planets, relativeHouse(moonHouse, 10)).some(isBenefic) ||
+      planetsInHouse(planets, 10).some(isBenefic);
+    add('Amala', 'अमल', amala,
+      'A natural benefic in the 10th from the Moon or Lagna — a clean reputation and lasting good name.', 'raja');
+
+    var l6 = planetNamed(planets, lordOfHouse(ascSign, 6));
+    var l8 = planetNamed(planets, lordOfHouse(ascSign, 8));
+    var l12 = planetNamed(planets, lordOfHouse(ascSign, 12));
+    var vipreet = (l6 && [8, 12].indexOf(l6.house) >= 0) ||
+      (l8 && [6, 12].indexOf(l8.house) >= 0) ||
+      (l12 && [6, 8].indexOf(l12.house) >= 0);
+    add('Vipreet Raja', 'विपरीत राज', vipreet,
+      'A lord of the 6th, 8th or 12th sits in another dusthana — rise through adversity, recovery and resourcefulness.', 'raja');
+
+    var kendraLords = KENDRA.map(function (h) { return planetNamed(planets, lordOfHouse(ascSign, h)); }).filter(Boolean);
+    var trikonaLords = TRIKONA.map(function (h) { return planetNamed(planets, lordOfHouse(ascSign, h)); }).filter(Boolean);
+    var raja = kendraLords.some(function (a) {
+      return trikonaLords.some(function (b) { return linked(a, b); });
+    });
+    add('Raja', 'राज', raja,
+      'A kendra lord and a trikona lord are conjunct or in mutual aspect — a classical combination for authority and success.', 'raja');
+
+    var l2 = planetNamed(planets, lordOfHouse(ascSign, 2));
+    var l11 = planetNamed(planets, lordOfHouse(ascSign, 11));
+    var dhana = linked(l2, l11) || (l2 && l2.house === 11) || (l11 && l11.house === 2);
+    add('Dhana', 'धन', dhana,
+      'The 2nd and 11th lords are linked, or occupy each other’s houses — a classical wealth combination.', 'dhana');
+
+    var saraswati = [p.Ju, p.Ve, p.Me].every(function (x) {
+      return [1, 2, 4, 5, 7, 9, 10].indexOf(x.house) >= 0;
+    }) && (strongDignity(p.Ju) || relation('Jupiter', RASHIS[p.Ju.sign].lord) === 'friend');
+    add('Saraswati', 'सरस्वती', saraswati,
+      'Jupiter, Venus and Mercury occupy kendras, trikonas, the 2nd or 5th — learning, arts and eloquent expression.', 'raja');
+
+    return out;
+  }
+
   /* ---------------------------------------------------------------- kundli */
   var DIGNITY = {
     Su: { ex: 0, deb: 6, own: [4] }, Mo: { ex: 1, deb: 7, own: [3] },
@@ -819,7 +1201,8 @@
         house: house, d9: d9, d9House: ((d9 - (Math.floor(asc.sidereal / (30 / 9)) % 12) + 12) % 12) + 1,
         nakshatraName: NAKSHATRAS[p.nakshatra].n,
         nakshatraLord: NAKSHATRAS[p.nakshatra].lord,
-        dignity: dignity(p)
+        dignity: dignity(p),
+        avastha: avastha(p.degInSign, p.sign)
       });
     });
 
@@ -889,6 +1272,20 @@
       moonNakshatraLord: NAKSHATRAS[moonP.nakshatra].lord,
       moonPada: moonP.pada,
       navamsaAsc: Math.floor(asc.sidereal / (30 / 9)) % 12,
+      nakshatraProfile: nakshatraProfile(moonP.nakshatra),
+      lagnaNakshatraProfile: nakshatraProfile(ascNakIdx),
+      namakshara: {
+        nakshatra: NAKSHATRAS[moonP.nakshatra].n,
+        pada: moonP.pada,
+        syllable: NAKSHATRA_SYLLABLES[moonP.nakshatra][moonP.pada - 1],
+        syllableHi: NAKSHATRA_SYLLABLES_HI[moonP.nakshatra][moonP.pada - 1],
+        all: NAKSHATRA_SYLLABLES[moonP.nakshatra],
+        allHi: NAKSHATRA_SYLLABLES_HI[moonP.nakshatra]
+      },
+      bhavas: bhavas(planets, ascSign),
+      vargas: vargas(planets, { lon: asc.sidereal }),
+      aspects: aspects(planets),
+      yogas: yogas(planets, ascSign, moonP),
       remedies: remediesFor(moonP.sign, doshas)
     };
   }
@@ -1272,6 +1669,10 @@
     TITHI_META: TITHI_BASE, YOGA_MEANINGS: YOGA_MEANINGS, YOGA_BAD: YOGA_BAD,
     KARANA_META: KARANA_META, FESTIVALS: FESTIVALS, RITUS: RITUS,
     PLANETS: PLANETS, VIMSHOTTARI: VIMSHOTTARI, WEEKDAYS: WEEKDAYS, MONTHS: MONTHS,
+    VARGAS: VARGAS, BHAVA_META: BHAVA_META, AVASTHA: AVASTHA,
+    NAKSHATRA_SYLLABLES: NAKSHATRA_SYLLABLES, NAKSHATRA_SYLLABLES_HI: NAKSHATRA_SYLLABLES_HI,
+    NAKSHATRA_NATURE: NAKSHATRA_NATURE, GANA_MEANING: GANA_MEANING, NADI_MEANING: NADI_MEANING,
+    vargaSign: vargaSign, nakshatraProfile: nakshatraProfile, avastha: avastha,
     norm: norm, ayanamsa: ayanamsa, sunTropical: sunTropical, moonTropical: moonTropical,
     sunLong: sunTropical, moonLong: moonTropical, tropicalPositions: tropicalPositions,
     planetSet: planetSet, ascendant: ascendant, gmst: gmst, obliquity: obliquity,

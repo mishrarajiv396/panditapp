@@ -94,9 +94,10 @@
         '<td>' + esc(V.RASHIS[p.sign].n) + ' ' + Math.floor(p.degInSign) + '°' + Math.floor((p.degInSign % 1) * 60) + '′</td>' +
         '<td>' + esc(p.house) + '</td>' +
         '<td>' + esc(V.NAKSHATRAS[p.nakshatra].n) + ' ' + esc(p.pada) + '</td>' +
-        '<td>' + esc(p.dignity || '—') + '</td></tr>';
+        '<td>' + esc(p.dignity || '—') + '</td>' +
+        '<td>' + esc(p.avastha ? p.avastha.name : '—') + '</td></tr>';
     }).join('');
-    return '<div class="table-wrap"><table><thead><tr><th>Graha</th><th>Rashi</th><th>Bhava</th><th>Nakshatra</th><th>Dignity</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    return '<div class="table-wrap"><table><thead><tr><th>Graha</th><th>Rashi</th><th>Bhava</th><th>Nakshatra</th><th>Dignity</th><th>Avastha</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
 
   root.VedicChart = { north: north, planetTable: planetTable };

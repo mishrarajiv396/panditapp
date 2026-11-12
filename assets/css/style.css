@@ -2040,3 +2040,66 @@ html.gs-open,body.gs-open{overflow:hidden;overscroll-behavior:contain}
   .product__row{gap:4px}
   .product .add-btn{width:40px;height:40px}
 }
+
+/* ------------------------------------------------ kundli deep-report extras
+   Nakshatra naming, bhava table, drishti, yoga list and shodashavarga.
+   All additions reuse the existing panel, table and chip tokens. */
+.nak-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.nak-chip{display:block;min-width:0;text-align:center;padding:10px 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.nak-chip b{display:block;font-family:var(--serif);font-size:1.2rem;line-height:1.1;color:var(--maroon-deep);font-weight:400}
+.nak-chip span{display:block;font-size:.74rem;color:var(--ink-soft);margin-top:2px}
+.nak-chip small{display:block;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:4px}
+.nak-chip.is-active{border-color:rgba(201,162,39,.55);background:rgba(201,162,39,.12);box-shadow:0 0 0 1px rgba(201,162,39,.25) inset}
+.nak-chip.is-active b{color:var(--maroon)}
+.nak-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.nak-notes div{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.nak-notes b{display:block;font-size:.76rem;color:var(--ink)}
+.nak-notes span{display:block;font-size:.7rem;color:var(--ink-faint);line-height:1.4;margin-top:2px}
+.table-wrap--prose table td{white-space:normal}
+.kundli-table td:last-child{min-width:220px}
+.kundli-table td small{display:block;font-size:.7rem;color:var(--ink-faint);line-height:1.4;margin-top:2px}
+.bhava-name{display:block;font-size:.66rem;color:var(--ink-faint);margin-top:2px;letter-spacing:.02em}
+.aspect-list{display:grid;gap:8px}
+.aspect-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.aspect-from b{display:block;font-size:.82rem;color:var(--ink)}
+.aspect-from small{display:block;font-size:.66rem;color:var(--ink-faint)}
+.aspect-to span{display:block;font-size:.8rem;font-weight:600;color:var(--maroon-deep)}
+.aspect-to small{display:block;font-size:.68rem;color:var(--ink-faint);margin-top:1px}
+.yoga-sa{font-weight:400;font-size:.68rem;color:var(--ink-faint);letter-spacing:.02em}
+.dosha.caution{border-color:rgba(201,162,39,.4);background:rgba(201,162,39,.07)}
+.dosha.caution svg{color:#a8841f}
+.yoga-details{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);overflow:hidden}
+.yoga-details summary{padding:11px 14px;font-size:.76rem;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.yoga-absent{padding:0 14px 8px}
+.yoga-absent div{padding:8px 0;border-top:1px solid var(--line)}
+.yoga-absent b{display:block;font-size:.78rem;color:var(--ink)}
+.yoga-absent span{display:block;font-size:.7rem;color:var(--ink-faint);line-height:1.4;margin-top:1px}
+.varga-table th,.varga-table td{padding:8px 9px;text-align:center;font-size:.72rem}
+.varga-table th:first-child,.varga-table td:first-child{text-align:left;position:sticky;left:0;z-index:1;background:var(--surface)}
+.varga-table thead th:first-child{background:var(--surface-2)}
+.varga-sign{display:inline-block;min-width:22px;font-variant-numeric:tabular-nums}
+.varga-legend{padding:12px 16px;margin:0;border-top:1px solid var(--line);background:var(--surface-2);font-size:.68rem;line-height:1.55;color:var(--ink-faint)}
+
+@media (max-width:640px){
+  .nak-notes{grid-template-columns:1fr}
+  .aspect-row{grid-template-columns:92px 1fr;gap:10px}
+  .kundli-table td:last-child{min-width:180px}
+}
+@media (max-width:420px){
+  .nak-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media print{
+  .table-wrap{overflow:visible}
+  .varga-table th,.varga-table td{padding:5px 6px;font-size:.62rem}
+}
+
+/* Deep-report tables must scroll inside the report column, never widen it. */
+.k-layout>*{min-width:0}
+.panel{min-width:0}
+.table-wrap{max-width:100%}
+.k-layout .grid>*{min-width:0}
+
+@media (min-width:760px){
+  .varga-table th,.varga-table td{padding:7px 6px;font-size:.68rem}
+  .varga-sign{min-width:18px}
+}
