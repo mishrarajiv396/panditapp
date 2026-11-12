@@ -1601,6 +1601,14 @@ html{scroll-padding-top:96px}
   outline:2px solid var(--gold);outline-offset:2px;
 }
 
+/* Keyboard skip link: off-screen until focused, then the first stop. */
+.skip-link{
+  position:fixed;left:14px;top:-90px;z-index:500;background:var(--maroon);color:#fff;
+  padding:12px 18px;border-radius:10px;font-size:.86rem;font-weight:600;
+  box-shadow:0 10px 30px -12px rgba(66,15,24,.7);transition:top .2s;
+}
+.skip-link:focus{top:14px}
+
 /* Toolbar / footer alignment */
 .toolbar{align-items:center}
 .toolbar > .search{flex:1 1 260px}

@@ -15,16 +15,36 @@ async function start() {
     return;
   }
 
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, () => {
     console.log(`[api] PanditApp listening on http://localhost:${config.port}`);
     console.log(`[api] site        http://localhost:${config.port}/index.html`);
     console.log(`[api] health      http://localhost:${config.port}/api/health`);
   });
+
+  // Render/Railway send SIGTERM on every deploy. Stop accepting connections,
+  // let in-flight requests finish, then close the MySQL pool so the platform
+  // can replace the instance without dropping a booking mid-write.
+  let closing = false;
+  function shutdown(signal) {
+    if (closing) return;
+    closing = true;
+    console.log(`[api] ${signal} received — finishing in-flight requests`);
+    const force = setTimeout(() => {
+      console.error('[api] shutdown timed out, exiting');
+      process.exit(1);
+    }, 10_000);
+    force.unref();
+
+    server.close(async () => {
+      clearTimeout(force);
+      await db.pool.end().catch(() => {});
+      console.log('[api] shutdown complete');
+      process.exit(0);
+    });
+  }
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 }
 
 start();
-
-process.on('SIGINT', async () => {
-  await db.pool.end().catch(() => {});
-  process.exit(0);
-});

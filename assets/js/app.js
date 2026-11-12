@@ -382,15 +382,20 @@
     var page = currentPage();
     function isActive(href) { return href === page || (page === '' && href === 'index.html'); }
     function extraClass(n) { return (n[0] === page || (page === '' && n[0] === 'index.html')) ? ' active' : ''; }
+    function activeAttrs(n) {
+      return isActive(n[0]) ? ' class="active" aria-current="page"' : '';
+    }
     var links = NAV.map(function (n) {
-      return '<a href="' + n[0] + '"' + (isActive(n[0]) ? ' class="active"' : '') + '>' + n[1] + '</a>';
+      return '<a href="' + n[0] + '"' + activeAttrs(n) + '>' + n[1] + '</a>';
     }).join('');
     var moreMenu = NAV_EXTRA.map(function (n) {
-      return '<a href="' + n[0] + '"' + (extraClass(n) ? ' class="active"' : '') + '>' + n[1] + '</a>';
+      return '<a href="' + n[0] + '"' + activeAttrs(n) + '>' + n[1] + '</a>';
     }).join('');
     var moreActive = NAV_EXTRA.some(function (n) { return isActive(n[0]); });
     var mobileExtras = NAV_EXTRA.map(function (n) {
-      return '<a class="nav__extra' + extraClass(n) + '" href="' + n[0] + '">' + n[1] + '</a>';
+      var extra = extraClass(n);
+      return '<a class="nav__extra' + extra + '"' + (extra ? ' aria-current="page"' : '') +
+        ' href="' + n[0] + '">' + n[1] + '</a>';
     }).join('');
     links +=
       '<div class="nav__more-wrap">' +
@@ -424,6 +429,15 @@
       '<button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>' +
       '</div></div></header>';
     document.body.insertAdjacentHTML('afterbegin', html);
+  }
+
+  /* Keep the keyboard skip link as the first tab stop even though the shell
+     (and the demo notice) are injected into an already-parsed body. */
+  function placeSkipLink() {
+    var skip = document.querySelector('.skip-link');
+    if (skip && skip.parentNode === document.body && document.body.firstChild !== skip) {
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
   }
 
   function initAccountLink() {
@@ -1436,6 +1450,7 @@
     injectHeader();
     initAccountLink();
     injectDemoNotice();
+    placeSkipLink();
     if (document.body) document.body.classList.add('shell-ready');
     injectFooter();
     injectFloatingActions();

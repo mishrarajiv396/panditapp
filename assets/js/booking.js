@@ -543,11 +543,14 @@
       date: state.date, dateLabel: prettyDate(state.date),
       time: state.muhurat ? state.muhurat.label + (state.muhurat.start ? ' · ' + V.fmtTime(state.muhurat.start, state.city.tz) + ' – ' + V.fmtTime(state.muhurat.end, state.city.tz) : ' · time TBC') : '—',
       panditName: state.pandit ? state.pandit.name : '',
+      panditId: state.pandit ? state.pandit.id : '',
+      city: state.city.name,
       place: state.city.name + (customer.society ? ' · ' + customer.society : ''),
       base: state.pooja.price, extras: extra, gst: gst, total: total,
       payment: payment, paymentStatus: 'Pending', paymentRef: '',
       payNow: payNow, balance: total - payNow, amountPaid: 0, upi: OWNER_UPI,
       otp: otp, customer: customer,
+      extrasIds: Object.keys(state.extras),
       extrasList: D.EXTRAS.filter(function (x) { return state.extras[x.id]; }).map(function (x) { return x.name; })
     };
 

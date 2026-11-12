@@ -3,7 +3,7 @@
    load. The cache is only used when the network is unavailable. */
 'use strict';
 
-var VERSION = 'vp-static-v48';
+var VERSION = 'vp-static-v49';
 var RUNTIME = 'vp-runtime-v2';
 
 var CORE = [

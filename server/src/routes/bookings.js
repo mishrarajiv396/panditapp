@@ -3,7 +3,7 @@
 const express = require('express');
 const db = require('../db');
 const {
-  asyncHandler, json, cleanString, toInt, toAmount, safeDate, isoDateOrNull
+  asyncHandler, json, cleanString, toInt, safeDate, isoDateOrNull
 } = require('../middleware/helpers');
 const { optionalUser } = require('../middleware/auth');
 const rateLimit = require('../middleware/rate-limit');
@@ -68,6 +68,72 @@ function mapBooking(row) {
   };
 }
 
+/* --------------------------------------------------------------- pricing
+   The browser shows a live estimate, but money is decided here. Prices are
+   read from the catalogue so a modified payload cannot book a ₹51,000 ritual
+   for ₹1, and GST / pay-now / balance are always derived from the same rule
+   the booking page displays. */
+const GST_RATE = 0.18;
+
+function extraIdsFrom(body) {
+  let ids = [];
+  if (Array.isArray(body.extrasIds)) ids = body.extrasIds;
+  else if (body.extras && typeof body.extras === 'object') ids = Object.keys(body.extras);
+  return Array.from(new Set(ids.map((v) => cleanString(v, 64)).filter(Boolean))).slice(0, 20);
+}
+
+async function priceBooking(body) {
+  const poojaId = cleanString(body.poojaId, 64);
+  const pooja = poojaId
+    ? await db.one('SELECT id, name, price FROM poojas WHERE id = :id AND active = 1', { id: poojaId })
+    : null;
+  // The catalogue is the only source of truth. A booking that names an
+  // unknown or retired ritual is rejected rather than trusted at the price the
+  // browser claims.
+  if (!pooja) return { error: 'Unknown or inactive pooja' };
+
+  const extraIds = extraIdsFrom(body);
+  let extrasRows = [];
+  if (extraIds.length) {
+    const params = {};
+    const names = extraIds.map((id, i) => {
+      params['e' + i] = id;
+      return ':e' + i;
+    });
+    extrasRows = await db.query(
+      `SELECT id, name, price FROM extras WHERE active = 1 AND id IN (${names.join(',')})`,
+      params
+    );
+    // Keep the order the customer selected (IN() does not guarantee one).
+    const byId = new Map(extrasRows.map((row) => [row.id, row]));
+    extrasRows = extraIds.map((id) => byId.get(id)).filter(Boolean);
+  }
+
+  const base = Number(pooja.price) || 0;
+  const extras = extrasRows.reduce((sum, row) => sum + (Number(row.price) || 0), 0);
+  const extrasList = extrasRows.map((row) => row.name);
+
+  const gst = Math.round((base + extras) * GST_RATE);
+  const total = base + extras + gst;
+  const paymentMethod = cleanString(body.payment, 40) || 'UPI';
+  const payNow = paymentMethod === '25% now'
+    ? Math.max(1, Math.round(total * 0.25))
+    : total;
+
+  return {
+    poojaName: pooja.name,
+    base,
+    extras,
+    gst,
+    total,
+    paymentMethod,
+    payNow,
+    balance: total - payNow,
+    extrasList,
+    extrasIds: extrasRows.map((row) => row.id)
+  };
+}
+
 /** Public: create a booking (called once from booking.html). */
 router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res) => {
   const body = req.body || {};
@@ -76,18 +142,27 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
   const name = cleanString(customer.name, 190);
   const phone = cleanString(customer.phone, 40);
   const poojaName = cleanString(body.poojaName, 190);
+  const poojaId = cleanString(body.poojaId, 64);
   const otp = cleanString(body.otp, 8);
 
   if (!id || !ID_RE.test(id)) return res.status(400).json({ error: 'A valid booking id is required' });
   if (!name) return res.status(400).json({ error: 'Customer name is required' });
   if (!phone) return res.status(400).json({ error: 'Customer phone is required' });
   if (!poojaName) return res.status(400).json({ error: 'Pooja name is required' });
+  if (!poojaId || !ID_RE.test(poojaId)) {
+    return res.status(400).json({ error: 'A valid poojaId is required' });
+  }
   if (!otp || !/^\d{4,8}$/.test(otp)) {
     return res.status(400).json({ error: 'A 4–8 digit gate OTP is required' });
   }
 
   const exists = await db.one('SELECT id FROM bookings WHERE id = :id', { id });
   if (exists) return res.status(409).json({ error: 'Booking already exists', id });
+
+  const price = await priceBooking(body);
+  if (price.error) return res.status(400).json({ error: price.error });
+  const extrasJson = {};
+  price.extrasIds.forEach((extraId) => { extrasJson[extraId] = true; });
 
   const bookingDate = cleanString(body.date, 10);
   const payload = {
@@ -97,8 +172,8 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
     // A customer can only create a fresh booking. Admin status changes go
     // through the protected admin route.
     status: 'Confirmed',
-    pooja_id: cleanString(body.poojaId, 64),
-    pooja_name: poojaName,
+    pooja_id: poojaId,
+    pooja_name: price.poojaName,
     booking_date: isoDateOrNull(bookingDate),
     date_label: cleanString(body.dateLabel, 60),
     muhurat: cleanString(body.time, 190),
@@ -106,14 +181,14 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
     pandit_name: cleanString(body.panditName, 190),
     city: cleanString(body.city, 120),
     place: cleanString(body.place, 255),
-    base_amount: toAmount(body.base),
-    extras_amount: toAmount(body.extras),
-    gst_amount: toAmount(body.gst),
-    total_amount: toAmount(body.total),
-    payment_method: cleanString(body.payment, 40) || 'UPI',
+    base_amount: price.base,
+    extras_amount: price.extras,
+    gst_amount: price.gst,
+    total_amount: price.total,
+    payment_method: price.paymentMethod,
     payment_status: 'Pending',
-    pay_now: toAmount(body.payNow),
-    balance: toAmount(body.balance),
+    pay_now: price.payNow,
+    balance: price.balance,
     amount_paid: 0,
     upi_id: cleanString(body.upi, 190),
     otp,
@@ -131,8 +206,8 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
     gstin: cleanString(customer.gstin, 40),
     company: cleanString(customer.company, 190),
     gate_pass: customer.gatePass ? 1 : 0,
-    extras: JSON.stringify(body.extras || {}),
-    extras_list: JSON.stringify(Array.isArray(body.extrasList) ? body.extrasList : []),
+    extras: JSON.stringify(extrasJson),
+    extras_list: JSON.stringify(price.extrasList),
     created_at: safeDate(body.createdAt)
   };
 

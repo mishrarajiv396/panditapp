@@ -146,9 +146,11 @@ data to MySQL whenever the API is reachable:
   payment status. If the API is unreachable, the order stays on the device and
   the success dialog offers a WhatsApp resend.
 - **Booking** (`booking.html`) — mirrors the full booking, 6-digit gate OTP and
-  extras to `POST /api/bookings`. The server validates the OTP, forces a fresh
-  booking to `Confirmed`, rejects impossible dates and clamps money to
-  non-negative amounts.
+  the selected add-on ids to `POST /api/bookings`. The server validates the OTP,
+  forces a fresh booking to `Confirmed`, rejects impossible dates, and now
+  recomputes every rupee from the `poojas` and `extras` tables (base, add-ons,
+  18% GST, pay-now and balance) so a modified browser payload cannot change the
+  price. The displayed estimate and the stored booking use the same rule.
 - **My bookings** (`#bookingsOpen` on every page) — lists device bookings and
   includes a **Booking ID + Gate OTP** lookup that reads the live status from
   `GET /api/bookings/:id`. A looked-up booking is remembered on the device and
@@ -163,7 +165,25 @@ data to MySQL whenever the API is reachable:
   admin approves it in the **Reviews** tab of the dashboard.
 - `assets/js/api.js` now loads on every page that renders the shared shell, so
   the header booking dialog works from anywhere. `sw.js` cache version is
-  `vp-static-v42`.
+  `vp-static-v49`.
+
+### Production hardening
+
+- **Security headers** (`server/src/middleware/security.js`) on every response:
+  a same-origin Content-Security-Policy, `X-Content-Type-Options`, frame
+  options, referrer and permissions policies, COOP, and HSTS in production.
+- **Compression** — gzip/Brotli-negotiated responses for HTML, CSS, JS, JSON
+  and fonts (roughly two thirds off the wire size of the ~2 MB asset bundle).
+- **Cache policy** — `sw.js`, the manifest and HTML are `no-cache`; files under
+  `assets/` are cached for an hour with `stale-while-revalidate`; API responses
+  are always `no-store`.
+- **Branded 404** — unknown paths render `404.html` (with the normal header,
+  footer and links back into the site) instead of a bare error string.
+- **Graceful shutdown** — SIGTERM/SIGINT stop new connections, finish in-flight
+  requests, close the MySQL pool, and force-exit only after 10 seconds, so a
+  Render deploy cannot cut a booking write in half.
+- **Accessibility** — every page has a keyboard skip link as the first tab stop
+  and a `main` landmark; the active nav item carries `aria-current="page"`.
 
 ### Customer accounts
 

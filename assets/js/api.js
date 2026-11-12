@@ -115,6 +115,7 @@
       upi: booking.upi,
       otp: booking.otp,
       createdAt: booking.createdAt,
+      extrasIds: booking.extrasIds,
       extrasList: booking.extrasList,
       customer: booking.customer || {}
     };
