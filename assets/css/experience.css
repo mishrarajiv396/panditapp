@@ -552,3 +552,14 @@
   .compare__row>span.compare__us::after{content:'Vedic Pooja';display:block;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--saffron-deep);margin-bottom:3px;position:absolute;top:8px;left:16px;transform:translateY(-100%)}
   .compare__row>span.compare__us{padding-top:20px}
 }
+
+/* ------------------------------------------------------ dock label legibility */
+/* style.css shrinks dock labels to 0.56rem on narrow phones; keep short labels
+   readable without changing the dock's height or icon rhythm. */
+.xp-dock__item{font-size:.68rem}
+.xp-dock__item--core span{font-size:.64rem}
+.xp-dock__label{font-size:.68rem;letter-spacing:0}
+@media (max-width:420px){
+  .xp-dock__item,.xp-dock__label{font-size:.66rem}
+  .xp-dock__item--core span{font-size:.62rem}
+}

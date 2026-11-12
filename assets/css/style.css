@@ -1932,3 +1932,111 @@ html.gs-open,body.gs-open{overflow:hidden;overscroll-behavior:contain}
 @media (prefers-reduced-motion: reduce){
   .motion{opacity:1 !important}
 }
+
+/* ==========================================================================
+   UI polish pass II — touch targets, mobile density and legibility
+   Additive only: resting colours, type families and layout character stay put.
+   ========================================================================== */
+
+::selection{background:rgba(224,138,46,.28);color:var(--maroon-deep)}
+
+/* ------------------------------------------------ comfortable tap targets */
+/* Compact controls keep their visual size but answer a ~44px hit area. */
+.head-actions > .icon-btn,
+.lang-switch,
+.burger,
+.cal-nav button{position:relative}
+.head-actions > .icon-btn::before,
+.lang-switch::before,
+.burger::before,
+.cal-nav button::before{
+  content:'';position:absolute;inset:-5px;border-radius:inherit;
+}
+.demo-notice__close{position:relative}
+.demo-notice__close::before{content:'';position:absolute;inset:-7px;border-radius:50%}
+
+/* ------------------------------------------------ small-text legibility */
+/* Metadata that carries real information moves off the 9–10px floor. */
+.panch-card__cell span{font-size:.7rem;letter-spacing:.08em}
+.panch-card__cell b small.panch-card__sub{font-size:.7rem}
+.panch-card__cityline small{
+  max-width:56%;white-space:normal;overflow:visible;text-overflow:clip;
+  line-height:1.35;font-size:.68rem;
+}
+.panch-card select{font-size:.8rem;min-height:36px}
+.slot b{font-size:.86rem}
+.slot span{font-size:.74rem}
+.pandit__title{font-size:.76rem}
+.pandit__spec{font-size:.76rem}
+.pandit__meta{font-size:.73rem}
+.pandit__langs .chip{font-size:.7rem}
+.product .price .mrp{font-size:.72rem}
+.product__off{font-size:.68rem}
+.chip--sm{font-size:.72rem}
+.ritual-card__fav{font-size:.7rem}
+.ritual-card__meta{font-size:.77rem}
+.price small{font-size:.68rem}
+.review-bar span{font-size:.76rem}
+.review-bar em{font-size:.74rem}
+
+/* ------------------------------------------------ mobile header rhythm */
+/* The dock already offers Facilities, so the duplicate header button goes and
+   the remaining controls get room to breathe. */
+@media (max-width:560px){
+  .head-actions > .icon-btn--facilities{display:none}
+  .head-in{gap:8px}
+  .head-actions{gap:5px}
+  .head-actions > .icon-btn{width:40px;height:40px}
+  .head-actions > .icon-btn svg{width:17px;height:17px}
+  .head-search{width:40px;height:40px;max-width:40px}
+  .lang-switch{min-height:40px;padding:7px 9px}
+  .burger{width:42px;height:42px}
+  .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+  .hero__trust div{align-items:flex-start}
+}
+@media (max-width:360px){
+  .head-actions{gap:3px}
+  .head-actions > .icon-btn{width:38px;height:38px}
+  .head-search{width:38px;height:38px;max-width:38px}
+  .burger{width:40px;height:40px}
+}
+
+/* ------------------------------------------------ mobile density & targets */
+@media (max-width:640px){
+  /* Trust strip: 2×2 instead of a tall single column. minmax(0,1fr) keeps the
+     tracks shrinkable so long labels wrap instead of being clipped. */
+  .trustbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trustbar div{padding:15px 12px;gap:9px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+  .trustbar div>div{min-width:0}
+  .trustbar div:nth-child(2n){border-right:0}
+  .trustbar div:nth-child(n+3){border-bottom:0}
+  .trustbar__icon{width:34px;height:34px;border-radius:10px}
+  .trustbar__icon svg{width:17px;height:17px}
+  .trustbar b{font-size:1.25rem}
+  .trustbar span{font-size:.72rem;line-height:1.35}
+
+  .filter-chip,.review-chip,.city-pill--link,.ritual-card__add,.pandit__audio{min-height:44px}
+  .filter-chip,.review-chip,.city-pill--link,.ritual-card__add,.pandit__audio{
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .add-btn{width:44px;height:44px}
+  .btn{min-height:44px}
+  select{min-height:44px}
+  .panch-card select{min-height:44px;max-width:100%;min-width:0}
+  /* On 360px phones the city select could not share the row with the date. */
+  .panch-card__head{flex-wrap:wrap}
+  /* Product tags were the last 10px text left on the grid. */
+  .product__art .chip{font-size:.72rem;padding:6px 11px;white-space:normal;max-width:calc(100% - 20px);line-height:1.3}
+}
+
+/* Very small phones: the 2-up trust strip and product row run out of room. */
+@media (max-width:360px){
+  .trustbar div{padding:14px 10px;gap:8px}
+  .trustbar__icon{width:30px;height:30px;border-radius:9px}
+  .trustbar__icon svg{width:15px;height:15px}
+  .trustbar b{font-size:1.15rem}
+  .trustbar span{font-size:.7rem;overflow-wrap:anywhere}
+  .product .btn--sm{padding:8px 9px;font-size:.75rem}
+  .product__row{gap:4px}
+  .product .add-btn{width:40px;height:40px}
+}
