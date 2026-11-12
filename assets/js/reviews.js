@@ -178,7 +178,7 @@
       state.summary = data.summary || null;
       renderSummary(state.summary);
       renderList(rows, append);
-      if (append) state.offset += rows.length;
+      state.offset += rows.length;
     }).catch(function () {
       setListStatus('Could not load reviews. Please refresh the page.');
     }).then(function () {

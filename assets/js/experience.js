@@ -321,7 +321,7 @@
     {
       title: 'Book & shop',
       items: [
-        { label: 'All poojas', desc: '86 rituals with all-inclusive pricing', href: 'poojas.html', icon: 'temple', keys: 'pooja puja book ritual satyanarayan griha pravesh' },
+        { label: 'All poojas', desc: '100 rituals with all-inclusive pricing', href: 'poojas.html', icon: 'temple', keys: 'pooja puja book ritual satyanarayan griha pravesh' },
         { label: 'Consultations', desc: 'Astrology, Vastu, numerology and pooja paath', href: 'services.html', icon: 'spark', keys: 'services astrology jyotish vastu numerology anka consultation pooja paath' },
         { label: 'Verified pandits', desc: 'Background-checked acharyas near you', href: 'pandits.html', icon: 'user', keys: 'pandit acharya brahmin verified' },
         { label: 'Pooja samagri', desc: 'Complete kits delivered to your door', href: 'shop.html', icon: 'box', keys: 'samagri shop kit box' },

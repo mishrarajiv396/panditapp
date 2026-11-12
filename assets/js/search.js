@@ -15,7 +15,7 @@
   var TOTAL_LIMIT = 26;
 
   var PAGES = [
-    { title: 'All poojas & rituals', sub: '86 all-inclusive Vedic poojas', href: 'poojas.html', icon: 'fire', keys: 'pooja puja ritual catalogue book satyanarayan griha pravesh' },
+    { title: 'All poojas & rituals', sub: '100 all-inclusive Vedic poojas', href: 'poojas.html', icon: 'fire', keys: 'pooja puja ritual catalogue book satyanarayan griha pravesh' },
     { title: 'Services & consultations', sub: 'Astrology, Vastu, numerology, pooja paath', href: 'services.html', icon: 'spark', keys: 'service consultation jyotish astrology vastu numerology anka' },
     { title: 'Free puja guide', sub: 'Step-by-step Satyanarayan vidhi', href: 'puja-guide.html', icon: 'book', keys: 'guide vidhi steps satyanarayan katha free samagri' },
     { title: 'Verified pandits', sub: 'Background-checked acharyas near you', href: 'pandits.html', icon: 'user', keys: 'pandit acharya priest brahmin verified book' },

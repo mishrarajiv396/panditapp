@@ -43,7 +43,7 @@ upi://pay?pa=rajivlochanmishra952-1@okhdfcbank&pn=Rajiv%20Lochan%20Mishra&cu=INR
   - **Plans tab** with the seven seva plans (₹1,100–₹51,000), a WhatsApp booking link per plan and one `plans` array in `puja-data.js` for every price
   - **Seva tab** with owner name, UPI ID, scannable QR, UPI app, call, WhatsApp and email
   - About tab with source status and safety notes
-- Other pages — poojas (86 rituals in 9 categories), services, booking (demo checkout), pandits (demo profiles), panchang, calendar, kundli, matching, shop, about, policies.
+- Other pages — poojas (100 rituals in 9 categories), services, booking (demo checkout), pandits (demo profiles), panchang, calendar, kundli, matching, shop, about, policies.
 - `panchang.html` - the daily panchang is fully computed for **1,057 places** (all **791 Indian districts**, 161 famous tirths/hill stations/beaches, the metro list and NRI hubs) with WGS-84 coordinates, IANA time zones, moonrise/moonset, moon phase, panchak, bhadra, hora, choghadiya, all six panchang limbs, a “tithi in focus” panel and a 30-tithi guide with meaning, deity, nature, guidance, festivals and the next date each tithi occurs.
 - `cities.html` — searchable directory of all 1,057 places with state/type filters, district vs famous-place badges, exact coordinates, local time, live panchang per place, “set as my city” and shareable deep links (`cities.html?city=Kedarnath`).
 - `horoscope.html` — daily rashifal for all 12 moon signs, computed from the Moon’s real transit house, tithi, nakshatra, yoga and paksha for the selected city and date. Each card shows a strength score, and the detail panel adds lucky colour/number/direction, gemstone, mantra, favourable choghadiya windows and Rahu Kaal to avoid. No random text.
@@ -108,10 +108,15 @@ the site. Stop everything with `.\stop.ps1` or `stop.bat`.
 - Health check: <http://localhost:4000/api/health>
 - Admin login: `admin@panditapp.local` / `Admin@2026` — change it from **Account & settings** in the dashboard
 
-The database was created and seeded with 1,057 cities, 86 poojas, 12 pandits,
-16 products and 8 extras from `assets/js/data.js`. To use your main MySQL 8
-service instead, edit `DB_PORT=3306`, `DB_USER` and `DB_PASSWORD` in
-`server/.env`, then run `npm run setup` inside `server/`.
+The database was created and seeded with 1,057 cities, 100 poojas, 24 pandits,
+30 products, 8 extras and 10 sample reviews from `assets/js/data.js`. To use your
+main MySQL 8 service instead, edit `DB_PORT=3306`, `DB_USER` and `DB_PASSWORD`
+in `server/.env`, then run `npm run setup` inside `server/`.
+
+The sample reviews are the same testimonials shown on the home page. They are
+inserted with `status = 'approved'` so a fresh install does not show an empty
+reviews page; re-seeding skips any review with the same name and message, so
+moderation decisions are never overwritten.
 
 ### Admin dashboard features
 

@@ -165,6 +165,46 @@ async function seedProducts() {
   console.log(`[seed] products: ${rows.length}`);
 }
 
+async function seedReviews() {
+  // Sample testimonials from the site data are published so a fresh install
+  // never shows an empty reviews page. Re-seeding never overwrites moderation:
+  // a row with the same name and message is left exactly as it is.
+  const poojaByName = new Map((DATA.POOJAS || []).map((pooja) => [pooja.name, pooja]));
+  const list = DATA.TESTIMONIALS || [];
+  let added = 0;
+
+  for (let i = 0; i < list.length; i += 1) {
+    const testimonial = list[i];
+    const existing = await db.one(
+      'SELECT id FROM reviews WHERE name = :name AND message = :message LIMIT 1',
+      { name: testimonial.name, message: testimonial.text }
+    );
+    if (existing) continue;
+
+    const pooja = poojaByName.get(testimonial.pooja);
+    const createdAt = new Date(Date.now() - (i + 1) * 9 * 24 * 60 * 60 * 1000);
+
+    await db.query(
+      `INSERT INTO reviews
+         (name, city, pooja_id, pooja_name, rating, message, status, created_at)
+       VALUES
+         (:name, :city, :poojaId, :poojaName, :rating, :message, 'approved', :createdAt)`,
+      {
+        name: testimonial.name,
+        city: testimonial.area || null,
+        poojaId: pooja ? pooja.id : null,
+        poojaName: pooja ? pooja.name : (testimonial.pooja || null),
+        rating: testimonial.rating || 5,
+        message: testimonial.text,
+        createdAt
+      }
+    );
+    added += 1;
+  }
+
+  console.log(`[seed] reviews: ${added} added, ${list.length - added} already present`);
+}
+
 async function seedAdmin() {
   // One dashboard admin is enough. If the owner already changed the email or
   // password from Account settings, don't create a second account on re-seed.
@@ -223,6 +263,7 @@ async function main() {
   await seedExtras();
   await seedPandits();
   await seedProducts();
+  await seedReviews();
   await seedAdmin();
   await seedSettings();
   console.log('[seed] done');

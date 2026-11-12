@@ -1811,6 +1811,104 @@
       desc: 'A Vishnu homa with Vishnu Sahasranama and a tulsi–yellow-flower offering for family unity, marriage harmony and protection of the household. Suitable for a new home or a family milestone.',
       includes: ['Vishnu Sahasranama', 'Vishnu homa', 'Tulsi offering', 'Family sankalpa', 'Prasad'],
       samagri: ['Vishnu yantra', 'Tulsi & yellow flowers', 'Havan samagri 3 kg', 'A2 ghee', 'Kalash & coconut', 'Prasad']
+    },
+    {
+      id: 'griha-shanti', name: 'Griha Shanti Homa', hi: 'गृह शांति होम', cat: 'Griha & Bhoomi', icon: '🏡',
+      price: 8500, mrp: 11000, duration: '2.5 hrs', tags: ['New home', 'Peace'],
+      desc: 'A calming home-shanti homa for a new flat, a rented home or a house that feels unsettled. Includes Ganpati Vandana, Navgrah shanti, Vastu Purush smaran and a family sankalpa for peace and prosperity.',
+      includes: ['Verified pandit', 'Navgrah shanti japa', 'Vastu Purush smaran', 'Full samagri kit', 'Prasad & visarjan'],
+      samagri: ['Navgrah samagri', 'Kalash & coconut', 'Havan samagri 2 kg', 'A2 cow ghee', 'Panchmeva', 'Fresh flowers']
+    },
+    {
+      id: 'vastu-dosh-nivaran', name: 'Vastu Dosh Nivaran', hi: 'वास्तु दोष निवारण', cat: 'Griha & Bhoomi', icon: '🧭',
+      price: 9500, mrp: 12500, duration: '3 hrs', tags: ['Vastu', 'Remedy'],
+      desc: 'A remedial pooja for a home or office with a Vastu dosh — cut corners, wrong entry, south-east kitchen or a stalled sale. A senior Vastu acharya reviews the floor plan, prescribes simple corrections and performs the shanti vidhi.',
+      includes: ['Floor-plan review', 'Vastu dosh shanti vidhi', 'Direction-wise remedy chart', 'Full samagri kit', 'Follow-up call'],
+      samagri: ['Vastu yantra', 'Navgrah samagri', 'Havan samagri 2 kg', 'A2 cow ghee', 'Camphor & dhoop', 'Prasad']
+    },
+    {
+      id: 'kalash-sthapana', name: 'Kalash Sthapana', hi: 'कलश स्थापना', cat: 'Griha & Bhoomi', icon: '🏺',
+      price: 4100, mrp: 5499, duration: '1.5 hrs', tags: ['Griha Pravesh', 'Festival'],
+      desc: 'The formal installation of a kalash before a griha pravesh, festival or long pooja. Includes kalash snan, mango-leaf toran, coconut sthapana and the Sankalpa mantra with your gotra.',
+      includes: ['Brass kalash & coconut', 'Mango-leaf toran', 'Ganpati Vandana', 'Gotra sankalpa', 'Prasad box'],
+      samagri: ['Brass kalash', 'Coconut & mango leaves', 'Roli, haldi & kumkum', 'Akshata', 'Kalava', 'Fresh flowers']
+    },
+    {
+      id: 'plot-poojan', name: 'Plot Poojan', hi: 'प्लॉट पूजन', cat: 'Griha & Bhoomi', icon: '📐',
+      price: 6500, mrp: 8500, duration: '2 hrs', tags: ['Land', 'Construction'],
+      desc: 'A blessing for a newly purchased plot before registration, fencing or construction. Performed at the site with Bhoomi Devi Vandana, Navgrah sthapana and a shubh-muhurat sankalpa; a compact kit works without water or shade.',
+      includes: ['Pandit at the site', 'Bhoomi Devi Vandana', 'Navgrah sthapana', 'Portable pooja kit', 'Muhurat certificate'],
+      samagri: ['Bhoomi Devi yantra', 'Coconut & kalash', 'Navgrah samagri', 'Roli & akshata', 'Dhoop', 'Prasad']
+    },
+    {
+      id: 'shilanyas', name: 'Shilanyas', hi: 'शिलान्यास', cat: 'Griha & Bhoomi', icon: '🧱',
+      price: 7500, mrp: 9500, duration: '2 hrs', tags: ['Construction', 'Foundation'],
+      desc: 'The foundation-stone ritual performed before the first brick is laid. Includes Bhoomi Poojan, Vastu Purush sthapana, silver/gold coin placement and a sankalpa for a safe, timely build.',
+      includes: ['Bhoomi & Vastu Purush pooja', 'Foundation-stone blessing', 'Coin & navdhaanya sthapana', 'Site-friendly kit', 'Prasad'],
+      samagri: ['Vastu Purush yantra', 'Silver coin', 'Navdhaanya', 'Kalash & coconut', 'Havan samagri', 'Prasad']
+    },
+    {
+      id: 'punya-vachan', name: 'Punya Vachan', hi: 'पुण्य वाचन', cat: 'Griha & Bhoomi', icon: '📜',
+      price: 5100, mrp: 6500, duration: '1.5 hrs', tags: ['Housewarming', 'Scripture'],
+      desc: 'A scripture-reading and blessing ritual for a housewarming when a full havan is not possible. A pandit recites the Punya Vachan, Vishnu Sahasranama and Griha Shanti mantras, then blesses each room.',
+      includes: ['Punya Vachan path', 'Vishnu Sahasranama', 'Room-by-room blessing', 'Family sankalpa', 'Prasad box'],
+      samagri: ['Punya Vachan book', 'Tulsi & flowers', 'Roli & akshata', 'Dhoop & diya', 'Prasad', 'Gangajal']
+    },
+    {
+      id: 'dwar-poojan', name: 'Dwar Poojan', hi: 'द्वार पूजन', cat: 'Griha & Bhoomi', icon: '🚪',
+      price: 3100, mrp: 4100, duration: '1 hr', tags: ['Main door', 'Griha Pravesh'],
+      desc: 'A short blessing of the main door before moving in or after a renovation. Includes Ganesh Vandana, toran tying, swastik and kalash at the threshold, and a sankalpa for auspicious entry.',
+      includes: ['Ganesh Vandana', 'Toran & swastik', 'Threshold kalash', 'Gotra sankalpa', 'Prasad box'],
+      samagri: ['Mango-leaf toran', 'Roli & kumkum', 'Akshata', 'Small kalash', 'Dhoop', 'Prasad']
+    },
+    {
+      id: 'ganga-snan', name: 'Ganga Snan Sankalp', hi: 'गंगा स्नान संकल्प', cat: 'Ganga & Tirth', icon: '🌊',
+      price: 2100, mrp: 2799, duration: '45 min', tags: ['Ganga', 'Sankalp'],
+      desc: 'A guided Ganga snan and sankalp at a ghat in Haridwar or Rishikesh, performed on your behalf when you cannot travel. Includes tarpan, Gayatri japa and a short video of the ritual for the family.',
+      includes: ['Ghat arrangement', 'Sankalp in your gotra', 'Tarpan & Gayatri japa', 'Prasad courier', 'Ritual video'],
+      samagri: ['Gangajal', 'Til & akshata', 'Flowers & deep', 'Kalava', 'Prasad', 'Sankalp patra']
+    },
+    {
+      id: 'ganga-pind-daan', name: 'Ganga Pind Daan', hi: 'गंगा पिंड दान', cat: 'Ganga & Tirth', icon: '🕯️',
+      price: 6500, mrp: 8500, duration: '2.5 hrs', tags: ['Ancestors', 'Pind Daan'],
+      desc: 'Pind daan and tarpan on the banks of the Ganga for a parent or ancestor, performed by an experienced tirth pandit. Includes pind preparation, Brahmin bhoj arrangement and a clear explanation of each step for the family.',
+      includes: ['Tirth pandit', 'Pind & tarpan samagri', 'Brahmin bhoj arrangement', 'Gotra sankalpa', 'Ritual video'],
+      samagri: ['Pind samagri', 'Til & barley', 'Gangajal', 'Flowers & deep', 'Dakshina envelope', 'Prasad']
+    },
+    {
+      id: 'tirth-shraddha', name: 'Tirth Shraddha', hi: 'तीर्थ श्राद्ध', cat: 'Ganga & Tirth', icon: '🪔',
+      price: 7500, mrp: 9500, duration: '3 hrs', tags: ['Shraddha', 'Pitru'],
+      desc: 'A full tirth shraddha at Haridwar, Rishikesh or Gaya for an annual pitru karma. A senior pandit performs the vidhi, feeds a Brahmin in the family name and shares a step-by-step video for relatives who could not attend.',
+      includes: ['Senior tirth pandit', 'Complete shraddha samagri', 'Brahmin bhoj', 'Pind & tarpan', 'Video for family'],
+      samagri: ['Shraddha kit', 'Til, barley & kusha', 'Gangajal', 'Flowers & deep', 'Bhoj samagri', 'Dakshina envelope']
+    },
+    {
+      id: 'tirth-poojan', name: 'Tirth Poojan', hi: 'तीर्थ पूजन', cat: 'Ganga & Tirth', icon: '🛕',
+      price: 5500, mrp: 6999, duration: '2 hrs', tags: ['Haridwar', 'Rishikesh'],
+      desc: 'A temple and ghat poojan at Haridwar, Rishikesh or Varanasi offered on your behalf — abhishek, archana and a sankalpa in your family name, with prasad couriered home.',
+      includes: ['Temple archana', 'Abhishek with Gangajal', 'Gotra sankalpa', 'Prasad courier', 'Ritual photos'],
+      samagri: ['Panchamrit', 'Gangajal', 'Fresh flowers', 'Bilva & tulsi', 'Dhoop & deep', 'Prasad']
+    },
+    {
+      id: 'haldi-pooja', name: 'Haldi Pooja', hi: 'हल्दी पूजा', cat: 'Wedding & Sanskar', icon: '🌼',
+      price: 5500, mrp: 6999, duration: '1.5 hrs', tags: ['Wedding', 'Haldi'],
+      desc: 'The haldi ceremony performed with Vedic mantras before a wedding — turmeric paste preparation, Ganesh Vandana, Navgrah shanti and blessings for the bride or groom. A women-led team is available on request.',
+      includes: ['Pandit or pandita', 'Haldi & ubtan samagri', 'Ganesh Vandana', 'Navgrah shanti', 'Prasad box'],
+      samagri: ['Haldi & chandan', 'Rose water', 'Fresh flowers', 'Roli & akshata', 'Dhoop', 'Mithai']
+    },
+    {
+      id: 'godh-bharai', name: 'Godh Bharai', hi: 'गोद भराई', cat: 'Wedding & Sanskar', icon: '🤰',
+      price: 6500, mrp: 8500, duration: '2 hrs', tags: ['Baby shower', 'Sanskar'],
+      desc: 'A godh bharai (baby shower) blessing in the seventh month, with Ganesh Vandana, Santaan Gopal mantra, suhag samagri and blessings for a safe delivery. Available in North Indian and South Indian styles.',
+      includes: ['Pandit or pandita', 'Santaan Gopal japa', 'Suhag & shringar samagri', 'Family blessing vidhi', 'Prasad box'],
+      samagri: ['Santaan Gopal yantra', 'Coconut & kalash', 'Fruits & sweets', 'Roli & akshata', 'Fresh flowers', 'Prasad']
+    },
+    {
+      id: 'mandap-poojan', name: 'Mandap Poojan', hi: 'मंडप पूजन', cat: 'Wedding & Sanskar', icon: '⛺',
+      price: 4500, mrp: 5999, duration: '1 hr', tags: ['Wedding', 'Mandap'],
+      desc: 'The mandap sthapana and poojan performed before the wedding rituals begin. Includes Bhoomi Poojan, Ganpati sthapana, mandap kalash and a sankalpa to remove obstacles from the ceremony.',
+      includes: ['Mandap sthapana', 'Ganpati pooja', 'Bhoomi Poojan', 'Kalash & toran', 'Prasad box'],
+      samagri: ['Mandap kalash', 'Mango leaves & toran', 'Coconut', 'Roli & akshata', 'Dhoop', 'Prasad']
     }
   ];
 
@@ -1826,7 +1924,19 @@
     { id: 'p9', name: 'Pt. Mahesh Purohit', title: 'Marwari Pandit', area: 'Sector 14', exp: 19, rating: 4.8, reviews: 267, langs: ['Marwari', 'Hindi', 'English'], tradition: 'Marwari', spec: ['Shop Opening', 'Lakshmi Kubera', 'Vivah'], price: 0, verified: true, color: '#8a5a1f', bio: 'Family priest to several old Gurgaon business families.' },
     { id: 'p10', name: 'Dr. Raghav Acharya', title: 'Jyotish & Vastu', area: 'Golf Course Ext.', exp: 27, rating: 5.0, reviews: 388, langs: ['Hindi', 'English', 'Sanskrit'], tradition: 'North Indian', spec: ['Vastu Shanti', 'Sade Sati', 'Kundli'], price: 0, verified: true, color: '#2f5d50', bio: 'PhD in Vedic astrology; consults on vastu for premium high-rise projects.' },
     { id: 'p11', name: 'Pt. Shivam Dwivedi', title: 'Young Acharya', area: 'Sector 56', exp: 8, rating: 4.7, reviews: 121, langs: ['Hindi', 'English'], tradition: 'North Indian', spec: ['Express Pooja', 'Ganesh Pooja', 'Vehicle Pooja'], price: 0, verified: true, color: '#4a4a8a', bio: 'Quick, camera-friendly rituals for corporate desks and new vehicles.' },
-    { id: 'p12', name: 'Pt. Anil Trivedi', title: 'Vedic Pandit', area: 'Nirvana Country', exp: 14, rating: 4.8, reviews: 204, langs: ['Hindi', 'English', 'Gujarati'], tradition: 'Gujarati / Marwari', spec: ['Griha Pravesh', 'Bhoomi Poojan', 'Satyanarayan'], price: 0, verified: true, color: '#6b3b8a', bio: 'Handles society-compliant griha pravesh and bhoomi poojan with full documentation.' }
+    { id: 'p12', name: 'Pt. Anil Trivedi', title: 'Vedic Pandit', area: 'Nirvana Country', exp: 14, rating: 4.8, reviews: 204, langs: ['Hindi', 'English', 'Gujarati'], tradition: 'Gujarati / Marwari', spec: ['Griha Pravesh', 'Bhoomi Poojan', 'Satyanarayan'], price: 0, verified: true, color: '#6b3b8a', bio: 'Handles society-compliant griha pravesh and bhoomi poojan with full documentation.' },
+    { id: 'p13', name: 'Pt. Harish Chandra Joshi', title: 'Karmkand Acharya', area: 'Sector 45', exp: 21, rating: 4.9, reviews: 334, langs: ['Hindi', 'English', 'Sanskrit'], tradition: 'North Indian', spec: ['Satyanarayan', 'Griha Pravesh', 'Pitru Tarpan'], price: 0, verified: true, color: '#8a2c3b', bio: 'Trained in Haridwar; known for precise sankalpa and pitru karma vidhi.' },
+    { id: 'p14', name: 'Pandita Shalini Deshpande', title: 'Vedic Scholar', area: 'Sector 46', exp: 10, rating: 4.9, reviews: 167, langs: ['Marathi', 'Hindi', 'English'], tradition: 'Maharashtrian', spec: ['Ganesh Pooja', 'Satyanarayan', 'Namkaran'], price: 0, verified: true, color: '#7a2a5e', bio: 'Pune-trained pandita who performs household poojas and sanskars in Marathi and Hindi.' },
+    { id: 'p15', name: 'Pt. Ravi Shankar Bhat', title: 'Vedic Priest', area: 'Sector 62', exp: 17, rating: 4.8, reviews: 242, langs: ['Kannada', 'Telugu', 'Hindi', 'English'], tradition: 'South Indian', spec: ['Griha Pravesh', 'Satyanarayan', 'Ayushya'], price: 0, verified: true, color: '#6b3b8a', bio: 'Madhwa tradition priest; conducts Kannada and Telugu griha pravesh and birthday homas.' },
+    { id: 'p16', name: 'Acharya Naveen Sharma', title: 'Vastu & Jyotish', area: 'Manesar', exp: 13, rating: 4.8, reviews: 189, langs: ['Hindi', 'English'], tradition: 'North Indian', spec: ['Vastu', 'Navgrah Shanti', 'Bhoomi Poojan'], price: 0, verified: true, color: '#2f5d50', bio: 'Advises plotted developments and villas on vastu, muhurat and bhoomi poojan.' },
+    { id: 'p17', name: 'Pt. Debashish Banerjee', title: 'Bangla Pandit', area: 'Sector 50', exp: 15, rating: 4.9, reviews: 208, langs: ['Bengali', 'Hindi', 'English'], tradition: 'Bengali', spec: ['Durga Pooja', 'Lakshmi Pooja', 'Annaprashan'], price: 0, verified: true, color: '#1f6b6b', bio: 'Kolkata-trained priest for Durga Puja, Lakshmi Puja and Bengali household sanskars.' },
+    { id: 'p18', name: 'Pandita Kavita Mishra', title: 'Sanskar Specialist', area: 'Old Gurgaon', exp: 9, rating: 4.9, reviews: 154, langs: ['Hindi', 'English'], tradition: 'North Indian', spec: ['Namkaran', 'Mundan', 'Annaprashan'], price: 0, verified: true, color: '#7a2a5e', bio: 'Gentle, child-friendly naming, mundan and annaprashan ceremonies for young families.' },
+    { id: 'p19', name: 'Pt. Jaspreet Singh', title: 'Vedic Pandit', area: 'Dwarka Expressway', exp: 12, rating: 4.7, reviews: 176, langs: ['Punjabi', 'Hindi', 'English'], tradition: 'North Indian', spec: ['Satyanarayan', 'Griha Pravesh', 'Vehicle Pooja'], price: 0, verified: true, color: '#4a4a8a', bio: 'Punjabi-speaking pandit for new homes, vehicles and family kathas in the NCR belt.' },
+    { id: 'p20', name: 'Acharya Mohan Lal Vyas', title: 'Marwari Pandit', area: 'Sector 23', exp: 24, rating: 4.9, reviews: 463, langs: ['Marwari', 'Hindi'], tradition: 'Marwari', spec: ['Lakshmi Kubera', 'Shop Opening', 'Vivah'], price: 0, verified: true, color: '#8a5a1f', bio: 'Senior family priest for Marwari business families, weddings and Lakshmi Kubera pooja.' },
+    { id: 'p21', name: 'Pt. Sathish Kumar', title: 'Vedic Priest', area: 'Sector 84', exp: 14, rating: 4.8, reviews: 198, langs: ['Tamil', 'Telugu', 'English'], tradition: 'South Indian', spec: ['Rudrabhishek', 'Navgrah', 'Satyanarayan'], price: 0, verified: true, color: '#6b3b8a', bio: 'Smarta tradition priest for Rudrabhishek, navgrah shanti and Tamil household poojas.' },
+    { id: 'p22', name: 'Pt. Alok Nath Tiwari', title: 'Mantra Acharya', area: 'MG Road', exp: 16, rating: 4.9, reviews: 287, langs: ['Hindi', 'English', 'Sanskrit'], tradition: 'North Indian', spec: ['Mahamrityunjay', 'Kaal Sarp', 'Sade Sati'], price: 0, verified: true, color: '#8a2c3b', bio: 'Specialises in japa-based remedies, Mahamrityunjay and Kaal Sarp shanti with clear guidance.' },
+    { id: 'p23', name: 'Pandita Rupali Kulkarni', title: 'Vastu Consultant', area: 'Sector 57', exp: 11, rating: 4.8, reviews: 143, langs: ['Marathi', 'Hindi', 'English'], tradition: 'Maharashtrian', spec: ['Vastu Shanti', 'Ganesh Pooja', 'Namkaran'], price: 0, verified: true, color: '#7a2a5e', bio: 'Combines Marathi ritual practice with practical vastu corrections for apartments.' },
+    { id: 'p24', name: 'Pt. Bhaskar Chattopadhyay', title: 'Tantra & Shastra', area: 'Sector 92', exp: 19, rating: 4.8, reviews: 219, langs: ['Bengali', 'Hindi', 'English'], tradition: 'Bengali', spec: ['Durga Saptashati', 'Lakshmi Pooja', 'Chhath'], price: 0, verified: true, color: '#1f6b6b', bio: 'Bengali shastra-trained pandit for Durga Saptashati, Chhath and large family anushthans.' }
   ];
 
   var PRODUCTS = [
@@ -1845,7 +1955,21 @@
     { id: 's13', name: 'Brass Pooja Thali Set', cat: 'Brass & Pooja Ware', price: 1199, mrp: 1499, icon: '🪔', desc: 'Thali, diya, kalash, bell, incense holder and kumkum box in pure brass.' },
     { id: 's14', name: 'Panchamrit & Bhog Set', cat: 'Brass & Pooja Ware', price: 499, mrp: 649, icon: '🥛', desc: 'Milk, curd, honey, ghee and sugar sachets with a brass spoon and bowl.' },
     { id: 's15', name: 'Prasad Box — 250 g', cat: 'Prasad & Bhog', price: 299, mrp: 399, icon: '🍬', desc: 'Panjiri, mishri and dry-fruit prasad prepared in a clean satvik kitchen.' },
-    { id: 's16', name: 'Punya-Flow Visarjan Add-on', cat: 'Prasad & Bhog', price: 299, mrp: 399, icon: '♻️', desc: 'Doorstep pickup of flowers, havan ash and biodegradable samagri for composting.' }
+    { id: 's16', name: 'Punya-Flow Visarjan Add-on', cat: 'Prasad & Bhog', price: 299, mrp: 399, icon: '♻️', desc: 'Doorstep pickup of flowers, havan ash and biodegradable samagri for composting.' },
+    { id: 's17', name: 'Vivah Sanskar Kit', cat: 'Samagri Kits', price: 4999, mrp: 6499, icon: '💍', desc: 'Wedding-day kit with kalash, coconut, toran, haldi-ubtan, 21 cloth pieces, yajnopavit and a ritual checklist.' },
+    { id: 's18', name: 'Navratri Ghatasthapana Kit', cat: 'Samagri Kits', price: 1299, mrp: 1699, icon: '🌾', desc: 'Clay pot, barley seeds, soil, mango leaves, coconut, red chunri and a nine-day japa card.' },
+    { id: 's19', name: 'Havan Samagri — 5 kg', cat: 'Havan & Ghee', price: 999, mrp: 1299, icon: '🪵', desc: 'Value pack of the same low-smoke 24-herb blend, sealed in food-grade pouches for large homas.' },
+    { id: 's20', name: 'Ghee Diya & Wicks Pack', cat: 'Havan & Ghee', price: 399, mrp: 499, icon: '🕯️', desc: '30 ready ghee diyas, 100 cotton wicks and a brass holder — no pouring or mess during aarti.' },
+    { id: 's21', name: 'Marigold Garland Pair', cat: 'Flowers & Garlands', price: 499, mrp: 649, icon: '🌼', desc: 'Two fresh 4-foot marigold garlands, hand-strung the same morning for doors and the deity.' },
+    { id: 's22', name: 'Mogra Gajra — Set of 10', cat: 'Flowers & Garlands', price: 349, mrp: 449, icon: '🤍', desc: 'Fragrant jasmine gajras for the pandit, aarti thali and family members, delivered chilled.' },
+    { id: 's23', name: 'Pooja Flower Combo', cat: 'Flowers & Garlands', price: 799, mrp: 999, icon: '💐', desc: 'Rose, marigold, mogra, tulsi and bilva leaves in one box — enough for a two-hour pooja.' },
+    { id: 's24', name: 'Emerald (Panna)', cat: 'Gemstones & Rudraksha', price: 6499, mrp: 8499, icon: '🟢', desc: 'Certified 3 ratti natural emerald for Mercury — recommended after a chart review, silver ring included.' },
+    { id: 's25', name: 'Pearl (Moti)', cat: 'Gemstones & Rudraksha', price: 1999, mrp: 2599, icon: '⚪', desc: 'South Sea pearl, 5 ratti, for Moon remedies and calm; lab certificate and silver setting included.' },
+    { id: 's26', name: 'Brass Kalash with Coconut Stand', cat: 'Brass & Pooja Ware', price: 1499, mrp: 1899, icon: '🏺', desc: 'Heavy-gauge brass kalash with a fitted coconut stand and mango-leaf slot for sthapana.' },
+    { id: 's27', name: 'Brass Aarti Thali — 5 Diya', cat: 'Brass & Pooja Ware', price: 899, mrp: 1199, icon: '🪔', desc: 'Five-wick aarti thali with a bell and incense holder, polished and ready for daily use.' },
+    { id: 's28', name: 'Copper Water Kalash', cat: 'Brass & Pooja Ware', price: 1099, mrp: 1399, icon: '🥇', desc: 'Pure copper kalash for gangajal and daily drinking water, with a snug lid and traditional etchings.' },
+    { id: 's29', name: 'Panjiri Prasad — 500 g', cat: 'Prasad & Bhog', price: 399, mrp: 499, icon: '🥮', desc: 'Satvik panjiri made with atta, ghee, mishri and dry fruits in a clean kitchen; sealed for freshness.' },
+    { id: 's30', name: 'Dry Fruit Prasad Box', cat: 'Prasad & Bhog', price: 699, mrp: 899, icon: '🥜', desc: 'Almond, cashew, raisin and mishri prasad box for festivals, Satyanarayan katha and office poojas.' }
   ];
 
   var EXTRAS = [
@@ -1867,7 +1991,11 @@
     { name: 'Priya & Arjun', area: 'Sohna Road', text: 'We moved into our first flat with a 4-hour Griha Pravesh. The smokeless havan meant no fire alarm drama, and the Punya-Flow pickup cleared everything the same evening.', rating: 5, pooja: 'Griha Pravesh' },
     { name: 'Vikram Sethi', area: 'Sushant Lok', text: 'I am Manglik and was nervous about matching. The Ashtakoot report was detailed, and the pandit explained the cancellation rules instead of scaring us.', rating: 5, pooja: 'Kundli Matching' },
     { name: 'Neha Kulkarni', area: 'New Gurgaon', text: 'A Marathi pandit for our Ganesh sthapana, with the aarti in Marathi. My mother was genuinely impressed — that says everything.', rating: 5, pooja: 'Ganesh Pooja' },
-    { name: 'Sanjay Gupta', area: 'Udyog Vihar', text: 'Office opening at 8 AM, two pandits, invoice before the event. Exactly what a corporate admin needs. We have moved our annual poojas here.', rating: 5, pooja: 'Corporate Office Poojan' }
+    { name: 'Sanjay Gupta', area: 'Udyog Vihar', text: 'Office opening at 8 AM, two pandits, invoice before the event. Exactly what a corporate admin needs. We have moved our annual poojas here.', rating: 5, pooja: 'Corporate Office Poojan' },
+    { name: 'Deepa Nair', area: 'Sector 62', text: 'We booked the Ayushya Homa for my son’s first birthday. The pandit explained every mantra in English and Tamil, and the tabletop havan was perfect for our apartment.', rating: 5, pooja: 'Ayushya Homa (Birthday)' },
+    { name: 'Manish Agarwal', area: 'Palam Vihar', text: 'Our showroom opening was at 9:15 AM and the team reached by 8:40 with the full kit. Clean vidhi, proper invoice, and the Punya-Flow pickup saved us from a pile of flowers.', rating: 5, pooja: 'Shop / Showroom Opening' },
+    { name: 'Ritu & Sameer', area: 'Dwarka Expressway', text: 'The godh bharai was handled with so much care — a woman pandit, Marwari and Hindi both, and the suhag samagri was fresh. My mother still talks about the aarti.', rating: 5, pooja: 'Godh Bharai' },
+    { name: 'Sneha & Amit', area: 'Sector 56', text: 'The Griha Pravesh vidhi itself was excellent and the samagri was complete. The pandit arrived about 20 minutes late because of a gate issue, but the team kept us informed and adjusted the muhurat.', rating: 4, pooja: 'Griha Pravesh' }
   ];
 
   var FAQS = [
@@ -1878,7 +2006,11 @@
     { q: 'Do you offer regional rituals?', a: 'We have pandits for North Indian, South Indian (Tamil/Telugu/Kannada), Bengali, Maharashtrian, Gujarati and Marwari traditions. Filter by language and tradition while booking.' },
     { q: 'How does the muhurat work?', a: 'Our panchang engine computes Tithi, Nakshatra, Rahu Kaal and Abhijit Muhurat for your city and chosen date. You can pick a suggested shubh window or ask the pandit to confirm a custom time.' },
     { q: 'What is the cancellation policy?', a: 'Free cancellation up to 24 hours before the slot. Within 24 hours, samagri and travel costs are retained. Rescheduling is free once, subject to pandit availability.' },
-    { q: 'Do you provide a GST invoice?', a: 'Yes. Add your GSTIN at checkout for corporate bookings, and the invoice is emailed before the ritual begins.' }
+    { q: 'Do you provide a GST invoice?', a: 'Yes. Add your GSTIN at checkout for corporate bookings, and the invoice is emailed before the ritual begins.' },
+    { q: 'Which areas do you serve?', a: 'Our home-visit pandits cover all of Gurugram — DLF phases, Golf Course Road, Sohna Road, New Gurgaon, Dwarka Expressway, Manesar, Palam Vihar and Old Gurgaon — plus Delhi NCR on request. Ganga and tirth rituals are performed at Haridwar, Rishikesh, Varanasi and Gaya on your behalf.' },
+    { q: 'Can I request a woman pandit?', a: 'Yes. Several panditas on our panel perform griha pravesh, Satyanarayan, namkaran, godh bharai and haldi ceremonies. Mention it in the booking notes or choose a profile from the pandits page, and we will confirm availability for your date.' },
+    { q: 'I already have some samagri. Can I use it?', a: 'Absolutely. Tell us at booking and we will remove the overlapping items from the kit and adjust the price. If you are unsure what you have, send a photo on WhatsApp and the pandit will confirm what is still needed before the muhurat.' },
+    { q: 'How early should I book, and is same-day possible?', a: 'For weddings, griha pravesh and large homas, book 7–15 days ahead so we can hold the muhurat and samagri. Satyanarayan, Ganesh and express poojas are often available same-day before 2 PM, subject to pandit travel time in your sector.' }
   ];
 
   var FEATURES = [
@@ -1949,7 +2081,7 @@
   ];
 
   var HOW_IT_WORKS = [
-    { step: '01', title: 'Choose your ritual', text: 'Browse 30+ poojas with transparent all-inclusive pricing, or let the panchang suggest a muhurat.' },
+    { step: '01', title: 'Choose your ritual', text: 'Browse 100 all-inclusive poojas with transparent pricing, or let the panchang suggest a muhurat.' },
     { step: '02', title: 'Share your details', text: 'Pick a date, add your gotra (or use our finder), society gate details and language preference.' },
     { step: '03', title: 'We arrive prepared', text: 'Samagri and fresh flowers reach you before the ritual. The pandit checks in 15 minutes early with a gate pass.' },
     { step: '04', title: 'Bless, rate, recycle', text: 'Live tracking, digital dakshina, rating prompt and optional Punya-Flow waste pickup.' }
