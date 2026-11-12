@@ -841,6 +841,7 @@
       '<p class="tiny muted">' + esc(b.place || b.city || '') + '</p>' +
       '</div></div>' +
       '<div class="bookings-item__actions">' +
+      '<a class="btn btn--whatsapp btn--sm" target="_blank" rel="noopener" href="' + esc(waBookingLink(b)) + '">' + icon('wa') + ' WhatsApp</a>' +
       '<button class="btn btn--ghost btn--sm" type="button" data-ics="' + esc(b.id) + '">Add to calendar</button>' +
       '<button class="btn btn--ghost btn--sm" type="button" data-print="' + esc(b.id) + '">Receipt</button>' +
       (canCancel ? '<button class="btn btn--ghost btn--sm" type="button" data-cancel="' + esc(b.id) + '" data-otp="' + esc(b.otp || '') + '">Cancel</button>' : '') +
@@ -862,6 +863,55 @@
     return store.get('vp_bookings', []).filter(function (b) {
       return String(b.id) === String(id);
     })[0] || null;
+  }
+
+  /* ------------------------------------------------ booking → WhatsApp
+     One message with everything the pandit needs: who booked, which pooja,
+     when, where and how much. Used by the booking flow the moment a pooja
+     is confirmed and by the saved-bookings list, so every entry can be
+     re-sent to the owner's WhatsApp. */
+  function waBookingText(booking, paymentNote) {
+    var b = booking || {};
+    var c = b.customer || {};
+    var lines = [
+      '🙏 New pooja booking — ' + (b.id || ''),
+      '',
+      '🪔 Pooja: ' + (b.poojaName || 'Vedic pooja'),
+      '📅 Date: ' + (b.dateLabel || b.date || 'to be confirmed'),
+      '⏰ Muhurat: ' + (b.time || 'to be confirmed')
+    ];
+    var place = b.place || b.city || '';
+    if (place) lines.push('📍 Place: ' + place);
+    if (c.name) lines.push('👤 Name: ' + c.name);
+    if (c.phone) lines.push('📱 Phone: ' + c.phone);
+    var address = c.address || '';
+    var society = (c.society && address.indexOf(c.society) < 0) ? ', ' + c.society : '';
+    if (address || society) lines.push('🏠 Address: ' + address + society + (c.pin ? ' — ' + c.pin : ''));
+    if (c.gate) lines.push('🚪 Gate / access: ' + c.gate);
+    if (c.gotra) lines.push('🕉️ Gotra: ' + c.gotra);
+    if (c.language) lines.push('🗣️ Language: ' + c.language);
+    lines.push('🧑‍🏫 Pandit: ' + (b.panditName || 'Best match — assign for me'));
+    if (b.extrasList && b.extrasList.length) lines.push('➕ Add-ons: ' + b.extrasList.join(', '));
+    lines.push('');
+    lines.push('💰 Total: ' + INR(Number(b.total) || 0) + ' (incl. GST ' + INR(Number(b.gst) || 0) + ')');
+    if (paymentNote) {
+      lines.push(paymentNote);
+    } else {
+      var balance = Number(b.balance) || 0;
+      lines.push('💳 Payment: ' + (b.payment || 'UPI') + ' · ' + INR(Number(b.payNow) || Number(b.total) || 0) +
+        (balance > 0 ? ' now, ' + INR(balance) + ' after the pooja' : ' due'));
+    }
+    if (b.paymentStatus && b.paymentStatus !== 'Pending') lines.push('🧾 Status: ' + b.paymentStatus);
+    if (c.notes) lines.push('📝 Notes: ' + c.notes);
+    lines.push('');
+    lines.push('🔖 Booking ' + (b.id || '') + ' · Gate OTP ' + (b.otp || '—'));
+    return lines.join('\n');
+  }
+
+  function waBookingLink(booking, paymentNote) {
+    var text = waBookingText(booking, paymentNote);
+    if (S && typeof S.waLink === 'function') return S.waLink(text);
+    return 'https://wa.me/' + OWNER_PHONE + '?text=' + encodeURIComponent(text);
   }
 
   /* ------------------------------------------------- calendar + receipt */
@@ -1185,6 +1235,119 @@
     }
   }
 
+  /* ---------------------------------------------------------------- motion
+     One calm entrance layer for the whole site. Blocks are claimed with
+     .motion only after this runs, so a blocked script never hides content.
+     Each entrance uses the Web Animations API with no fill mode; when it
+     finishes the component's own hover transform takes over again. */
+  function initMotion() {
+    if (!document.body || !('IntersectionObserver' in window) || !('animate' in Element.prototype)) return;
+    var reduce = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { reduce = false; }
+    if (reduce) return;
+
+    var TARGETS = [
+      '.sec-head', '.page-head', '.toolbar',
+      '.card', '.panel', '.feature', '.step', '.svc-card', '.svc-step',
+      '.paath-card', '.pandit', '.review-card', '.product', '.kit-step',
+      '.city-card', '.rashi-card', '.trustbar > div', '.mini-card', '.band',
+      '.cta-card', '.lead-shell', '.form-section', '.summary-card', '.chart-card',
+      '.num-panel', '.daily-card', '.join-band', '.pj-card', '.pj-section-head',
+      '.pj-step-wrap', '.book-step', '.acct-card', '.contact-line', '.faq__item',
+      '.review-side', '.review-write', '.review-summary', '.match-hero',
+      '.pan-hero__main', '.pan-hero__meta', '.cal-day', '.fest-item', '.foot-col'
+    ].join(',');
+    var BARS = '.koot__bar i,.review-bar i b,.daily-progress span';
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        var el = en.target;
+        var delay = Number(el.getAttribute('data-motion-delay')) || 0;
+        // A full-width page head only fades: sliding it would briefly expose
+        // the page background above the fold.
+        var head = el.classList.contains('page-head');
+        var frames = head
+          ? [{ opacity: 0 }, { opacity: 1 }]
+          : [{ opacity: 0, transform: 'translate3d(0,20px,0)' }, { opacity: 1, transform: 'translate3d(0,0,0)' }];
+        el.classList.remove('motion');
+        try {
+          el.animate(frames, { duration: 620, delay: delay, easing: 'cubic-bezier(.22,.68,.24,1)', fill: 'backwards' });
+        } catch (e) { /* older browsers just show the block */ }
+      });
+    }, { threshold: .08, rootMargin: '0px 0px -6% 0px' });
+
+    var barIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        barIo.unobserve(en.target);
+        var el = en.target;
+        el.classList.add('motion-bar');
+        try {
+          el.animate(
+            [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+            { duration: 820, easing: 'cubic-bezier(.22,.68,.24,1)' }
+          );
+        } catch (e) { /* ignore */ }
+      });
+    }, { threshold: .3 });
+
+    var parentCount = 'WeakMap' in window ? new WeakMap() : null;
+
+    function claim(el) {
+      if (!el || el.nodeType !== 1) return false;
+      if (el.getAttribute('data-motion') === '1') return false;
+      if (el.classList.contains('reveal') || el.classList.contains('motion')) return false;
+      if (el.closest && el.closest('.no-motion,.xp-sheet,.modal,.drawer,#xpDock')) return false;
+      // These elements own their transform; leave them to the experience layer.
+      if (el.matches && el.matches('.xp-tilt,.xp-float,.xp-parallax,.hero__mandala,.hero__glow,.panch-card')) return false;
+      el.setAttribute('data-motion', '1');
+      el.classList.add('motion');
+      return true;
+    }
+
+    function claimBars(root) {
+      $$(BARS, root).forEach(function (el) {
+        if (el.getAttribute('data-motion-bar') === '1') return;
+        el.setAttribute('data-motion-bar', '1');
+        barIo.observe(el);
+      });
+    }
+
+    function scan(root) {
+      var scope = (root && root.nodeType === 1) ? root : document;
+      var list = $$(TARGETS, scope);
+      if (scope.matches && scope.matches(TARGETS)) list.unshift(scope);
+      list.forEach(function (el) {
+        if (!claim(el)) return;
+        var parent = el.parentNode;
+        var n = 0;
+        if (parent && parentCount) {
+          n = parentCount.get(parent) || 0;
+          parentCount.set(parent, n + 1);
+        }
+        el.setAttribute('data-motion-delay', String(Math.min(n, 7) * 55));
+        io.observe(el);
+      });
+      claimBars(scope);
+    }
+
+    scan(document);
+
+    /* Page scripts render most cards after this init — pick those up too. */
+    if ('MutationObserver' in window) {
+      var mo = new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+          Array.prototype.forEach.call(m.addedNodes, function (n) {
+            if (n.nodeType === 1) scan(n);
+          });
+        });
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   function initCounters() {
     $$('[data-count]').forEach(function (el) {
       var target = parseFloat(el.getAttribute('data-count'));
@@ -1281,6 +1444,7 @@
     initQuickEnquiry();
     initNav();
     initReveal();
+    initMotion();
     initCounters();
     initNewsletter();
     initPWA();
@@ -1317,6 +1481,7 @@
     Cart: Cart, bookingsModal: bookingsModal, syncOwner: syncOwner,
     rememberBooking: rememberBooking, findSavedBooking: findSavedBooking,
     addToCalendar: addToCalendar, printBooking: printBooking,
+    waBookingText: waBookingText, waBookingLink: waBookingLink,
     owner: { name: OWNER_NAME, phone: OWNER_PHONE, phoneDisplay: OWNER_PHONE_DISPLAY, email: OWNER_EMAIL, upi: OWNER_UPI },
     teller: topbarText
   };

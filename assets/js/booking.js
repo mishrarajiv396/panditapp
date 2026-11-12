@@ -109,7 +109,13 @@
     }
   }
 
+  /* The WhatsApp message the buyer sends after paying: the full booking
+     plus the UPI reference, so the owner verifies in one glance. */
   function receiptLink(booking) {
+    var note = '✅ Paid via UPI: ' + A.INR(booking.payNow) +
+      (booking.paymentRef ? '\n🔖 UTR / reference: ' + booking.paymentRef : '') +
+      '\nPlease verify my payment and confirm the booking.';
+    if (typeof A.waBookingLink === 'function') return A.waBookingLink(booking, note);
     var text = 'Booking ' + booking.id + ' — ' + booking.poojaName + '\n' +
       booking.dateLabel + ' · ' + booking.time + '\n' +
       'Paid via UPI: ' + A.INR(booking.payNow) +
@@ -119,6 +125,23 @@
       return window.SITE_SETTINGS.waLink(text);
     }
     return 'https://wa.me/' + OWNER_PHONE + '?text=' + encodeURIComponent(text);
+  }
+
+  /* Every confirmed pooja booking goes to the owner's WhatsApp with every
+     detail pre-filled — the buyer just presses Send. Same link powers the
+     buttons in the payment sheet and the success dialog, so a blocked
+     pop-up never stops the handoff. */
+  function openBookingWhatsApp(booking) {
+    var url = (typeof A.waBookingLink === 'function')
+      ? A.waBookingLink(booking)
+      : receiptLink(booking);
+    var win = window.open(url, '_blank');
+    if (win) {
+      A.toast('WhatsApp opened — press Send to deliver your booking');
+    } else {
+      A.toast('Allow pop-ups, or use the WhatsApp button below', 'error');
+    }
+    return win;
   }
 
   function poojaById(id) { return D.POOJAS.filter(function (p) { return p.id === id; })[0]; }
@@ -530,6 +553,11 @@
 
     saveBooking(booking);
 
+    // Straight to the owner's WhatsApp: opened synchronously inside the
+    // click handler so popup blockers allow it. The buyer only has to
+    // press Send; the payment sheet opens behind this tab.
+    openBookingWhatsApp(booking);
+
     setTimeout(function () {
       btn.disabled = false;
       btn.style.opacity = '';
@@ -567,6 +595,7 @@
       '<div class="pay-sheet__copy"><code id="payUpiId">' + A.esc(OWNER_UPI) + '</code>' +
       '<button class="btn btn--ghost btn--sm" type="button" id="payCopy">Copy</button></div></div>' +
       '<a class="btn btn--primary btn--wide mt-2" id="payOpen" href="' + A.esc(link) + '">Open UPI app · ' + A.INR(booking.payNow) + '</a>' +
+      '<a class="btn btn--whatsapp btn--wide" id="payWa" target="_blank" rel="noopener" href="' + A.esc((typeof A.waBookingLink === 'function') ? A.waBookingLink(booking) : receiptLink(booking)) + '">' + A.icon('wa') + ' Send booking on WhatsApp</a>' +
       '<div class="field mt-2"><label for="payRef">UTR / UPI reference <span class="opt">optional, helps us verify faster</span></label>' +
       '<input id="payRef" inputmode="numeric" maxlength="30" placeholder="e.g. 402183746592"></div>' +
       '<div class="pay-sheet__actions">' +
@@ -622,11 +651,14 @@
       payLine +
       '<div class="summary-line total"><span>Total</span><b>' + A.INR(booking.total) + '</b></div></div>' +
       '<p class="small muted mt-3">We’ve saved the confirmation for <b>' + A.esc(booking.customer.phone) + '</b>. Samagri arrives before the muhurat; the pandit’s gate pass is shared one hour prior.</p>' +
+      '<div class="note-strip mt-2">' + A.icon('wa') + '<span><b>Send it on WhatsApp.</b> Your full booking details are ready as a message to ' +
+        A.esc(OWNER_UPI_NAME) + ' — press Send in WhatsApp so the pooja is confirmed instantly.</span></div>' +
       (pending
         ? '<p class="tiny muted mt-2">Your slot is held for 60 minutes. Pay by UPI to confirm it.</p>'
         : '<p class="tiny muted mt-2">We’ll verify the UPI reference and confirm on WhatsApp within 30 minutes.</p>') +
       '<div class="success-actions">' +
       (pending ? '<button class="btn btn--gold" type="button" id="successPay">Pay ' + A.INR(booking.payNow) + ' now</button>' : '') +
+      '<a class="btn btn--whatsapp" id="successWa" target="_blank" rel="noopener" href="' + A.esc((typeof A.waBookingLink === 'function') ? A.waBookingLink(booking) : receiptLink(booking)) + '">' + A.icon('wa') + ' Send on WhatsApp</a>' +
       '<button class="btn btn--primary" type="button" id="viewBookings">View my bookings</button>' +
       '<button class="btn btn--ghost" type="button" id="successIcs">Add to calendar</button>' +
       '<button class="btn btn--ghost" type="button" id="successReceipt">Receipt</button>' +

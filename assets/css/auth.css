@@ -2437,3 +2437,34 @@
 @media (max-width: 480px) {
   .auth-tab { min-width: 96px; padding-inline: 14px; }
 }
+
+/* ---------------------------------------------------------- entrance motion */
+/* The card already rises; these pieces follow it in reading order. Fill mode
+   is `backwards`, never `both`, so hover transforms still work afterwards. */
+@media (prefers-reduced-motion: no-preference) {
+  .auth-panel__head,
+  .auth-form > *,
+  .auth-trust,
+  .auth-story__top > *,
+  .auth-story__bottom {
+    animation: authRise .6s cubic-bezier(.16, .84, .28, 1) backwards;
+  }
+  .auth-panel__head { animation-delay: .1s; }
+  .auth-form > *:nth-child(1) { animation-delay: .16s; }
+  .auth-form > *:nth-child(2) { animation-delay: .21s; }
+  .auth-form > *:nth-child(3) { animation-delay: .26s; }
+  .auth-form > *:nth-child(4) { animation-delay: .31s; }
+  .auth-form > *:nth-child(5) { animation-delay: .36s; }
+  .auth-form > *:nth-child(n+6) { animation-delay: .41s; }
+  .auth-trust { animation-delay: .38s; }
+  .auth-story__top > *:nth-child(2) { animation-delay: .08s; }
+  .auth-story__top > *:nth-child(3) { animation-delay: .14s; }
+  .auth-story__top > *:nth-child(4) { animation-delay: .2s; }
+  .auth-story__bottom { animation-delay: .24s; }
+
+  .auth-field__wrap { transition: border-color .2s, box-shadow .2s, transform .2s; }
+  .auth-field__wrap:focus-within { transform: translateY(-1px); }
+  .auth-submit { transition: transform .2s cubic-bezier(.16, .84, .28, 1), box-shadow .2s, background .2s; }
+  .auth-submit:hover { transform: translateY(-2px); }
+  .auth-submit:active { transform: translateY(0) scale(.99); }
+}

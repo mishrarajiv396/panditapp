@@ -1827,3 +1827,100 @@ html.gs-open,body.gs-open{overflow:hidden;overscroll-behavior:contain}
 @media print{
   .head-search,.gs{display:none !important}
 }
+
+/* ==========================================================================
+   Motion layer — calm entrances, staggered grids, growing bars, hover life
+   app.js claims blocks with .motion just before they animate, so nothing is
+   hidden when scripts are blocked. Each entrance uses the Web Animations API
+   with no fill mode; once it finishes the element's own hover transition owns
+   the transform again. Everything is disabled for prefers-reduced-motion.
+   ========================================================================== */
+
+@keyframes mUp{from{opacity:0;transform:translate3d(0,20px,0)}to{opacity:1;transform:none}}
+@keyframes mFade{from{opacity:0}to{opacity:1}}
+@keyframes mZoom{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes mLeft{from{opacity:0;transform:translate3d(-24px,0,0)}to{opacity:1;transform:none}}
+@keyframes mRight{from{opacity:0;transform:translate3d(24px,0,0)}to{opacity:1;transform:none}}
+@keyframes mFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-8px,0)}}
+@keyframes mBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes mGlow{0%,100%{box-shadow:0 0 0 0 rgba(224,138,46,.32)}50%{box-shadow:0 0 0 9px rgba(224,138,46,0)}}
+@keyframes mPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.72;transform:scale(.97)}}
+@keyframes mSpin{to{transform:rotate(360deg)}}
+@keyframes mShimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes mRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+@media (prefers-reduced-motion: no-preference){
+  /* Hidden only after app.js has claimed the block. */
+  .motion{opacity:0}
+  .motion-bar{transform-origin:left center}
+
+  /* Section rules draw themselves in as the page settles. */
+  .kicker::before{transform-origin:left center;animation:mRule .9s cubic-bezier(.22,.68,.24,1) both}
+  .kicker--center::after{transform-origin:right center;animation:mRule .9s cubic-bezier(.22,.68,.24,1) .1s both}
+  .steps::before{transform-origin:left center;animation:mRule 1.2s cubic-bezier(.22,.68,.24,1) .2s both}
+
+  /* The panchang card's cells arrive one after another. */
+  .panch-card__cell{animation:mUp .62s cubic-bezier(.22,.68,.24,1) both}
+  .panch-card__cell:nth-child(2){animation-delay:.06s}
+  .panch-card__cell:nth-child(3){animation-delay:.12s}
+  .panch-card__cell:nth-child(4){animation-delay:.18s}
+  .panch-card__cell:nth-child(5){animation-delay:.24s}
+  .panch-card__cell:nth-child(6){animation-delay:.3s}
+  .panch-card__cell:nth-child(n+7){animation-delay:.36s}
+
+  /* FAQ answers ease in when a row is opened. */
+  .faq__item[open] > p,.faq__item[open] > div{animation:mFade .34s ease both}
+
+  /* Reusable one-shot entrances for markup and rendered templates. */
+  .anim-up{animation:mUp .7s cubic-bezier(.22,.68,.24,1) both}
+  .anim-fade{animation:mFade .8s ease both}
+  .anim-zoom{animation:mZoom .7s cubic-bezier(.22,.68,.24,1) both}
+  .anim-left{animation:mLeft .7s cubic-bezier(.22,.68,.24,1) both}
+  .anim-right{animation:mRight .7s cubic-bezier(.22,.68,.24,1) both}
+
+  /* Reusable loops. */
+  .anim-float{animation:mFloat 6s ease-in-out infinite}
+  .anim-bob{animation:mBob 3.4s ease-in-out infinite}
+  .anim-glow{animation:mGlow 3.6s ease-in-out infinite}
+  .anim-pulse{animation:mPulse 2.4s ease-in-out infinite}
+  .anim-spin{animation:mSpin 18s linear infinite}
+
+  /* Navigation underline glides in instead of popping. */
+  .nav a::after{content:'';position:absolute;left:50%;bottom:2px;width:14px;height:2px;border-radius:2px;background:var(--gold);transform:translateX(-50%) scaleX(0);transform-origin:center;transition:transform .25s ease}
+  .nav a:hover::after,.nav a.active::after{transform:translateX(-50%) scaleX(1)}
+
+  /* Icons and avatars answer the pointer. */
+  .feature__icon,.svc-card__icon,.paath-card__icon,.contact-line__ico,.trustbar__icon,
+  .pandit__avatar,.kit-step>span,.pj-card__ico,.acct-card__ico{
+    transition:transform .35s cubic-bezier(.22,.68,.24,1),box-shadow .35s ease;
+  }
+  .feature:hover .feature__icon,.svc-card:hover .svc-card__icon,
+  .paath-card:hover .paath-card__icon,.contact-line:hover .contact-line__ico,
+  .trustbar>div:hover .trustbar__icon,.pandit:hover .pandit__avatar,
+  .kit-step:hover>span,.pj-card:hover .pj-card__ico,.acct-card:hover .acct-card__ico{
+    transform:translateY(-3px) rotate(-5deg) scale(1.06);
+    box-shadow:0 12px 22px -14px rgba(66,15,24,.55);
+  }
+
+  /* Cards without their own lift get the same calm rise. */
+  .svc-card,.paath-card,.review-card,.pandit,.kit-step,.rashi-card{
+    transition:transform .3s cubic-bezier(.22,.68,.24,1),box-shadow .3s ease,border-color .3s ease;
+  }
+  .svc-card:hover,.paath-card:hover,.review-card:hover,.kit-step:hover,.rashi-card:hover,
+  .pandit:not(.xp-tilt):hover{
+    transform:translateY(-4px);
+    box-shadow:0 22px 44px -28px rgba(66,15,24,.5);
+  }
+
+  /* Small controls get a springy press. */
+  .chip,.filter-chip,.review-chip,.lang-switch,.icon-btn{transition:transform .18s cubic-bezier(.22,.68,.24,1),background .2s,color .2s,border-color .2s,box-shadow .2s}
+  .chip:active,.filter-chip:active,.review-chip:active,.lang-switch:active,.icon-btn:active{transform:scale(.96)}
+
+  /* Floating actions rise to meet the pointer. */
+  .floating-actions__btn{transition:transform .2s cubic-bezier(.22,.68,.24,1),box-shadow .2s}
+  .floating-actions__btn:hover{transform:translateY(-3px) scale(1.03)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .motion{opacity:1 !important}
+}

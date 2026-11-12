@@ -54,7 +54,8 @@ upi://pay?pa=rajivlochanmishra952-1@okhdfcbank&pn=Rajiv%20Lochan%20Mishra&cu=INR
 ### 3D + mobile experience layer
 
 - `assets/css/experience.css` + `assets/js/experience.js` load on every page after the core shell. They only add behaviour and never change a calculated panchang or kundli value.
-- **3D**: an animated starfield and zodiac rings in the hero canvas, pointer-driven card tilt with a soft glare, layered depth shadows, 3D buttons, a rotating hero mandala, floating elements and a reading-progress bar. All motion respects `prefers-reduced-motion`.
+- **3D**: an animated starfield and zodiac rings behind the home hero and every dark page head, pointer-driven card tilt with a soft glare, layered depth shadows, 3D buttons, a rotating hero mandala, floating elements and a reading-progress bar. All motion respects `prefers-reduced-motion`.
+- **Entrances**: `app.js` claims sections, cards, grids, forms and footer columns with a `.motion` class and animates each one the first time it enters the viewport, with a capped stagger. Progress bars in matching and reviews grow when they appear, section rules draw in, icons answer the pointer, and FAQ answers fade open. The same layer is skipped entirely for reduced-motion visitors.
 - **Single tap**: a five-item bottom dock on phones (`Home · Panchang · Facilities · Kundli · Rashifal`) with ripple feedback.
 - **Double tap / double click**: opens the searchable facilities sheet from anywhere in the page content (links, buttons and form fields keep their normal action). `Alt+F` does the same on a keyboard, and the header grid button is always available.
 - **Facilities sheet**: 17 tools grouped into Today & timing, Kundli & matching, Book & shop, and Explore Bharat, with live search, My Bookings, WhatsApp and an Install-app button when the browser offers it.

@@ -32,8 +32,10 @@
   }
 
   /* ---------------------------------------------------------------- hero 3D */
+  /* The same starfield and zodiac rings now sit behind every dark page head,
+     not just the home hero, so the whole site shares one living sky. */
   function initHero() {
-    var hero = $('.hero');
+    var hero = $('.hero') || $('.page-head');
     if (!hero || $('#xpHeroCanvas')) return;
     var canvas = document.createElement('canvas');
     canvas.className = 'xp-hero-canvas';
@@ -140,16 +142,37 @@
       ctx.fill();
     }
 
+    var inView = true;
+    var running = false;
+
+    function canRun() { return !reduce && visible && inView; }
+
     function loop(t) {
+      if (!canRun()) { running = false; return; }
       draw(t);
-      if (!reduce) window.requestAnimationFrame(loop);
+      window.requestAnimationFrame(loop);
+    }
+
+    function start() {
+      if (running || !canRun()) return;
+      running = true;
+      window.requestAnimationFrame(loop);
     }
 
     resize();
     if (reduce) {
       draw(0);
     } else {
-      window.requestAnimationFrame(loop);
+      start();
+    }
+
+    /* Only animate while the header is actually on screen. */
+    if ('IntersectionObserver' in window) {
+      var hio = new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView) start();
+      }, { threshold: 0 });
+      hio.observe(hero);
     }
 
     var ro = null;
@@ -171,7 +194,7 @@
 
     document.addEventListener('visibilitychange', function () {
       visible = document.visibilityState === 'visible';
-      if (visible && !reduce) window.requestAnimationFrame(loop);
+      if (visible) start();
     });
   }
 

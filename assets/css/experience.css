@@ -79,6 +79,8 @@
   z-index:1;pointer-events:none;opacity:.9;
   mix-blend-mode:screen;
 }
+/* Keep page-head copy above the shared starfield. */
+.page-head > .container{position:relative;z-index:2}
 .hero__mandala{
   transform:translateZ(-70px) rotate(0deg);
   animation:xpMandala 60s linear infinite;
