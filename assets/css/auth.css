@@ -1694,6 +1694,20 @@
   box-shadow: 0 12px 24px -18px rgba(66, 15, 24, .7);
 }
 
+.auth-top__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.auth-top__actions .lang-switch {
+  flex: none;
+  border-color: rgba(109, 31, 44, .18);
+  background: rgba(255, 253, 249, .72);
+  box-shadow: 0 8px 18px -16px rgba(66, 15, 24, .6);
+}
+
 /* ------------------------------------------------------------------- shell */
 .auth-shell {
   width: min(1120px, calc(100% - 40px));
@@ -2399,6 +2413,8 @@
 @media (max-width: 480px) {
   .auth-card { border-radius: 24px; }
   .auth-top__back { padding: 9px 12px; }
+  .auth-top__actions { gap: 6px; }
+  .auth-top__actions .lang-switch { padding: 8px 10px; min-height: 38px; }
   .auth-panel { padding: 24px 18px 28px; }
   .auth-story { padding: 24px 18px 26px; }
   .auth-field__wrap, .auth-field__wrap input { min-height: 52px; height: 52px; }

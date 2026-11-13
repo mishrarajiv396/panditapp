@@ -308,6 +308,12 @@ UPI) to prove every surface follows the file:
 - Test rows were removed from MySQL afterwards. All 21 pages return HTTP 200;
   415 local asset references resolve; full mobile audit shows 0 console errors,
   0 failed requests, 0 4xx responses and no horizontal overflow.
+- **Public-page language audit**: the shared ENG/हिंदी toggle switches every
+  page (including the four account pages) to Devanagari (`lang="hi"` persisted,
+  `vp_lang` restored on reload) with 0 console/JS errors. The only expected
+  error is the optional reviews API (`127.0.0.1:4000`) refusing a connection
+  while that backend is not running; the page shows a friendly Hindi offline
+  notice instead.
 
 Not tested on a real phone, real UPI app payment, iPhone Safari, Hindi voice quality or clipboard permissions. Do those before launch.
 
@@ -327,7 +333,7 @@ Not tested on a real phone, real UPI app payment, iPhone Safari, Hindi voice qua
 
 ## 8. Phase 2
 
-Live panchang API, recorded mantra audio, full authorised katha text, Hindi/English toggle, live payment gateway (booking UPI claim is already recorded), reminders (calendar `.ics` export is done; server-side push is not), and pandit verification. The admin dashboard and MySQL backend are already in place.
+Live panchang API, recorded mantra audio, full authorised katha text, live payment gateway (booking UPI claim is already recorded), reminders (calendar `.ics` export is done; server-side push is not), and pandit verification. The admin dashboard and MySQL backend are already in place.
 
 ## 9. Sources
 

@@ -27,20 +27,20 @@
 
     var traditions = ['all'].concat(D.PANDITS.map(function (p) { return p.tradition; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).sort());
     $('#panditTradition').innerHTML = traditions.map(function (t) {
-      return '<option value="' + A.esc(t) + '">' + (t === 'all' ? 'All traditions' : A.esc(t)) + '</option>';
+      return '<option value="' + A.esc(t) + '">' + (t === 'all' ? A.t('All traditions') : A.esc(t)) + '</option>';
     }).join('');
 
     var langs = ['all'].concat(D.LANGUAGES.filter(function (l) {
       return D.PANDITS.some(function (p) { return p.langs.indexOf(l) >= 0; });
     }));
     $('#panditLanguage').innerHTML = langs.map(function (l) {
-      return '<option value="' + A.esc(l) + '">' + (l === 'all' ? 'All languages' : A.esc(l)) + '</option>';
+      return '<option value="' + A.esc(l) + '">' + (l === 'all' ? A.t('All languages') : A.esc(l)) + '</option>';
     }).join('');
 
     var counts = {};
     D.PANDITS.forEach(function (p) { p.spec.forEach(function (s) { counts[s] = (counts[s] || 0) + 1; }); });
     var specs = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); }).slice(0, 8);
-    $('#panditSpecs').innerHTML = '<button type="button" class="filter-chip active" data-spec="all">All specialities</button>' +
+    $('#panditSpecs').innerHTML = '<button type="button" class="filter-chip active" data-spec="all">' + A.t('All specialities') + '</button>' +
       specs.map(function (s) { return '<button type="button" class="filter-chip" data-spec="' + A.esc(s) + '">' + A.esc(s) + '</button>'; }).join('');
 
     $('#panditSearch').addEventListener('input', function (e) { state.q = e.target.value.trim().toLowerCase(); render(); });
@@ -65,6 +65,12 @@
     });
 
     render();
+    if (A.onLang) A.onLang(function () {
+      var tr = $('#panditTradition'); if (tr && tr.options[0]) tr.options[0].textContent = A.t('All traditions');
+      var lg = $('#panditLanguage'); if (lg && lg.options[0]) lg.options[0].textContent = A.t('All languages');
+      var sp = $('#panditSpecs [data-spec="all"]'); if (sp) sp.textContent = A.t('All specialities');
+      render();
+    });
     initJoin();
   }
 

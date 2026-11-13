@@ -16,7 +16,27 @@
 
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var HI_MONTHS = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+  var HI_MON = ['जन', 'फ़र', 'मार्च', 'अप्रै', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्टू', 'नव', 'दिस'];
+  var HI_DAYS = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
   var pCache = {}, fCache = {};
+
+  function isHi() { return A.isHi && A.isHi(); }
+  function hn(cat, key) {
+    if (!isHi()) return key;
+    var t = window.VPAstroHi;
+    return t && t.get ? t.get(cat, key) : key;
+  }
+  function T(en, hi) { return isHi() ? hi : en; }
+  function hMonth(m) { return isHi() ? HI_MONTHS[m] : MONTHS[m]; }
+  function hMon(m) { return isHi() ? HI_MON[m] : MON[m]; }
+  function hDay(i) { return isHi() ? HI_DAYS[i] : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][i]; }
+  function hDate(d) { return d.getDate() + ' ' + hMonth(d.getMonth()) + ' ' + d.getFullYear(); }
+  function hShortDate(d) {
+    if (!isHi()) return V.fmtShort(d, state.city.tz);
+    var p = V.localParts(d, state.city.tz);
+    return p.d + ' ' + HI_MON[p.m - 1];
+  }
 
   var HIGHLIGHTS = [
     'Makar Sankranti', 'Vasant Panchami', 'Maha Shivratri', 'Holika Dahan', 'Holi',
@@ -122,6 +142,8 @@
       state.selected = q[1];
     }
 
+    if (A.onLang) A.onLang(function () { pCache = {}; fCache = {}; render(); });
+
     render();
     startLive();
   }
@@ -160,13 +182,15 @@
 
   function render() {
     var y = state.view.getFullYear(), m = state.view.getMonth();
-    $('#calMonthTitle').textContent = MONTHS[m] + ' ' + y;
+    $('#calMonthTitle').textContent = hMonth(m) + ' ' + y;
     $('#calYearLabel').textContent = y;
-    $('#calMonthSub').textContent = 'Vikram Samvat ' + panchangOf(keyOf(new Date(y, m, 1, 12))).samvat + ' · ' + state.city.name;
+    $('#calMonthSub').textContent = T('Vikram Samvat ', 'विक्रम संवत् ') + panchangOf(keyOf(new Date(y, m, 1, 12))).samvat + ' · ' + A.placeName(state.city.name);
 
     var monthList = monthFestivals(y, m);
-    $('#calCount').textContent = monthList.length + ' festival' + (monthList.length === 1 ? '' : 's');
-    $('#calFestHead').textContent = 'Festivals in ' + MONTHS[m];
+    $('#calCount').textContent = isHi()
+      ? monthList.length + ' त्योहार'
+      : monthList.length + ' festival' + (monthList.length === 1 ? '' : 's');
+    $('#calFestHead').textContent = T('Festivals in ' + hMonth(m), hMonth(m) + ' के त्योहार');
     $('#calFestCount').textContent = monthList.length;
 
     renderGrid(y, m);
@@ -200,12 +224,12 @@
       else if (pc.tithi.index === 10 || pc.tithi.index === 25) dots.push('<span class="cal-dot cal-dot--green"></span>');
       else if (pc.tithi.index === 14 || pc.tithi.index === 29) dots.push('<span class="cal-dot cal-dot--red"></span>');
 
-      cells.push('<div class="' + cls.join(' ') + '" data-key="' + k + '" role="button" tabindex="' + (out ? '-1' : '0') + '" aria-label="' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + '">' +
+      cells.push('<div class="' + cls.join(' ') + '" data-key="' + k + '" role="button" tabindex="' + (out ? '-1' : '0') + '" aria-label="' + d.getDate() + ' ' + hMonth(d.getMonth()) + ' ' + d.getFullYear() + '">' +
         dots.join('') +
         '<div class="num">' + d.getDate() + '</div>' +
-        '<div class="tithi"><b>' + pc.tithi.paksha.charAt(0) + '</b> ' + A.esc(pc.tithi.name) + '</div>' +
+        '<div class="tithi"><b>' + (isHi() ? (pc.tithi.paksha === 'Shukla' ? 'शु' : 'कृ') : pc.tithi.paksha.charAt(0)) + '</b> ' + A.esc(hn('tithi', pc.tithi.name)) + '</div>' +
         fests.slice(0, 2).map(function (f) {
-          return '<div class="cal-fest"><span>' + f.e + '</span>' + A.esc(f.n) + '</div>';
+          return '<div class="cal-fest"><span>' + f.e + '</span>' + A.esc(hn('festival', f.n)) + '</div>';
         }).join('') +
         '</div>');
     }
@@ -233,37 +257,37 @@
     var pc = panchangOf(k);
     var fests = festsOn(k);
     var tz = state.city.tz;
-    var dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
+    var dayName = hDay(d.getDay());
 
     var festHtml = fests.map(function (f) {
-      return '<div class="fest-line"><span>' + f.e + '</span><b>' + A.esc(f.n) + '</b></div>';
+      return '<div class="fest-line"><span>' + f.e + '</span><b>' + A.esc(hn('festival', f.n)) + '</b></div>';
     }).join('');
 
     var html =
       '<div class="cal-detail__head">' +
         '<div><span class="kicker kicker--tight">' + dayName + '</span>' +
-        '<h3>' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + '</h3>' +
-        '<p class="small muted">' + pc.tithi.paksha + ' ' + A.esc(pc.tithi.name) + ' · ' + A.esc(pc.nakshatra.name) + ' nakshatra · ' + A.esc(pc.lunarMonthName) + ' month</p></div>' +
+        '<h3>' + hDate(d) + '</h3>' +
+        '<p class="small muted">' + hn('paksha', pc.tithi.paksha) + ' ' + A.esc(hn('tithi', pc.tithi.name)) + ' · ' + A.esc(hn('nakshatra', pc.nakshatra.name)) + T(' nakshatra', ' नक्षत्र') + ' · ' + A.esc(hn('month', pc.lunarMonthName)) + T(' month', ' मास') + '</p></div>' +
         '<div class="cal-detail__actions">' +
-          '<a class="btn btn--ghost btn--sm" href="panchang.html?date=' + k + '">Full panchang</a>' +
-          '<button type="button" class="btn btn--ghost btn--sm" data-ics-date="' + k + '">Add to calendar</button>' +
-          '<a class="btn btn--primary btn--sm" href="booking.html">Book a pooja</a>' +
+          '<a class="btn btn--ghost btn--sm" href="panchang.html?date=' + k + '">' + T('Full panchang', 'पूरा पंचांग') + '</a>' +
+          '<button type="button" class="btn btn--ghost btn--sm" data-ics-date="' + k + '">' + T('Add to calendar', 'कैलेंडर में जोड़ें') + '</button>' +
+          '<a class="btn btn--primary btn--sm" href="booking.html">' + T('Book a pooja', 'पूजा बुक करें') + '</a>' +
         '</div>' +
       '</div>' +
-      (festHtml || '<p class="small muted mt-2">No major festival on this date. Ekadashi, Purnima and Amavasya are still observed where applicable.</p>') +
+      (festHtml || '<p class="small muted mt-2">' + T('No major festival on this date. Ekadashi, Purnima and Amavasya are still observed where applicable.', 'इस तिथि पर कोई बड़ा त्योहार नहीं है। जहाँ लागू हो, एकादशी, पूर्णिमा और अमावस्या का पालन अभी भी किया जाता है।') + '</p>') +
       '<div class="cal-detail__grid">' +
-        meta('Tithi', pc.tithi.paksha + ' ' + pc.tithi.name) +
-        meta('Nakshatra', pc.nakshatra.name + ' · pada ' + pc.nakshatra.pada) +
-        meta('Sunrise', V.fmtTime(pc.sunrise, tz)) +
-        meta('Sunset', V.fmtTime(pc.sunset, tz)) +
-        meta('Rahu Kaal', V.fmtTime(pc.rahu.start, tz) + ' – ' + V.fmtTime(pc.rahu.end, tz)) +
-        meta('Abhijit', V.fmtTime(pc.abhijit.start, tz) + ' – ' + V.fmtTime(pc.abhijit.end, tz)) +
-        meta('Moonrise', V.fmtTime(pc.moonrise, tz)) +
-        meta('Moonset', V.fmtTime(pc.moonset, tz)) +
-        meta('Moon phase', pc.moonPhase.name + ' · ' + Math.round(pc.moonIllumination * 100) + '%') +
-        meta('Panchak', pc.panchak.active ? 'Active' : 'No') +
+        meta(T('Tithi', 'तिथि'), hn('paksha', pc.tithi.paksha) + ' ' + hn('tithi', pc.tithi.name)) +
+        meta(T('Nakshatra', 'नक्षत्र'), hn('nakshatra', pc.nakshatra.name) + T(' · pada ', ' · पाद ') + pc.nakshatra.pada) +
+        meta(T('Sunrise', 'सूर्योदय'), V.fmtTime(pc.sunrise, tz)) +
+        meta(T('Sunset', 'सूर्यास्त'), V.fmtTime(pc.sunset, tz)) +
+        meta(T('Rahu Kaal', 'राहु काल'), V.fmtTime(pc.rahu.start, tz) + ' – ' + V.fmtTime(pc.rahu.end, tz)) +
+        meta(T('Abhijit', 'अभिजीत'), V.fmtTime(pc.abhijit.start, tz) + ' – ' + V.fmtTime(pc.abhijit.end, tz)) +
+        meta(T('Moonrise', 'चंद्रोदय'), V.fmtTime(pc.moonrise, tz)) +
+        meta(T('Moonset', 'चंद्रास्त'), V.fmtTime(pc.moonset, tz)) +
+        meta(T('Moon phase', 'चंद्र कला'), hn('moonPhase', pc.moonPhase.name) + ' · ' + Math.round(pc.moonIllumination * 100) + '%') +
+        meta(T('Panchak', 'पंचक'), pc.panchak.active ? T('Active', 'सक्रिय') : T('No', 'नहीं')) +
       '</div>' +
-      '<p class="tiny muted mt-2">Tithi ends ' + V.fmtTime(pc.tithi.end, tz) + ' · Yoga ' + A.esc(pc.yoga.name) + ' · Karana ' + A.esc(pc.karana.name) + ' · ' + A.esc(pc.tithi.nature) + ' tithi · computed for ' + A.esc(state.city.name) + '.</p>';
+      '<p class="tiny muted mt-2">' + T('Tithi ends ', 'तिथि समाप्त ') + V.fmtTime(pc.tithi.end, tz) + ' · ' + T('Yoga ', 'योग ') + A.esc(hn('yoga', pc.yoga.name)) + ' · ' + T('Karana ', 'करण ') + A.esc(hn('karana', pc.karana.name)) + ' · ' + A.esc(hn('tithiNature', pc.tithi.nature)) + T(' tithi', ' तिथि') + ' · ' + T('computed for ', 'गणना: ') + A.esc(A.placeName(state.city.name)) + '.</p>';
 
     var el = $('#calDetail');
     el.innerHTML = html;
@@ -279,14 +303,14 @@
   function renderFestList(list) {
     var el = $('#calFestList');
     if (!list.length) {
-      el.innerHTML = '<p class="small muted">No major festivals this month. The next observance may fall in the following month.</p>';
+      el.innerHTML = '<p class="small muted">' + T('No major festivals this month. The next observance may fall in the following month.', 'इस महीने कोई बड़ा त्योहार नहीं है। अगला पर्व अगले महीने में पड़ सकता है।') + '</p>';
       return;
     }
     el.innerHTML = list.map(function (f) {
       var d = parseKey(f.key);
       return '<button type="button" class="fest-item" data-key="' + f.key + '">' +
         '<span class="fest-item__icon">' + f.icon + '</span>' +
-        '<span class="fest-item__txt"><b>' + A.esc(f.name) + '</b><span>' + d.getDate() + ' ' + MON[ d.getMonth() ] + ' · ' + A.esc(panchangOf(f.key).tithi.paksha) + ' ' + A.esc(panchangOf(f.key).tithi.name) + '</span></span>' +
+        '<span class="fest-item__txt"><b>' + A.esc(hn('festival', f.name)) + '</b><span>' + d.getDate() + ' ' + hMon(d.getMonth()) + ' · ' + A.esc(hn('paksha', panchangOf(f.key).tithi.paksha)) + ' ' + A.esc(hn('tithi', panchangOf(f.key).tithi.name)) + '</span></span>' +
         A.icon('arrow') + '</button>';
     }).join('');
 
@@ -304,15 +328,15 @@
     var list = muhurats(21);
     var tz = state.city.tz;
     if (!list.length) {
-      $('#calMuhurats').innerHTML = '<p class="small muted">No strong muhurats in the next three weeks — Abhijit muhurat is always available as a daily fallback.</p>';
+      $('#calMuhurats').innerHTML = '<p class="small muted">' + T('No strong muhurats in the next three weeks — Abhijit muhurat is always available as a daily fallback.', 'अगले तीन सप्ताह में कोई प्रबल मुहूर्त नहीं है — अभिजीत मुहूर्त हर दिन वैकल्पिक रूप से उपलब्ध रहता है।') + '</p>';
       return;
     }
     $('#calMuhurats').innerHTML = list.map(function (m) {
       var d = parseKey(m.key);
       return '<a class="muhurat-item" href="booking.html">' +
-        '<span class="muhurat-item__date"><b>' + d.getDate() + '</b><span>' + MON[d.getMonth()] + '</span></span>' +
-        '<span class="muhurat-item__txt"><b>' + m.day + ' · ' + A.esc(m.tithi.paksha) + ' ' + A.esc(m.tithi.name) + '</b>' +
-        '<span>' + A.esc(m.nakshatra.name) + ' · Abhijit ' + V.fmtTime(m.abhijit.start, tz) + '</span></span>' +
+        '<span class="muhurat-item__date"><b>' + d.getDate() + '</b><span>' + hMon(d.getMonth()) + '</span></span>' +
+        '<span class="muhurat-item__txt"><b>' + hn('weekday', m.day) + ' · ' + A.esc(hn('paksha', m.tithi.paksha)) + ' ' + A.esc(hn('tithi', m.tithi.name)) + '</b>' +
+        '<span>' + A.esc(hn('nakshatra', m.nakshatra.name)) + ' · ' + T('Abhijit ', 'अभिजीत ') + V.fmtTime(m.abhijit.start, tz) + '</span></span>' +
         A.icon('arrow') + '</a>';
     }).join('');
   }
@@ -334,19 +358,19 @@
       var d = parseKey(f.key);
       return '<a class="card fest-card card--hover" href="calendar.html?date=' + f.key + '">' +
         '<div class="fest-card__icon">' + f.icon + '</div>' +
-        '<div><h3>' + A.esc(f.name) + '</h3>' +
-        '<p class="small muted">' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + ' · ' + A.esc(panchangOf(f.key).tithi.paksha) + ' ' + A.esc(panchangOf(f.key).tithi.name) + '</p></div>' +
-        '<span class="link-arrow">View day ' + A.icon('arrow') + '</span></a>';
+        '<div><h3>' + A.esc(hn('festival', f.name)) + '</h3>' +
+        '<p class="small muted">' + hDate(d) + ' · ' + A.esc(hn('paksha', panchangOf(f.key).tithi.paksha)) + ' ' + A.esc(hn('tithi', panchangOf(f.key).tithi.name)) + '</p></div>' +
+        '<span class="link-arrow">' + T('View day ', 'दिन देखें ') + A.icon('arrow') + '</span></a>';
     }).join('');
   }
 
   function renderJump(year) {
     var sel = $('#calJump');
     var map = festivalsOfYear(year);
-    var opts = ['<option value="">Jump to a festival…</option>'];
+    var opts = ['<option value="">' + T('Jump to a festival…', 'किसी त्योहार पर जाएँ…') + '</option>'];
     Object.keys(map).sort().forEach(function (k) {
       map[k].forEach(function (f) {
-        opts.push('<option value="' + k + '">' + A.esc(f.n) + ' · ' + V.fmtShort(parseKey(k), state.city.tz) + '</option>');
+        opts.push('<option value="' + k + '">' + A.esc(hn('festival', f.n)) + ' · ' + hShortDate(parseKey(k)) + '</option>');
       });
     });
     sel.innerHTML = opts.join('');

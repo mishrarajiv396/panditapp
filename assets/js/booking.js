@@ -5,6 +5,20 @@
   if (!A || !V || !D) return;
   var $ = A.$, $$ = A.$$;
 
+  var HI_MONTHS = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+  var HI_MONTHS_SHORT = ['जन', 'फ़र', 'मार्च', 'अप्रै', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्टू', 'नव', 'दिस'];
+
+  function isHi() { return A.isHi && A.isHi(); }
+  function hn(cat, key) {
+    if (!isHi()) return key;
+    var t = window.VPAstroHi;
+    return t && t.get ? t.get(cat, key) : key;
+  }
+  function T(en, hi) { return isHi() ? hi : en; }
+  /* Translate a data value (duration, category) that is composed into a larger
+     string, so the whole sentence still reads naturally. */
+  function tr(s) { return isHi() ? A.translateString(s) : s; }
+
   var params = new URLSearchParams(location.search);
   var savedCity = A.store.get('vp_city', 'Gurugram');
 
@@ -30,6 +44,7 @@
   function prettyDate(s) {
     var p = parseDate(s);
     var d = new Date(p.y, p.m - 1, p.d);
+    if (isHi()) return hn('weekday', V.WEEKDAYS[d.getDay()]) + ', ' + p.d + ' ' + HI_MONTHS[p.m - 1] + ' ' + p.y;
     return V.WEEKDAYS[d.getDay()].slice(0, 3) + ', ' + p.d + ' ' +
       ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][p.m - 1] + ' ' + p.y;
   }
@@ -151,8 +166,8 @@
     var groups = D.CATEGORIES.filter(function (c) { return c !== 'All Rituals'; });
     sel.innerHTML = groups.map(function (cat) {
       var items = D.POOJAS.filter(function (p) { return p.cat === cat; });
-      return '<optgroup label="' + A.esc(cat) + '">' + items.map(function (p) {
-        return '<option value="' + p.id + '">' + A.esc(p.name) + ' — ' + A.INR(p.price) + ' · ' + A.esc(p.duration) + '</option>';
+      return '<optgroup label="' + A.esc(tr(cat)) + '">' + items.map(function (p) {
+        return '<option value="' + p.id + '">' + A.esc(tr(p.name)) + ' — ' + A.INR(p.price) + ' · ' + A.esc(tr(p.duration)) + '</option>';
       }).join('') + '</optgroup>';
     }).join('');
     var wanted = params.get('pooja');
@@ -227,12 +242,15 @@
     var note = $('#dateNote');
     if (badTithi || badNak) {
       note.innerHTML = '<div class="note-strip warn-strip">' + A.icon('alert') +
-        '<span><b>A gentle note:</b> ' + A.esc(pc.tithi.paksha + ' ' + pc.tithi.name) + ' and ' + A.esc(pc.nakshatra.name) +
-        ' are not the strongest combination for a new beginning. You can still book — the pandit will add a shanti mantram — or choose one of the green dates below.</span></div>';
+        '<span><b>' + T('A gentle note:', 'एक सुझाव:') + '</b> ' +
+        A.esc(hn('paksha', pc.tithi.paksha) + ' ' + hn('tithi', pc.tithi.name)) + T(' and ', ' और ') + A.esc(hn('nakshatra', pc.nakshatra.name)) +
+        T(' are not the strongest combination for a new beginning. You can still book — the pandit will add a shanti mantram — or choose one of the green dates below.',
+          ' नई शुरुआत के लिए सबसे प्रबल संयोजन नहीं हैं। आप फिर भी बुक कर सकते हैं — पंडित शांति मंत्र जोड़ेंगे — या नीचे दी गई हरी तिथियों में से चुनें।') + '</span></div>';
     } else {
       note.innerHTML = '<div class="note-strip">' + A.icon('check') +
-        '<span><b>Shubh date:</b> ' + A.esc(pc.tithi.paksha + ' ' + pc.tithi.name) + ' · ' + A.esc(pc.nakshatra.name) +
-        ' nakshatra · Rahu Kaal ' + V.fmtTime(pc.rahu.start, state.city.tz) + ' – ' + V.fmtTime(pc.rahu.end, state.city.tz) + '.</span></div>';
+        '<span><b>' + T('Shubh date:', 'शुभ तिथि:') + '</b> ' +
+        A.esc(hn('paksha', pc.tithi.paksha) + ' ' + hn('tithi', pc.tithi.name)) + ' · ' + A.esc(hn('nakshatra', pc.nakshatra.name)) +
+        T(' nakshatra · Rahu Kaal ', ' नक्षत्र · राहु काल ') + V.fmtTime(pc.rahu.start, state.city.tz) + ' – ' + V.fmtTime(pc.rahu.end, state.city.tz) + '.</span></div>';
     }
     renderShubhDates();
     renderMuhurat(pc);
@@ -245,14 +263,15 @@
     var picked = state.date;
     var next = list.filter(function (d) { return d.key >= picked && d.shubh; }).slice(0, 5);
     if (!next.length) {
-      wrap.innerHTML = '<span class="tiny muted">No extra-strong dates in the next 30 days — your selected date can still be confirmed by the pandit.</span>';
+      wrap.innerHTML = '<span class="tiny muted">' + T('No extra-strong dates in the next 30 days — your selected date can still be confirmed by the pandit.', 'अगले 30 दिनों में कोई अति-प्रबल तिथि नहीं है — आपकी चुनी हुई तिथि पंडित द्वारा पुष्ट की जा सकती है।') + '</span>';
       return;
     }
-    wrap.innerHTML = '<span class="tiny muted shubh-label">Next shubh dates:</span>' +
+    wrap.innerHTML = '<span class="tiny muted shubh-label">' + T('Next shubh dates:', 'अगली शुभ तिथियाँ:') + '</span>' +
       next.map(function (d) {
         var cls = 'filter-chip' + (d.key === picked ? ' active' : '');
-        return '<button type="button" class="' + cls + '" data-shubh="' + d.key + '">' + A.esc(d.day) + ' ' + A.esc(V.fmtShort(d.date, state.city.tz)) +
-          ' <span class="op-60">· ' + A.esc(d.tithi.name) + '</span></button>';
+        return '<button type="button" class="' + cls + '" data-shubh="' + d.key + '">' + A.esc(hn('weekday', d.day)) + ' ' +
+          A.esc(isHi() ? d.date.getDate() + ' ' + HI_MONTHS_SHORT[d.date.getMonth()] : V.fmtShort(d.date, state.city.tz)) +
+          ' <span class="op-60">· ' + A.esc(hn('tithi', d.tithi.name)) + '</span></button>';
       }).join('');
     $$('[data-shubh]', wrap).forEach(function (b) {
       b.addEventListener('click', function () {
@@ -275,17 +294,17 @@
     }
     var tz = state.city.tz;
     var slots = [
-      { id: 'brahma', label: 'Brahma Muhurat', start: pc.brahma.start, end: pc.brahma.end, note: 'Most spiritually potent' },
-      { id: 'abhijit', label: 'Abhijit Muhurat', start: pc.abhijit.start, end: pc.abhijit.end, note: 'Victory window' }
+      { id: 'brahma', label: T('Brahma Muhurat', 'ब्रह्म मुहूर्त'), start: pc.brahma.start, end: pc.brahma.end, note: T('Most spiritually potent', 'आध्यात्मिक रूप से सर्वाधिक प्रभावी') },
+      { id: 'abhijit', label: T('Abhijit Muhurat', 'अभिजीत मुहूर्त'), start: pc.abhijit.start, end: pc.abhijit.end, note: T('Victory window', 'विजय का समय') }
     ];
     pc.choghadiya.forEach(function (c) {
       if (!c.good) return;
       if (overlaps(c, pc.rahu)) return;
       if (c.start.getTime() < pc.sunrise.getTime()) return;
-      slots.push({ id: 'chog-' + c.name, label: c.name + ' Choghadiya', start: c.start, end: c.end, note: 'Auspicious daytime' });
+      slots.push({ id: 'chog-' + c.name, label: hn('choghadiya', c.name) + T(' Choghadiya', ' चौघड़िया'), start: c.start, end: c.end, note: T('Auspicious daytime', 'दिन का शुभ समय') });
     });
     slots = slots.slice(0, 6);
-    slots.push({ id: 'custom', label: 'Pandit will confirm', start: null, end: null, note: 'Family muhurat or custom time' });
+    slots.push({ id: 'custom', label: T('Pandit will confirm', 'पंडित पुष्ट करेंगे'), start: null, end: null, note: T('Family muhurat or custom time', 'पारिवारिक मुहूर्त या चुना हुआ समय') });
 
     var previousId = state.muhurat && state.muhurat.id;
     var pick = slots.filter(function (s) { return s.id === previousId; })[0] || slots.filter(function (s) { return s.id === 'abhijit'; })[0] || slots[0];
@@ -293,7 +312,7 @@
 
     var wrap = $('#muhuratSlots');
     wrap.innerHTML = slots.map(function (s) {
-      var time = s.start ? V.fmtTime(s.start, tz) + ' – ' + V.fmtTime(s.end, tz) : 'Time to be advised';
+      var time = s.start ? V.fmtTime(s.start, tz) + ' – ' + V.fmtTime(s.end, tz) : T('Time to be advised', 'समय बताया जाएगा');
       return '<button type="button" class="slot' + (s.id === pick.id ? ' active' : '') + '" data-slot="' + s.id + '">' +
         '<b>' + A.esc(s.label) + '</b><span>' + time + '</span><span class="slot__note">' + A.esc(s.note) + '</span></button>';
     }).join('');
@@ -412,13 +431,13 @@
     var p = state.pooja;
     if (!p) return;
     $('#sumPooja').textContent = p.name;
-    $('#sumMeta').textContent = p.duration + ' · ' + p.cat + ' · save ' + A.INR(p.mrp - p.price);
+    $('#sumMeta').textContent = tr(p.duration) + ' · ' + tr(p.cat) + T(' · save ', ' · बचत ') + A.INR(p.mrp - p.price);
     var m = state.muhurat;
     var dp = parseDate(state.date);
-    var dateTxt = dp.d + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dp.m - 1];
-    $('#sumMuhurat').textContent = m ? (dateTxt + ' · ' + m.label + (m.start ? ' ' + V.fmtTime(m.start, state.city.tz) : ' · TBC')) : '—';
-    $('#sumCity').textContent = state.city.name;
-    $('#sumPandit').textContent = state.pandit ? state.pandit.name.replace('Pt. ', '').replace('Pandita ', '') : 'Best match';
+    var dateTxt = dp.d + ' ' + (isHi() ? HI_MONTHS_SHORT[dp.m - 1] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dp.m - 1]);
+    $('#sumMuhurat').textContent = m ? (dateTxt + ' · ' + m.label + (m.start ? ' ' + V.fmtTime(m.start, state.city.tz) : T(' · TBC', ' · पुष्टि होना बाकी'))) : '—';
+    $('#sumCity').textContent = A.placeName(state.city.name);
+    $('#sumPandit').textContent = state.pandit ? state.pandit.name.replace('Pt. ', '').replace('Pandita ', '') : T('Best match', 'सर्वोत्तम मिलान');
     var extra = extrasTotal();
     var gst = Math.round((p.price + extra) * 0.18);
     $('#sumBase').textContent = A.INR(p.price);
@@ -452,8 +471,8 @@
   function renderPoojaHint() {
     var p = state.pooja;
     if (!p) return;
-    $('#poojaHint').innerHTML = '<b>' + A.esc(p.name) + '</b> · ' + A.esc(p.duration) + ' · ' + A.esc(p.cat) +
-      ' · all-inclusive ' + A.INR(p.price) + ' <a href="poojas.html?q=' + encodeURIComponent(p.name.split(' ')[0]) + '" class="link-underline">what’s included?</a>';
+    $('#poojaHint').innerHTML = '<b>' + A.esc(p.name) + '</b> · ' + A.esc(tr(p.duration)) + ' · ' + A.esc(tr(p.cat)) +
+      ' · ' + T('all-inclusive ', 'सर्व-समावेशी ') + A.INR(p.price) + ' <a href="poojas.html?q=' + encodeURIComponent(p.name.split(' ')[0]) + '" class="link-underline">' + T('what’s included?', 'क्या शामिल है?') + '</a>';
   }
 
   /* ------------------------------------------------------------------- flow */
@@ -700,6 +719,7 @@
     renderDates();
     renderMuhurat();
     renderSummary();
+    if (A.onLang) A.onLang(function () { renderDates(); renderMuhurat(); renderSummary(); });
     initNav();
   }
 

@@ -6,6 +6,16 @@
   'use strict';
   var V = root.Vedic;
 
+  function A() { return root.App; }
+  function hi(cat, key) {
+    var app = A();
+    if (!app || !app.isHi || !app.isHi()) return key;
+    var h = root.VPAstroHi;
+    return h && h.get ? h.get(cat, key) : key;
+  }
+  function isHi() { var app = A(); return !!(app && app.isHi && app.isHi()); }
+  var PLANET_ABBR = { Su: 'सू', Mo: 'चं', Ma: 'मं', Me: 'बु', Ju: 'गु', Ve: 'शु', Sa: 'श', Ra: 'रा', Ke: 'के' };
+
   var CENTERS = {
     1: [150, 78], 2: [76, 27], 3: [27, 76], 4: [76, 150],
     5: [27, 224], 6: [76, 273], 7: [150, 222], 8: [224, 273],
@@ -42,7 +52,9 @@
     });
 
     var svg = '<svg class="chart-svg" viewBox="0 0 300 300" role="img" aria-label="' +
-      (d9 ? 'Navamsa' : 'Birth') + ' chart for ' + esc(k.name || 'seeker') + '">';
+      (isHi()
+        ? esc(k.name || 'जातक') + ' की ' + (d9 ? 'नवांश' : 'जन्म') + ' कुंडली'
+        : (d9 ? 'Navamsa' : 'Birth') + ' chart for ' + esc(k.name || 'seeker')) + '">';
 
     /* house frame */
     svg += '<rect x="1.5" y="1.5" width="297" height="297" rx="6" fill="#fffdf8" stroke="var(--line-strong)" stroke-width="1.2"/>';
@@ -64,14 +76,14 @@
       if (!n) {
         if (!compact) {
           svg += '<text x="' + c[0] + '" y="' + (c[1] + 4) + '" text-anchor="middle" font-size="8" fill="#c4b3a2">' +
-            esc(V.RASHIS[sign].s) + '</text>';
+            esc(hi('rashi', V.RASHIS[sign].n)) + '</text>';
         }
         continue;
       }
 
       list.forEach(function (p, idx) {
         var y = startY + idx * lineH;
-        var label = p.key;
+        var label = isHi() ? (PLANET_ABBR[p.key] || p.key) : p.key;
         if (p.retro && !compact) label += '℞';
         svg += '<text class="planet-txt" x="' + c[0] + '" y="' + y + '" text-anchor="middle">' + label + '</text>';
         if (!compact && p.deg != null) {
@@ -81,7 +93,8 @@
     }
 
     /* lagna marker */
-    svg += '<text x="150" y="18" text-anchor="middle" font-size="9" font-weight="700" fill="#8a2c3b">Lagna ' + esc(V.RASHIS[ascSign].s) + '</text>';
+    svg += '<text x="150" y="18" text-anchor="middle" font-size="9" font-weight="700" fill="#8a2c3b">' +
+      (isHi() ? 'लग्न ' + esc(hi('rashi', V.RASHIS[ascSign].n)) : 'Lagna ' + esc(V.RASHIS[ascSign].s)) + '</text>';
     svg += '</svg>';
 
     return svg;
@@ -90,14 +103,15 @@
   /* a small rows-of-3 "planet strip" used under charts */
   function planetTable(k) {
     var rows = (k.planets || []).map(function (p) {
-      return '<tr><td><b>' + esc(p.name) + '</b>' + (p.retro ? '<span class="tag-retro">R</span>' : '') + '</td>' +
-        '<td>' + esc(V.RASHIS[p.sign].n) + ' ' + Math.floor(p.degInSign) + '°' + Math.floor((p.degInSign % 1) * 60) + '′</td>' +
+      return '<tr><td><b>' + esc(hi('planet', p.name)) + '</b>' + (p.retro ? '<span class="tag-retro">R</span>' : '') + '</td>' +
+        '<td>' + esc(hi('rashi', V.RASHIS[p.sign].n)) + ' ' + Math.floor(p.degInSign) + '°' + Math.floor((p.degInSign % 1) * 60) + '′</td>' +
         '<td>' + esc(p.house) + '</td>' +
-        '<td>' + esc(V.NAKSHATRAS[p.nakshatra].n) + ' ' + esc(p.pada) + '</td>' +
-        '<td>' + esc(p.dignity || '—') + '</td>' +
-        '<td>' + esc(p.avastha ? p.avastha.name : '—') + '</td></tr>';
+        '<td>' + esc(hi('nakshatra', V.NAKSHATRAS[p.nakshatra].n)) + ' ' + esc(p.pada) + '</td>' +
+        '<td>' + esc(p.dignity ? hi('dignity', p.dignity) : '—') + '</td>' +
+        '<td>' + esc(p.avastha ? hi('avastha', p.avastha.name) : '—') + '</td></tr>';
     }).join('');
-    return '<div class="table-wrap"><table><thead><tr><th>Graha</th><th>Rashi</th><th>Bhava</th><th>Nakshatra</th><th>Dignity</th><th>Avastha</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    var h = isHi();
+    return '<div class="table-wrap"><table><thead><tr><th>' + (h ? 'ग्रह' : 'Graha') + '</th><th>' + (h ? 'राशि' : 'Rashi') + '</th><th>' + (h ? 'भाव' : 'Bhava') + '</th><th>' + (h ? 'नक्षत्र' : 'Nakshatra') + '</th><th>' + (h ? 'बल' : 'Dignity') + '</th><th>' + (h ? 'अवस्था' : 'Avastha') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
 
   root.VedicChart = { north: north, planetTable: planetTable };

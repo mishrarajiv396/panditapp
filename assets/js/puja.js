@@ -279,7 +279,7 @@
     if (sunset) sunset.textContent = V.fmtTime(p.sunset, tz);
     var hero = $('#heroToday');
     if (hero) {
-      hero.textContent = tithiText + ' · ' + nakName(p.nakshatra.name) + ' ' + t('panchang.nakshatra') + ' · ' + city.name + ' · ' + t('panchang.rahu') + ' ' + V.fmtTime(p.rahu.start, tz) + '–' + V.fmtTime(p.rahu.end, tz);
+      hero.textContent = tithiText + ' · ' + nakName(p.nakshatra.name) + ' ' + t('panchang.nakshatra') + ' · ' + A.placeName(city.name) + ' · ' + t('panchang.rahu') + ' ' + V.fmtTime(p.rahu.start, tz) + '–' + V.fmtTime(p.rahu.end, tz);
     }
   }
 
@@ -300,7 +300,7 @@
           state.sankalp.city = state.city.name;
           save('sankalp', state.sankalp);
         }
-        A.toast(pick('City set to ' + state.city.name, 'शहर ' + state.city.name + ' चुना गया'));
+        A.toast(pick('City set to ' + state.city.name, 'शहर ' + A.placeName(state.city.name) + ' चुना गया'));
       });
     });
   }
@@ -873,7 +873,10 @@
       else msg.textContent = t('havan.msgExtra');
     }
     $$('.pj-target__btn').forEach(function (b) {
-      b.classList.toggle('active', Number(b.getAttribute('data-target')) === target);
+      var n = Number(b.getAttribute('data-target'));
+      if (b.getAttribute('data-label-en') == null) b.setAttribute('data-label-en', b.textContent);
+      b.textContent = isHi() ? t('havan.target', { n: n }) : b.getAttribute('data-label-en');
+      b.classList.toggle('active', n === target);
     });
   }
 
@@ -1396,6 +1399,10 @@
   }
 
   /* ----------------------------------------------------------------- plans */
+  function planNoteText() {
+    return isHi() && I && I.hi.planNote ? I.hi.planNote : (P.planNote || '');
+  }
+
   function renderPlans() {
     var wrap = $('#plansGrid');
     if (!wrap || !P.plans) return;
@@ -1434,7 +1441,7 @@
     }).join('');
 
     var note = $('#planNote');
-    if (note) note.textContent = isHi() && I.hi.planNote ? I.hi.planNote : (P.planNote || '');
+    if (note) note.textContent = planNoteText();
 
     var ask = $('#plansWhatsApp');
     if (ask) {
@@ -1709,7 +1716,10 @@
     if (dates && dates.getAttribute('data-ready') === '1') renderNextDates();
     if (panelReady.samagri) renderSamagri();
     if (panelReady.puja) { renderRail(); renderPujaStep(); }
-    if (panelReady.havan) { renderHavan(); updateHavan(); }
+    renderHavan();
+    updateHavan();
+    var planNote = $('#planNote');
+    if (planNote) planNote.textContent = planNoteText();
     if (panelReady.katha) renderKatha();
     if (panelReady.sankalp) { renderSankalpOptions(); updateSankalp(); }
     if (panelReady.plans) renderPlans();

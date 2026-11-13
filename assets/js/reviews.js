@@ -26,9 +26,9 @@
   }
 
   function apiMessage(res) {
-    if (res && res.error) return res.error;
-    if (res && res.offline) return 'The reviews service is not reachable right now. Please try again in a minute.';
-    return 'Something went wrong. Please try again.';
+    if (res && res.offline) return A.t('The reviews service is not reachable right now. Please try again in a minute.');
+    if (res && res.error && !/failed to fetch|networkerror|load failed/i.test(res.error)) return res.error;
+    return A.t('Something went wrong. Please try again.');
   }
 
   function monthYear(value) {

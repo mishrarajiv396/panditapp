@@ -66,9 +66,24 @@
     return lat + ' · ' + lon + ' · ' + utcOffsetLabel(cityOffset(city, when));
   }
 
+  /* City and state names live in the English data file, so render them through
+     the phrase dictionary when Hindi is active. The English name remains the
+     option value and the storage key. */
+  function placeName(name) {
+    var s = typeof name === 'string' ? name : (name && name.name) || '';
+    if (!s || langState.lang !== 'hi') return s;
+    return translateString(s);
+  }
+
+  function place(city) {
+    if (!city) return '';
+    if (typeof city === 'string') return placeName(city);
+    return [placeName(city.name), placeName(city.state)].filter(Boolean).join(', ');
+  }
+
   function cityOption(city, selected) {
     var star = city.famous ? ' ★' : '';
-    return '<option value="' + esc(city.name) + '"' + (city.name === selected ? ' selected' : '') + '>' + esc(city.name) + star + '</option>';
+    return '<option value="' + esc(city.name) + '"' + (city.name === selected ? ' selected' : '') + '>' + esc(placeName(city.name)) + star + '</option>';
   }
 
   function cityCount() {
@@ -78,10 +93,13 @@
   function applyCityCopy() {
     var n = cityCount();
     if (!n) return;
+    var hi = langState.lang === 'hi';
     var label = n.toLocaleString('en-IN');
     $$('[data-city-count]').forEach(function (el) { el.textContent = label; });
     $$('input[type="search"][id$="CitySearch"]').forEach(function (inp) {
-      inp.placeholder = 'Search ' + label + ' cities, districts & places…';
+      inp.placeholder = hi
+        ? label + ' शहर, ज़िले और प्रसिद्ध स्थान खोजें…'
+        : 'Search ' + label + ' cities, districts & places…';
     });
   }
 
@@ -97,7 +115,11 @@
     var current = all.filter(function (c) { return c.name === selected; })[0];
     if (current && list.indexOf(current) < 0) list = [current].concat(list);
     if (!list.length) {
-      return '<option value="" disabled selected>No city matches “' + esc(query) + '”</option>';
+      return '<option value="" disabled selected>' +
+        (langState.lang === 'hi'
+          ? '“' + esc(query) + '” से कोई शहर नहीं मिला'
+          : 'No city matches “' + esc(query) + '”') +
+        '</option>';
     }
 
     var groups = [], byState = {};
@@ -110,46 +132,218 @@
     });
 
     return groups.map(function (g) {
-      return '<optgroup label="' + esc(g.state) + '">' +
+      return '<optgroup label="' + esc(placeName(g.state)) + '">' +
         g.cities.map(function (c) { return cityOption(c, selected); }).join('') +
         '</optgroup>';
     }).join('');
   }
 
-  var translations = {
-    en: {
-      langLabel: 'हिंदी',
-      homeBook: 'Book a pooja',
-      homeWhatsApp: 'WhatsApp us',
-      leadTitle: 'Choose the right ritual for your family.',
-      leadSub: 'Share your location, puja type and preferred date and we will suggest the best muhurat and plan.',
-      leadName: 'Your name',
-      leadPhone: 'WhatsApp number',
-      leadCity: 'City',
-      leadPooja: 'Puja need',
-      leadDate: 'Preferred date',
-      leadSubmit: 'Send request',
-      leadSuccess: 'Your enquiry is saved locally and shared on WhatsApp.',
-      floatingBook: 'Book now',
-      floatingWhatsApp: 'WhatsApp'
-    },
-    hi: {
-      langLabel: 'ENG',
-      homeBook: 'पुजा बुक करें',
-      homeWhatsApp: 'व्हाट्सऐप करें',
-      leadTitle: 'अपने परिवार के लिए सही पूजा चुनें।',
-      leadSub: 'अपना शहर, पूजा प्रकार और पसंदीदा दिन साझा करें; हम सबसे शुभ मुहूर्त और योजना सुझाएंगे।',
-      leadName: 'आपका नाम',
-      leadPhone: 'व्हाट्सऐप नंबर',
-      leadCity: 'शहर',
-      leadPooja: 'पूजा आवश्यक',
-      leadDate: 'पसंदीदा तिथि',
-      leadSubmit: 'अनुरोध भेजें',
-      leadSuccess: 'आपकी जानकारी लोकली सेव की गई है और व्हाट्सऐप पर साझा की जाएगी।',
-      floatingBook: 'अभी बुक करें',
-      floatingWhatsApp: 'व्हाट्सऐप'
-    }
+  /* ------------------------------------------------------------------ language
+     English is the base language in the markup and in the astronomical engine.
+     Every visible English phrase is looked up in window.VP_PHRASES and replaced
+     in place. Data-driven renderers (kundli, matching, panchang, chart) register
+     a callback with App.onLang() and redraw themselves in the chosen language. */
+  var PHRASES = root.VP_PHRASES || {};
+  var PHRASE_INDEX = {};
+  var ASTR = root.VPAstroHi || null;
+  var langState = { lang: 'en', callbacks: [] };
+  var APPLYING = false;
+  var textOriginal = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+  var attrOriginal = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+  var ATTRS = ['placeholder', 'title', 'aria-label', 'alt', 'label'];
+
+  function normText(s) {
+    return String(s == null ? '' : s)
+      .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+      .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+      .replace(/[\u2013\u2014\u2212]/g, '-')
+      .replace(/\u00A0/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  Object.keys(PHRASES).forEach(function (k) { PHRASE_INDEX[normText(k)] = PHRASES[k]; });
+
+  var GREG_MONTHS = {
+    Jan: 'जनवरी', Feb: 'फ़रवरी', Mar: 'मार्च', Apr: 'अप्रैल', May: 'मई', Jun: 'जून',
+    Jul: 'जुलाई', Aug: 'अगस्त', Sep: 'सितंबर', Oct: 'अक्टूबर', Nov: 'नवंबर', Dec: 'दिसंबर',
+    January: 'जनवरी', February: 'फ़रवरी', March: 'मार्च', April: 'अप्रैल', June: 'जून',
+    July: 'जुलाई', August: 'अगस्त', September: 'सितंबर', October: 'अक्टूबर',
+    November: 'नवंबर', December: 'दिसंबर'
   };
+  var COUNT_NOUN = {
+    rituals: 'अनुष्ठान', ritual: 'अनुष्ठान', poojas: 'पूजाएँ', pooja: 'पूजा',
+    pandits: 'पंडित', pandit: 'पंडित', places: 'स्थान', place: 'स्थान',
+    products: 'उत्पाद', product: 'उत्पाद', cities: 'शहर', city: 'शहर',
+    festivals: 'त्योहार', festival: 'त्योहार', reviews: 'समीक्षाएँ', review: 'समीक्षा',
+    bookings: 'बुकिंग', booking: 'बुकिंग', items: 'आइटम', item: 'आइटम',
+    results: 'परिणाम', result: 'परिणाम', days: 'दिन', day: 'दिन',
+    points: 'अंक', point: 'अंक', ahutis: 'आहुतियाँ', ahuti: 'आहुति',
+    pandits: 'पंडित', hours: 'घंटे', hour: 'घंटा', minutes: 'मिनट', minute: 'मिनट'
+  };
+
+  function astro(cat, key) {
+    if (ASTR && ASTR.get) return ASTR.get(cat, key);
+    return key;
+  }
+
+  function patternHi(s) {
+    var m;
+    if ((m = /^(\d+)\s+of\s+(\d+)$/.exec(s))) return m[2] + ' में से ' + m[1];
+    if ((m = /^(\d+)\s+of\s+(\d+)\s+offered$/i.exec(s))) return m[2] + ' में से ' + m[1] + ' उपलब्ध';
+    if ((m = /^(\d+)\s+of\s+(\d+)\s+complete$/i.exec(s))) return m[2] + ' में से ' + m[1] + ' पूर्ण';
+    if ((m = /^\((\d+)\s+reviews?\)$/i.exec(s))) return '(' + m[1] + ' समीक्षाएँ)';
+    if ((m = /^(\d+)\s+stars?$/i.exec(s))) return m[1] + ' सितारे';
+    if ((m = /^(\d+)\s+star reviews?:\s*(\d+)$/i.exec(s))) return m[1] + ' स्टार समीक्षाएँ: ' + m[2];
+    if ((m = /^(\d+)\s+(rituals?|poojas?|pandits?|places?|products?|cities?|festivals?|reviews?|bookings?|items?|results?|days?|hours?|minutes?|points?|ahutis?)$/i.exec(s))) {
+      return m[1] + ' ' + (COUNT_NOUN[m[2].toLowerCase()] || m[2]);
+    }
+    if ((m = /^(\d+)\s+(min|mins|minutes?)\s+read$/i.exec(s))) return m[1] + ' मिनट पढ़ें';
+    if ((m = /^Page\s+(\d+)\s+of\s+(\d+)$/i.exec(s))) return 'पृष्ठ ' + m[1] + ' / ' + m[2];
+    if ((m = /^(.+?)\s+Nakshatra\s*·\s*(.+)$/.exec(s))) {
+      return astro('nakshatra', m[1]) + ' नक्षत्र · ' + translateString(m[2], true);
+    }
+    if ((m = /^(.+?)\s+Nakshatra$/i.exec(s))) return astro('nakshatra', m[1]) + ' नक्षत्र';
+    if ((m = /^(.+?)\s*·\s*pada\s+(\d+)\s+of\s+4$/i.exec(s))) {
+      return astro('nakshatra', m[1]) + ' · पाद ' + m[2] + '/4';
+    }
+    if ((m = /^(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})$/.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3];
+    }
+    if ((m = /^(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})$/.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3];
+    }
+    if ((m = /^(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$/.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]];
+    }
+    if ((m = /^(\d+(?:\.\d+)?)\s*(hr|hrs|hours?)$/i.exec(s))) return m[1] + ' घंटे';
+    if ((m = /^(\d+)\s*(min|mins|minutes?)$/i.exec(s))) return m[1] + ' मिनट';
+    if ((m = /^(\d+)\s*(hr|hrs|hours?)\s+(\d+)\s*(min|mins|minutes?)$/i.exec(s))) return m[1] + ' घंटे ' + m[3] + ' मिनट';
+    if ((m = /^(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*·\s*(.+)$/.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]] + ' · ' + astro('month', m[3]);
+    }
+    if ((m = /^Open samagri cart,\s*(\d+)\s+items?$/i.exec(s))) return 'सामग्री कार्ट खोलें, ' + m[1] + ' आइटम';
+    if ((m = /^(\d+)\s+(days?|hours?|minutes?)\s+ago$/i.exec(s))) return m[1] + ' ' + COUNT_NOUN[m[2].toLowerCase()] + ' पहले';
+    return null;
+  }
+
+  function translateString(s, skipPattern) {
+    if (!s) return s;
+    var exact = PHRASES[s];
+    if (exact != null) return exact;
+    var key = normText(s);
+    if (PHRASE_INDEX[key] != null) return PHRASE_INDEX[key];
+    if (!skipPattern) {
+      var p = patternHi(key);
+      if (p != null) return p;
+    }
+    return s;
+  }
+
+  function skipI18n(node) {
+    var el = node && node.nodeType === 1 ? node : (node && node.parentNode);
+    while (el && el !== document.body) {
+      if (el.id === 'pjMain') return true;
+      if (el.getAttribute && (el.getAttribute('data-no-i18n') != null || el.getAttribute('translate') === 'no')) return true;
+      if (/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test(el.nodeName)) return true;
+      el = el.parentNode;
+    }
+    return false;
+  }
+
+  function translateTextNode(node) {
+    if (!node || node.nodeType !== 3 || skipI18n(node)) return;
+    var raw = textOriginal ? textOriginal.get(node) : node.__vpEn;
+    if (raw == null) {
+      raw = node.nodeValue;
+      if (textOriginal) textOriginal.set(node, raw); else node.__vpEn = raw;
+    }
+    if (!raw || !/[A-Za-z]/.test(raw)) return;
+    var target = raw;
+    if (langState.lang === 'hi') {
+      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(raw);
+      var lead = m[1], core = m[2], trail = m[3];
+      if (core) {
+        var out = translateString(core);
+        if (out !== core) target = lead + out + trail;
+      }
+    }
+    if (node.nodeValue !== target) {
+      APPLYING = true;
+      node.nodeValue = target;
+      APPLYING = false;
+    }
+  }
+
+  function translateAttrs(el) {
+    if (!el || el.nodeType !== 1 || skipI18n(el)) return;
+    var names = ATTRS.slice();
+    if (el.nodeName === 'INPUT' && /^(submit|button|reset)$/i.test(el.type || '')) names.push('value');
+    var store = attrOriginal ? attrOriginal.get(el) : el.__vpAttrs;
+    if (!store) { store = {}; if (attrOriginal) attrOriginal.set(el, store); else el.__vpAttrs = store; }
+    names.forEach(function (name) {
+      if (!el.hasAttribute(name)) return;
+      if (store[name] == null) store[name] = el.getAttribute(name);
+      var raw = store[name];
+      if (!raw || !/[A-Za-z]/.test(raw)) return;
+      var target = langState.lang === 'hi' ? translateString(raw) : raw;
+      if (el.getAttribute(name) !== target) el.setAttribute(name, target);
+    });
+  }
+
+  function translateDom(rootNode) {
+    var root = rootNode || document.body;
+    if (!root) return;
+    if (root.nodeType === 3) { translateTextNode(root); return; }
+    if (root.nodeType !== 1 && root.nodeType !== 9) return;
+    if (root.nodeType === 1 && skipI18n(root)) return;
+    translateAttrs(root);
+    if (!document.createTreeWalker) return;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null, false);
+    var batch = [];
+    while (walker.nextNode()) batch.push(walker.currentNode);
+    batch.forEach(function (n) {
+      if (n.nodeType === 3) translateTextNode(n); else translateAttrs(n);
+    });
+  }
+
+  function fireLang(lang) {
+    langState.callbacks.slice().forEach(function (fn) {
+      try { fn(lang); } catch (e) { /* keep the page usable */ }
+    });
+  }
+
+  function setLang(lang) {
+    var next = lang === 'hi' ? 'hi' : 'en';
+    langState.lang = next;
+    try { localStorage.setItem('vp_lang', next); } catch (e) { /* private mode */ }
+    document.documentElement.lang = next;
+    document.documentElement.setAttribute('data-lang', next);
+    var btn = $('#langToggle');
+    if (btn) {
+      btn.textContent = next === 'hi' ? 'ENG' : 'हिंदी';
+      btn.setAttribute('aria-label', next === 'hi' ? 'Switch language to English' : 'Switch language to Hindi');
+      btn.dataset.lang = next;
+    }
+    translateDom(document.body);
+    var ticker = $('#tickerText');
+    if (ticker) ticker.textContent = topbarText();
+    fireLang(next);
+    if (next === 'hi') translateDom(document.body);
+  }
+
+  function getLang() {
+    try {
+      var saved = localStorage.getItem('vp_lang');
+      if (saved === 'hi' || saved === 'en') return saved;
+    } catch (e) { /* ignore */ }
+    return 'en';
+  }
+
+  function t(en, hi) {
+    if (langState.lang !== 'hi') return en;
+    if (hi != null) return hi;
+    return translateString(en);
+  }
 
   var store = {
     get: function (k, d) {
@@ -267,15 +461,21 @@
   }
 
   function topbarText() {
-    if (!V) return 'Daily panchang, verified pandits & pooja-in-a-box';
+    var hi = langState.lang === 'hi';
+    if (!V) return hi ? 'दैनिक पंचांग, सत्यापित पंडित और पूजा-इन-ए-बॉक्स' : 'Daily panchang, verified pandits & pooja-in-a-box';
     try {
       var saved = store.get('vp_city', null);
       var place = (D && D.CITIES && (D.CITIES.filter(function (c) { return c.name === saved; })[0] || D.CITIES[0])) || { name: 'Gurugram', tz: 'Asia/Kolkata' };
       var pc = V.panchangForDate(new Date(), place);
+      if (hi) {
+        return 'आज · ' + astro('paksha', pc.tithi.paksha) + ' ' + astro('tithi', pc.tithi.name) + ' · ' +
+          astro('nakshatra', pc.nakshatra.name) + ' नक्षत्र · राहु काल ' +
+          V.fmtTime(pc.rahu.start, place.tz) + ' – ' + V.fmtTime(pc.rahu.end, place.tz);
+      }
       return 'Today · ' + pc.tithi.paksha + ' ' + pc.tithi.name + ' · ' + pc.nakshatra.name + ' Nakshatra · Rahu Kaal ' +
         V.fmtTime(pc.rahu.start, place.tz) + ' – ' + V.fmtTime(pc.rahu.end, place.tz);
     } catch (e) {
-      return 'Daily panchang, verified pandits & pooja-in-a-box';
+      return hi ? 'दैनिक पंचांग, सत्यापित पंडित और पूजा-इन-ए-बॉक्स' : 'Daily panchang, verified pandits & pooja-in-a-box';
     }
   }
 
@@ -539,25 +739,40 @@
   function initLanguageToggle() {
     var btn = $('#langToggle');
     if (!btn) return;
-    var current = localStorage.getItem('vp_lang') || 'en';
-    function apply(lang) {
-      var set = translations[lang] ? lang : 'en';
-      var pairs = document.querySelectorAll('[data-i18n]');
-      for (var i = 0; i < pairs.length; i++) {
-        var key = pairs[i].getAttribute('data-i18n');
-        if (translations[set] && translations[set][key]) {
-          pairs[i].textContent = translations[set][key];
-        }
-      }
-      btn.textContent = translations[set].langLabel;
-      btn.setAttribute('aria-label', set === 'en' ? 'Switch language to Hindi' : 'Switch language to English');
-      btn.dataset.lang = set;
-      localStorage.setItem('vp_lang', set);
-    }
     btn.addEventListener('click', function () {
-      apply(btn.dataset.lang === 'hi' ? 'en' : 'hi');
+      setLang(langState.lang === 'hi' ? 'en' : 'hi');
     });
-    apply(current);
+    // Translate the already-rendered shell, then watch for content injected by
+    // page scripts, the cart, modals and live updates.
+    setLang(getLang());
+    if (root.MutationObserver && document.body) {
+      var pending = [];
+      var scheduled = false;
+      var observer = new MutationObserver(function (records) {
+        if (langState.lang !== 'hi' || APPLYING) return;
+        for (var i = 0; i < records.length; i++) {
+          var r = records[i];
+          if (r.type === 'characterData') pending.push(r.target);
+          else if (r.addedNodes) {
+            for (var j = 0; j < r.addedNodes.length; j++) pending.push(r.addedNodes[j]);
+          }
+        }
+        if (!pending.length || scheduled) return;
+        scheduled = true;
+        var run = function () {
+          scheduled = false;
+          var list = pending; pending = [];
+          list.forEach(function (n) {
+            if (!n) return;
+            if (n.nodeType === 1 && !n.isConnected) return;
+            if (n.nodeType === 3 && !n.parentNode) return;
+            translateDom(n.nodeType === 3 ? n : n);
+          });
+        };
+        if (root.requestAnimationFrame) root.requestAnimationFrame(run); else setTimeout(run, 16);
+      });
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
   }
 
   function initQuickEnquiry() {
@@ -1492,11 +1707,26 @@
     icon: icon, stars: stars, starIcon: starIcon,
     findCity: findCity, cityOptions: cityOptions, cityMeta: cityMeta, cityOffset: cityOffset,
     cityCount: cityCount, applyCityCopy: applyCityCopy,
+    place: place, placeName: placeName, translateString: translateString,
     toast: toast, openModal: openModal, closeModal: closeModal,
     Cart: Cart, bookingsModal: bookingsModal, syncOwner: syncOwner,
     rememberBooking: rememberBooking, findSavedBooking: findSavedBooking,
     addToCalendar: addToCalendar, printBooking: printBooking,
     waBookingText: waBookingText, waBookingLink: waBookingLink,
+    lang: function () { return langState.lang; },
+    isHi: function () { return langState.lang === 'hi'; },
+    setLang: setLang,
+    t: t,
+    astro: astro,
+    translateDom: translateDom,
+    onLang: function (fn) {
+      if (typeof fn !== 'function') return function () {};
+      langState.callbacks.push(fn);
+      return function () {
+        var i = langState.callbacks.indexOf(fn);
+        if (i >= 0) langState.callbacks.splice(i, 1);
+      };
+    },
     owner: { name: OWNER_NAME, phone: OWNER_PHONE, phoneDisplay: OWNER_PHONE_DISPLAY, email: OWNER_EMAIL, upi: OWNER_UPI },
     teller: topbarText
   };

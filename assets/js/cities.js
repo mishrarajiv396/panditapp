@@ -167,22 +167,24 @@
   function fillStates() {
     var sel = $('#cityState');
     if (!sel) return;
+    var keep = sel.value;
     var groups = {};
     ALL.forEach(function (c) { groups[c.state] = (groups[c.state] || 0) + 1; });
     var india = Object.keys(groups).filter(function (s) {
       return ALL.some(function (c) { return c.state === s && c.tz === 'Asia/Kolkata'; });
     }).sort();
     var world = Object.keys(groups).filter(function (s) { return india.indexOf(s) < 0; }).sort();
-    var opt = '<option value="all">All states &amp; countries (' + ALL.length.toLocaleString('en-IN') + ')</option>';
-    opt += '<optgroup label="Indian states &amp; union territories">';
+    var opt = '<option value="all">' + A.t('All states & countries') + ' (' + ALL.length.toLocaleString('en-IN') + ')</option>';
+    opt += '<optgroup label="' + A.t('Indian states &amp; union territories') + '">';
     india.forEach(function (s) { opt += '<option value="' + A.esc(s) + '">' + A.esc(s) + ' (' + groups[s] + ')</option>'; });
     opt += '</optgroup>';
     if (world.length) {
-      opt += '<optgroup label="NRI hubs">';
+      opt += '<optgroup label="' + A.t('NRI hubs') + '">';
       world.forEach(function (s) { opt += '<option value="' + A.esc(s) + '">' + A.esc(s) + ' (' + groups[s] + ')</option>'; });
       opt += '</optgroup>';
     }
     sel.innerHTML = opt;
+    if (keep) sel.value = keep;
   }
 
   function fillStats() {
@@ -210,6 +212,7 @@
   function init() {
     fillStates();
     fillStats();
+    if (A.onLang) A.onLang(fillStates);
     $$('[data-ico]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico')); });
     $$('[data-ico-inline]').forEach(function (el) { el.innerHTML = A.icon(el.getAttribute('data-ico-inline')); });
 

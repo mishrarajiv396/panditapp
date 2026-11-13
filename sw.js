@@ -3,7 +3,7 @@
    load. The cache is only used when the network is unavailable. */
 'use strict';
 
-var VERSION = 'vp-static-v52';
+var VERSION = 'vp-static-v56';
 var RUNTIME = 'vp-runtime-v2';
 
 var CORE = [
@@ -42,6 +42,9 @@ var CORE = [
   './assets/js/astro.js',
   './assets/js/data.js',
   './assets/js/site-settings.js',
+  './assets/js/i18n-phrases.js',
+  './assets/js/i18n-astro.js',
+  './assets/js/i18n-auth.js',
   './assets/js/app.js',
   './assets/js/search.js',
   './assets/js/api.js',

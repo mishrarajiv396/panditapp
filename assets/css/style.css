@@ -1830,7 +1830,7 @@ html.gs-open,body.gs-open{overflow:hidden;overscroll-behavior:contain}
   .burger{width:38px;height:38px;border-radius:10px}
 }
 @media (max-width:360px){
-  .lang-switch{display:none}
+  .lang-switch{padding:6px 6px;font-size:.68rem;min-height:34px}
 }
 @media print{
   .head-search,.gs{display:none !important}
@@ -1995,10 +1995,12 @@ html.gs-open,body.gs-open{overflow:hidden;overscroll-behavior:contain}
   .hero__trust div{align-items:flex-start}
 }
 @media (max-width:360px){
+  .head-in{gap:5px}
   .head-actions{gap:3px}
-  .head-actions > .icon-btn{width:38px;height:38px}
-  .head-search{width:38px;height:38px;max-width:38px}
-  .burger{width:40px;height:40px}
+  .head-actions > .icon-btn{width:36px;height:36px}
+  .head-search{width:36px;height:36px;max-width:36px}
+  .lang-switch{padding:6px 5px;min-height:36px}
+  .burger{width:38px;height:38px}
 }
 
 /* ------------------------------------------------ mobile density & targets */

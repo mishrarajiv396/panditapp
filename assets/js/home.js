@@ -15,33 +15,48 @@
   } catch (e) { /* ignore */ }
 
   /* ---------------------------------------------------------------- panchang */
+  var HI_MONTHS_SHORT = ['जन', 'फ़र', 'मार्च', 'अप्रै', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्टू', 'नव', 'दिस'];
+
+  function isHi() { return A.isHi && A.isHi(); }
+  function hn(cat, key) {
+    if (!isHi()) return key;
+    var t = window.VPAstroHi;
+    return t && t.get ? t.get(cat, key) : key;
+  }
+  function T(en, hi) { return isHi() ? hi : en; }
+  function hiShort(date, tz) {
+    if (!isHi()) return V.fmtShort(date, tz);
+    var p = V.localParts(date, tz);
+    return p.d + ' ' + HI_MONTHS_SHORT[p.m - 1];
+  }
+
   function renderPanchang() {
     var p;
     try { p = V.panchangForDate(new Date(), city); }
     catch (e) { return; }
     var tz = city.tz;
 
-    $('#panchDate').textContent = V.fmtShort(p.sunrise, tz);
-    $('#panchPlace').textContent = city.name + ', ' + city.state;
-    $('#pcTithi').innerHTML = p.tithi.paksha + ' ' + p.tithi.name +
-      '<small class="panch-card__sub">till ' + V.fmtTime(p.tithi.end, tz) + '</small>';
-    $('#pcNak').innerHTML = p.nakshatra.name +
-      '<small class="panch-card__sub">' + p.nakshatra.lord + ' · pada ' + p.nakshatra.pada + '</small>';
+    $('#panchDate').textContent = hiShort(p.sunrise, tz);
+    $('#panchPlace').textContent = A.place(city);
+    $('#pcTithi').innerHTML = hn('paksha', p.tithi.paksha) + ' ' + hn('tithi', p.tithi.name) +
+      '<small class="panch-card__sub">' + T('till ', 'समाप्त ') + V.fmtTime(p.tithi.end, tz) + '</small>';
+    $('#pcNak').innerHTML = hn('nakshatra', p.nakshatra.name) +
+      '<small class="panch-card__sub">' + hn('planet', p.nakshatra.lord) + T(' · pada ', ' · पाद ') + p.nakshatra.pada + '</small>';
     $('#pcRahu').textContent = V.fmtTime(p.rahu.start, tz) + ' – ' + V.fmtTime(p.rahu.end, tz);
     $('#pcAbhijit').textContent = V.fmtTime(p.abhijit.start, tz) + ' – ' + V.fmtTime(p.abhijit.end, tz);
     $('#pcSunrise').textContent = V.fmtTime(p.sunrise, tz);
     $('#pcSunset').textContent = V.fmtTime(p.sunset, tz);
-    $('#homeWeekday').textContent = p.weekday + ' · ' + p.lunarMonthName + (p.tithi.paksha === 'Shukla' ? ' Shukla' : ' Krishna');
-    $('#panchCityMeta').textContent = city.name + ', ' + city.state + ' · ' + A.cityMeta(city);
+    $('#homeWeekday').textContent = hn('weekday', p.weekday) + ' · ' + hn('month', p.lunarMonthName) + (p.tithi.paksha === 'Shukla' ? T(' Shukla', ' शुक्ल') : T(' Krishna', ' कृष्ण'));
+    $('#panchCityMeta').textContent = A.place(city) + ' · ' + A.cityMeta(city);
 
     var rows = [
-      ['Tithi', p.tithi.paksha + ' ' + p.tithi.name, 'ends ' + V.fmtTime(p.tithi.end, tz)],
-      ['Nakshatra', p.nakshatra.name, p.nakshatra.lord + ' · pada ' + p.nakshatra.pada],
-      ['Yoga', p.yoga.name, 'ends ' + V.fmtTime(p.yoga.end, tz)],
-      ['Karana', p.karana.name, 'ends ' + V.fmtTime(p.karana.end, tz)],
-      ['Rahu Kaal', V.fmtTime(p.rahu.start, tz) + ' – ' + V.fmtTime(p.rahu.end, tz), 'avoid new beginnings'],
-      ['Abhijit', V.fmtTime(p.abhijit.start, tz) + ' – ' + V.fmtTime(p.abhijit.end, tz), 'auspicious window'],
-      ['Sunrise / Sunset', V.fmtTime(p.sunrise, tz) + ' / ' + V.fmtTime(p.sunset, tz), p.weekday + ' · ' + city.name]
+      [T('Tithi', 'तिथि'), hn('paksha', p.tithi.paksha) + ' ' + hn('tithi', p.tithi.name), T('ends ', 'समाप्त ') + V.fmtTime(p.tithi.end, tz)],
+      [T('Nakshatra', 'नक्षत्र'), hn('nakshatra', p.nakshatra.name), hn('planet', p.nakshatra.lord) + T(' · pada ', ' · पाद ') + p.nakshatra.pada],
+      [T('Yoga', 'योग'), hn('yoga', p.yoga.name), T('ends ', 'समाप्त ') + V.fmtTime(p.yoga.end, tz)],
+      [T('Karana', 'करण'), hn('karana', p.karana.name), T('ends ', 'समाप्त ') + V.fmtTime(p.karana.end, tz)],
+      [T('Rahu Kaal', 'राहु काल'), V.fmtTime(p.rahu.start, tz) + ' – ' + V.fmtTime(p.rahu.end, tz), T('avoid new beginnings', 'नई शुरुआत से बचें')],
+      [T('Abhijit', 'अभिजीत'), V.fmtTime(p.abhijit.start, tz) + ' – ' + V.fmtTime(p.abhijit.end, tz), T('auspicious window', 'शुभ समय')],
+      [T('Sunrise / Sunset', 'सूर्योदय / सूर्यास्त'), V.fmtTime(p.sunrise, tz) + ' / ' + V.fmtTime(p.sunset, tz), hn('weekday', p.weekday) + ' · ' + A.placeName(city.name)]
     ];
     $('#homePanchRows').innerHTML = rows.map(function (r) {
       return '<div class="pan-row"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '<small>' + r[2] + '</small></span></div>';
@@ -160,6 +175,7 @@
   }
 
   function init() {
+    if (A.onLang) A.onLang(renderPanchang);
     initCitySelect();
     renderPanchang();
     renderIcons();

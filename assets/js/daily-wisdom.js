@@ -15,6 +15,142 @@
     return Math.floor((date - start) / 86400000) + 1;
   }
 
+  /* The verse sources mix Sanskrit work names with transliteration marks, so
+     they are translated by fragment instead of one giant phrase table. Longer
+     fragments win, which keeps "Nītiśataka" from being split into "Nīti". */
+  var SOURCE_HI = [
+    ['Śiva-aparādha-kṣamāpaṇa Stotram', 'शिव-अपराध-क्षमापण स्तोत्र'],
+    ['Subhashita Ratna Bhandagara', 'सुभाषित रत्नभाण्डागार'],
+    ['Subhāṣitaratnabhāṇḍāgāra', 'सुभाषितरत्नभाण्डागार'],
+    ['Subhashita Ratnakara', 'सुभाषित रत्नाकर'],
+    ['Subhashita Sangraha', 'सुभाषित संग्रह'],
+    ['Subhashita Manjari', 'सुभाषित मंजरी'],
+    ['Subhashita Nari', 'सुभाषित नारी'],
+    ['Nari Subhashita', 'नारी सुभाषित'],
+    ['Subhashita Niti', 'सुभाषित नीति'],
+    ['Chanakya Niti', 'चाणक्य नीति'],
+    ['Cāṇakya Nīti', 'चाणक्य नीति'],
+    ['Cāṇakya Sūtra', 'चाणक्य सूत्र'],
+    ['Bhartṛhari', 'भर्तृहरि'],
+    ['Nītiśataka', 'नीतिशतक'],
+    ['Vairāgyaśataka', 'वैराग्यशतक'],
+    ['Bhagavad Gītā', 'भगवद्गीता'],
+    ['Bhagavad Gita', 'भगवद्गीता'],
+    ['Manusmṛti', 'मनुस्मृति'],
+    ['Manusmriti', 'मनुस्मृति'],
+    ['Yājñavalkya Smṛti', 'याज्ञवल्क्य स्मृति'],
+    ['Mahābhārata', 'महाभारत'],
+    ['Mahabharata', 'महाभारत'],
+    ['Vālmīki Rāmāyaṇa', 'वाल्मीकि रामायण'],
+    ['Rāmāyaṇa', 'रामायण'],
+    ['Pañcatantra', 'पंचतंत्र'],
+    ['Panchatantra', 'पंचतंत्र'],
+    ['Hitopadeśa', 'हितोपदेश'],
+    ['Hitopadesha', 'हितोपदेश'],
+    ['Abhijñānaśākuntalam', 'अभिज्ञानशाकुंतलम्'],
+    ['Kaṭhopaniṣad', 'कठोपनिषद'],
+    ['Amṛtabindu Upaniṣad', 'अमृतबिंदु उपनिषद'],
+    ['Mahopaniṣad', 'महोपनिषद'],
+    ['Taittiriya Upanishad', 'तैत्तिरीय उपनिषद'],
+    ['Upanishadic Shanti Mantra', 'उपनिषद शांति मंत्र'],
+    ['Śaṅkarācārya', 'शंकराचार्य'],
+    ['Bhaja Govindam', 'भज गोविंदम्'],
+    ['Siksastaka', 'शिक्षाष्टक'],
+    ['Chaitanya Mahaprabhu', 'चैतन्य महाप्रभु'],
+    ['Padma Purāṇa', 'पद्म पुराण'],
+    ['Viṣṇu Purāṇa', 'विष्णु पुराण'],
+    ['Garuḍa Purāṇa', 'गरुड पुराण'],
+    ['Yoga Vasistha', 'योग वासिष्ठ'],
+    ['Dhammapada', 'धम्मपद'],
+    ['Nītiśāstra', 'नीतिशास्त्र'],
+    ['Śānti Parva', 'शांति पर्व'],
+    ['Udyoga Parva', 'उद्योग पर्व'],
+    ['Vana Parva', 'वन पर्व'],
+    ['Araṇya Kāṇḍa', 'अरण्य कांड'],
+    ['Yuddha Kāṇḍa', 'युद्ध कांड'],
+    ['Anuśāsana Parva', 'अनुशासन पर्व'],
+    ['Anushasana Parva', 'अनुशासन पर्व'],
+    ['Svargārohaṇika Parva', 'स्वर्गारोहण पर्व'],
+    ['Karṇa Parva', 'कर्ण पर्व'],
+    ['Vidura Nīti', 'विदुर नीति'],
+    ['Yakṣa Praśna', 'यक्ष प्रश्न'],
+    ['Mitrabheda', 'मित्रभेद'],
+    ['Mitralābha', 'मित्रलाभ'],
+    ['Kākolūkīyam', 'काकोलूकीयम्'],
+    ['Kakolukiyam', 'काकोलूकीयम्'],
+    ['Kathāmukha', 'कथामुख'],
+    ['Prastāvikā', 'प्रस्ताविका'],
+    ['Prastāvanā', 'प्रस्तावना'],
+    ['Traditional gṛhastha subhāṣita', 'पारंपरिक गृहस्थ सुभाषित'],
+    ['Traditional mātr̥-mahimā subhāṣita', 'पारंपरिक मातृ-महिमा सुभाषित'],
+    ['Traditional vidyā subhāṣita', 'पारंपरिक विद्या सुभाषित'],
+    ['Traditional pedagogical subhāṣita', 'पारंपरिक शिक्षाप्रद सुभाषित'],
+    ['Traditional lore', 'पारंपरिक कथा'],
+    ['Traditional', 'पारंपरिक'],
+    ['General', 'सामान्य'],
+    ['Popular', 'लोकप्रिय'],
+    ['General Nīti/Dharma compilation', 'सामान्य नीति/धर्म संकलन'],
+    ['Closing reflection on Intellect & Will', 'बुद्धि और संकल्प पर समापन चिंतन'],
+    ['Praśnottara-ratnamālikā lore', 'प्रश्नोत्तर-रत्नमालिका'],
+    ['Widely cited in', 'व्यापक रूप से उद्धृत'],
+    ['Widely compiled in', 'व्यापक रूप से संकलित'],
+    ['Shanti Parva', 'शांति पर्व'],
+    ['Sanskrit', 'संस्कृत'],
+    ['anthology', 'संग्रह'],
+    ['Sandhi', 'संधि'],
+    ['verse', 'श्लोक'],
+    ['subhāṣita', 'सुभाषित'],
+    ['Attributed to', 'श्रेय'],
+    ['based on', 'आधारित'],
+    ['also cites this', 'का भी उल्लेख'],
+    ['Vidyā-praśaṃsā', 'विद्या-प्रशंसा'],
+    ['Mitra-praśaṃsā', 'मित्र-प्रशंसा'],
+    ['Sujana-paddhati', 'सुजन-पद्धति'],
+    ['Durjana-paddhati', 'दुर्जन-पद्धति'],
+    ['Sāmānya-nīti', 'सामान्य नीति'],
+    ['Prajñā Nīti', 'प्रज्ञा नीति'],
+    ['Vidyā/Prajñā', 'विद्या/प्रज्ञा'],
+    ['General Nīti', 'सामान्य नीति'],
+    ['Dharma Section', 'धर्म खंड'],
+    ['Nīti section', 'नीति खंड'],
+    ['Nīti Section', 'नीति खंड'],
+    ['Subhāṣitas', 'सुभाषित'],
+    ['Subhāṣita', 'सुभाषित'],
+    ['Subhashita', 'सुभाषित'],
+    ['Nīti', 'नीति'],
+    ['nīti', 'नीति'],
+    ['Verse', 'श्लोक'],
+    ['Maxim', 'सूक्ति'],
+    ['Proverb', 'कहावत'],
+    ['Aphorism', 'सूक्ति'],
+    ['Philosophical', 'दार्शनिक'],
+    ['Vedantic', 'वेदांतिक'],
+    ['ethical', 'नैतिक'],
+    ['vidyā', 'विद्या'],
+    ['Karma', 'कर्म'],
+    ['Dhairya', 'धैर्य'],
+    ['Yoga', 'योग'],
+    ['Prakīrṇaka', 'प्रकीर्णक'],
+    ['Vairāgya', 'वैराग्य'],
+    ['Dharma', 'धर्म'],
+    ['Purāṇa', 'पुराण'],
+    ['Mantra', 'मंत्र'],
+    ['Stotram', 'स्तोत्र'],
+    ['Upanishad', 'उपनिषद'],
+    ['Smṛti', 'स्मृति'],
+    ['lore', 'कथा'],
+    ['Rāma', 'राम'],
+    ['Vidura', 'विदुर']
+  ].sort(function (a, b) { return b[0].length - a[0].length; });
+
+  function sourceHi(text) {
+    var out = String(text == null ? '' : text);
+    SOURCE_HI.forEach(function (pair) {
+      if (out.indexOf(pair[0]) >= 0) out = out.split(pair[0]).join(pair[1]);
+    });
+    return out;
+  }
+
   function quoteFor(date) {
     var d = date || new Date();
     var index = ((dayOfYear(d) - 1) % QUOTES.length + QUOTES.length) % QUOTES.length;
@@ -47,13 +183,15 @@
       var now = new Date();
       current = quoteFor(now);
       var q = current.quote;
-      if (el.day) el.day.textContent = 'Day ' + current.day + ' / ' + current.total;
-      if (el.date) el.date.textContent = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      if (el.theme) el.theme.textContent = q.themeSa + ' · ' + q.theme;
+      var A = root.App;
+      var hi = A && A.isHi && A.isHi();
+      if (el.day) el.day.textContent = hi ? 'दिन ' + current.day + ' / ' + current.total : 'Day ' + current.day + ' / ' + current.total;
+      if (el.date) el.date.textContent = now.toLocaleDateString(hi ? 'hi-IN' : 'en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      if (el.theme) el.theme.textContent = q.themeSa + (hi ? '' : ' · ' + q.theme);
       if (el.sa) el.sa.textContent = q.sa;
       if (el.hi) el.hi.textContent = q.hi;
-      if (el.en) el.en.textContent = q.en;
-      if (el.source) el.source.textContent = '— ' + q.source;
+      if (el.en) { el.en.textContent = q.en; el.en.hidden = hi; }
+      if (el.source) el.source.textContent = '— ' + (hi ? sourceHi(q.source) : q.source);
       if (el.progress) el.progress.style.width = ((current.day / current.total) * 100).toFixed(2) + '%';
       card.setAttribute('data-day', String(current.day));
       if (el.share) {
@@ -64,8 +202,14 @@
       scheduleMidnight();
     }
 
+    if (root.App && root.App.onLang) root.App.onLang(render);
+
     function shareText(q) {
-      return '🙏 Daily Wisdom · Day ' + current.day + '/365\n\n' + q.sa + '\n\nहिंदी: ' + q.hi + '\n\nEnglish: ' + q.en + '\n\n— ' + q.source + '\n\nhttps://vedicpooja.in/#daily-wisdom';
+      var A = root.App;
+      var hi = A && A.isHi && A.isHi();
+      var head = hi ? '🙏 दैनिक ज्ञान · दिन ' + current.day + '/' + current.total : '🙏 Daily Wisdom · Day ' + current.day + '/' + current.total;
+      var src = hi ? sourceHi(q.source) : q.source;
+      return head + '\n\n' + q.sa + '\n\nहिंदी: ' + q.hi + '\n\nEnglish: ' + q.en + '\n\n— ' + src + '\n\nhttps://vedicpooja.in/#daily-wisdom';
     }
 
     function scheduleMidnight() {
@@ -111,7 +255,7 @@
     render();
   }
 
-  root.DailyWisdom = { quotes: QUOTES, quoteFor: quoteFor, dayOfYear: dayOfYear };
+  root.DailyWisdom = { quotes: QUOTES, quoteFor: quoteFor, dayOfYear: dayOfYear, sourceHi: sourceHi };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
