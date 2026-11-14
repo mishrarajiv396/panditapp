@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" data-leaflet-css>
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/experience.css">
+<link rel="stylesheet" href="assets/css/promo.css">
 <link rel="stylesheet" href="assets/css/map.css">
 </head>
 <body>
@@ -68,6 +69,36 @@
           <a class="link-arrow" href="panchang.html">Full panchang</a>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <!-- ============================================================ LAUNCH OFFER -->
+  <section class="promo-teaser" id="launchOffer" aria-labelledby="promoTitle">
+    <div class="container">
+      <div class="promo-teaser__card" data-no-i18n>
+        <div class="promo-teaser__copy">
+          <span class="promo-teaser__kicker" data-promo-kicker><span class="promo-dot" aria-hidden="true"></span>Launch offer · first 100 bookings only</span>
+          <h2 class="promo-teaser__title" id="promoTitle" data-promo-title><span class="promo-teaser__num">20%</span> off every pooja</h2>
+          <p class="promo-teaser__sub" data-promo-sub>No code, no haggling. The launch discount is applied automatically to every ritual — samagri, pandit and GST stay exactly as before.</p>
+          <ul class="promo-teaser__facts">
+            <li data-promo-fact="auto">Applied automatically — no promo code</li>
+            <li data-promo-fact="poojas">Every one of the 100+ pooja packages</li>
+            <li data-promo-fact="live">Real booking counter — no fake urgency</li>
+          </ul>
+          <div class="promo-teaser__cta">
+            <a class="btn btn--gold btn--lg" href="poojas.html" data-promo-cta>Claim one of the first 100 slots</a>
+            <a class="btn btn--light" href="#rituals" data-promo-alt-cta>See the discounted poojas</a>
+          </div>
+          <p class="promo-teaser__note" data-promo-note>Shop samagri and astrology/Vastu consultations are not part of this offer.</p>
+        </div>
+        <div class="promo-teaser__meter" data-promo-meter aria-live="polite">
+          <span class="promo-meter__eyebrow" data-promo-meter-eyebrow>Launch slots</span>
+          <span class="promo-meter__num" data-promo-remaining>—</span>
+          <span class="promo-meter__label" data-promo-remaining-label>slots left</span>
+          <div class="promo-meter__bar" aria-hidden="true"><span data-promo-bar></span></div>
+          <small class="promo-meter__claimed" data-promo-claimed>Live counter</small>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -506,6 +537,7 @@
 <script src="assets/js/i18n-phrases.js" defer></script>
 <script src="assets/js/i18n-astro.js" defer></script>
 <script src="assets/js/app.js" defer></script>
+<script src="assets/js/promo.js" defer></script>
 <script src="assets/js/search.js" defer></script>
 <script src="assets/js/chart.js" defer></script>
 <script src="assets/js/home.js" defer></script>

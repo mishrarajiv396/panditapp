@@ -175,6 +175,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   place              VARCHAR(255) DEFAULT NULL,
 
   base_amount        INT UNSIGNED NOT NULL DEFAULT 0,
+  discount_amount    INT UNSIGNED NOT NULL DEFAULT 0,
   extras_amount      INT UNSIGNED NOT NULL DEFAULT 0,
   gst_amount         INT UNSIGNED NOT NULL DEFAULT 0,
   total_amount       INT UNSIGNED NOT NULL DEFAULT 0,

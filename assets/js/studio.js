@@ -26,8 +26,19 @@
   var DAY = 86400000;
 
   function L(en, hi) { return A.isHi() ? hi : en; }
+  function dur(s) { return A.isHi() ? A.translateString(s) : s; }
+  function promoBadge() {
+    return (window.VPPromo && window.VPPromo.copy)
+      ? window.VPPromo.copy('badge')
+      : '20% OFF';
+  }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function money(n) { return '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN'); }
+  function launchQuote(list) {
+    return (window.VPPromo && window.VPPromo.price)
+      ? window.VPPromo.price(list)
+      : { list: list, price: list, discount: 0, active: false };
+  }
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
   function T(kind, name) {
     try { return A.isHi() ? A.astro(kind, name) : name; } catch (e) { return name; }
@@ -164,7 +175,7 @@
       if (!items.length) return '';
       return '<optgroup label="' + esc(A.translateString(cat)) + '">' + items.map(function (p) {
         return '<option value="' + esc(p.id) + '"' + (p.id === state.poojaId ? ' selected' : '') + '>' +
-          esc(ritualName(p)) + ' — ' + money(p.price) + ' · ' + esc(p.duration) + '</option>';
+          esc(ritualName(p)) + ' — ' + money(launchQuote(p.price).price) + ' · ' + esc(dur(p.duration)) + '</option>';
       }).join('') + '</optgroup>';
     }).join('');
   }
@@ -253,8 +264,12 @@
     var el = $('#stMarket');
     if (!el) return;
     var p = findPooja();
-    el.innerHTML = '<b>' + esc(ritualName(p)) + '</b> · ' + esc(p.duration) +
-      ' · <span class="mrp">' + money(p.mrp || p.price) + '</span> ' + money(p.price) +
+    var q = launchQuote(p.price);
+    el.innerHTML = '<b>' + esc(ritualName(p)) + '</b> · ' + esc(dur(p.duration)) + ' · ' +
+      (q.discount
+        ? '<span class="mrp">' + money(q.list) + '</span> ' + money(q.price) +
+          ' <span class="promo-badge promo-badge--sm" data-promo-badge>' + promoBadge() + '</span>'
+        : '<span class="mrp">' + money(p.mrp || p.price) + '</span> ' + money(q.price)) +
       ' <span class="tiny">' + L('all-inclusive', 'सर्व-समावेशी') + '</span>';
   }
 
@@ -693,14 +708,16 @@
   function budgetHtml(pooja) {
     var extras = selectedExtras();
     var extraTotal = extras.reduce(function (s, x) { return s + x.price; }, 0);
-    var base = Number(pooja.price) || 0;
+    var q = launchQuote(pooja.price);
+    var base = q.price;
     var gst = Math.round((base + extraTotal) * 0.18);
     var total = base + extraTotal + gst;
-    var save = Math.max(0, (Number(pooja.mrp) || base) - base);
+    var save = Math.max(0, (Number(pooja.mrp) || q.list) - base);
     return '<div class="studio-budget">' +
       '<div class="studio-budget__card">' +
         '<h4>' + L('Transparent estimate', 'पारदर्शी अनुमान') + '</h4>' +
-        '<div class="studio-budget__row"><span>' + esc(ritualName(pooja)) + '</span><b>' + money(base) + '</b></div>' +
+        '<div class="studio-budget__row"><span>' + esc(ritualName(pooja)) + '</span><b>' + money(q.list) + '</b></div>' +
+        (q.discount ? '<div class="studio-budget__row studio-budget__row--promo"><span>' + L('Launch offer (20% off)', 'लॉन्च ऑफ़र (20% छूट)') + '</span><b>- ' + money(q.discount) + '</b></div>' : '') +
         (extras.length ? extras.map(function (x) {
           return '<div class="studio-budget__row"><span>' + esc(x.name) + '</span><b>' + money(x.price) + '</b></div>';
         }).join('') : '<div class="studio-budget__row"><span>' + L('Add-ons', 'अतिरिक्त सेवाएँ') + '</span><b>—</b></div>') +
@@ -1068,6 +1085,13 @@
     lastDayKey = dayKeyNow();
 
     A.onLang(function () {
+      buildForm();
+      if (ranked.length) renderResults();
+      else if (!scanning) renderScan(0, state.days, findPooja());
+    });
+
+    // The live launch counter prices the plan and budget; redraw when it lands.
+    document.addEventListener('vp:promo', function () {
       buildForm();
       if (ranked.length) renderResults();
       else if (!scanning) renderScan(0, state.days, findPooja());

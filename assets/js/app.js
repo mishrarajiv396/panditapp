@@ -1130,6 +1130,9 @@
     lines.push('🧑‍🏫 Pandit: ' + (b.panditName || 'Best match — assign for me'));
     if (b.extrasList && b.extrasList.length) lines.push('➕ Add-ons: ' + b.extrasList.join(', '));
     lines.push('');
+    if (Number(b.discount) > 0) {
+      lines.push('🎉 Launch offer: -' + INR(Number(b.discount)) + ' (20% off the ritual fee)');
+    }
     lines.push('💰 Total: ' + INR(Number(b.total) || 0) + ' (incl. GST ' + INR(Number(b.gst) || 0) + ')');
     if (paymentNote) {
       lines.push(paymentNote);
@@ -1250,18 +1253,22 @@
       ['Payment', booking.paymentStatus || 'Pending'],
       ['UPI reference', booking.paymentRef]
     ];
-    var amounts = [
-      ['Pooja', booking.base],
+    var amounts = [['Pooja', booking.base]];
+    if (Number(booking.discount) > 0) amounts.push(['Launch discount (20% off)', -Number(booking.discount)]);
+    amounts = amounts.concat([
       ['Extras', booking.extras],
       ['GST', booking.gst],
       ['Paid', booking.amountPaid],
       ['Balance', booking.balance]
-    ];
+    ]);
     var customer = booking.customer || {};
     var rows = details.filter(function (r) { return r[1] != null && r[1] !== ''; })
       .map(function (r) { return '<tr><th>' + esc(r[0]) + '</th><td>' + esc(r[1]) + '</td></tr>'; }).join('');
     var money = amounts.filter(function (r) { return r[1] != null; })
-      .map(function (r) { return '<tr><th>' + esc(r[0]) + '</th><td>' + INR(Number(r[1]) || 0) + '</td></tr>'; }).join('');
+      .map(function (r) {
+        var n = Number(r[1]) || 0;
+        return '<tr><th>' + esc(r[0]) + '</th><td>' + (n < 0 ? '- ' + INR(Math.abs(n)) : INR(n)) + '</td></tr>';
+      }).join('');
     var html = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
       '<meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>Receipt ' + esc(booking.id) + '</title><style>' +

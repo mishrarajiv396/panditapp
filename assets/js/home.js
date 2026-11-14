@@ -85,6 +85,26 @@
   }
 
   /* ------------------------------------------------------------------- cards */
+  function quote(list) {
+    return (window.VPPromo && window.VPPromo.price)
+      ? window.VPPromo.price(list)
+      : { list: list, price: list, discount: 0, active: false };
+  }
+
+  function promoBadge() {
+    return (window.VPPromo && window.VPPromo.copy)
+      ? window.VPPromo.copy('badge')
+      : '20% OFF';
+  }
+
+  function priceHtml(p) {
+    var q = quote(p.price);
+    return '<div class="price">' + A.INR(q.price) +
+      '<small>all inclusive' + (q.discount ? ' <s class="promo-strike">' + A.INR(q.list) + '</s>' : '') + '</small>' +
+      (q.discount ? '<span class="price__promo"><span class="promo-badge promo-badge--sm" data-promo-badge>' + promoBadge() + '</span></span>' : '') +
+      '</div>';
+  }
+
   function poojaCard(p) {
     return '<article class="card ritual-card card--hover reveal">' +
       '<div class="ritual-card__art">' +
@@ -96,7 +116,7 @@
       '<div class="ritual-card__hi dev">' + A.esc(p.hi) + '</div>' +
       '<div class="ritual-card__meta"><span>' + A.icon('clock') + A.esc(p.duration) + '</span><span>' + A.icon('shield') + 'Verified pandit</span></div>' +
       '<p class="ritual-card__desc">' + A.esc(p.desc) + '</p>' +
-      '<div class="ritual-card__foot"><div class="price">' + A.INR(p.price) + '<small>all inclusive</small></div>' +
+      '<div class="ritual-card__foot">' + priceHtml(p) +
       '<a class="ritual-card__add" href="booking.html?pooja=' + p.id + '" aria-label="Book ' + A.esc(p.name) + '">Book ' + A.icon('arrow') + '</a></div>' +
       '</div></article>';
   }
@@ -179,6 +199,8 @@
     initCitySelect();
     renderPanchang();
     renderIcons();
+    // Prices follow the live launch offer; redraw when /api/offer answers.
+    document.addEventListener('vp:promo', renderFeatured);
     // The sections below the hero are not part of the first paint. Rendering
     // them in small batches keeps a single long main-thread task from forming.
     var queue = [

@@ -7,6 +7,7 @@ const {
 } = require('../middleware/helpers');
 const { optionalUser } = require('../middleware/auth');
 const rateLimit = require('../middleware/rate-limit');
+const offer = require('../offer');
 
 const router = express.Router();
 
@@ -35,6 +36,8 @@ function mapBooking(row) {
     place: row.place,
     city: row.city,
     base: row.base_amount,
+    listBase: Number(row.base_amount || 0) + Number(row.discount_amount || 0),
+    discount: row.discount_amount,
     extras: row.extras_amount,
     gst: row.gst_amount,
     total: row.total_amount,
@@ -109,9 +112,17 @@ async function priceBooking(body) {
     extrasRows = extraIds.map((id) => byId.get(id)).filter(Boolean);
   }
 
-  const base = Number(pooja.price) || 0;
   const extras = extrasRows.reduce((sum, row) => sum + (Number(row.price) || 0), 0);
   const extrasList = extrasRows.map((row) => row.name);
+
+  // One snapshot of the launch counter decides the price for this booking.
+  // The browser shows a live estimate, but the discount only exists here if a
+  // launch slot is still open at the moment the booking is created.
+  const launch = await offer.status();
+  const priced = offer.quote(pooja.price, launch.active);
+  const base = priced.price;
+  const discount = priced.discount;
+  const listBase = priced.list;
 
   const gst = Math.round((base + extras) * GST_RATE);
   const total = base + extras + gst;
@@ -123,6 +134,8 @@ async function priceBooking(body) {
   return {
     poojaName: pooja.name,
     base,
+    listBase,
+    discount,
     extras,
     gst,
     total,
@@ -182,6 +195,7 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
     city: cleanString(body.city, 120),
     place: cleanString(body.place, 255),
     base_amount: price.base,
+    discount_amount: price.discount,
     extras_amount: price.extras,
     gst_amount: price.gst,
     total_amount: price.total,
@@ -214,14 +228,14 @@ router.post('/bookings', createLimit, optionalUser, asyncHandler(async (req, res
   await db.query(
     `INSERT INTO bookings (
        id, user_id, type, status, pooja_id, pooja_name, booking_date, date_label, muhurat,
-       pandit_id, pandit_name, city, place, base_amount, extras_amount, gst_amount,
+       pandit_id, pandit_name, city, place, base_amount, discount_amount, extras_amount, gst_amount,
        total_amount, payment_method, payment_status, pay_now, balance, amount_paid,
        upi_id, otp, customer_name, customer_phone, customer_email, address, society,
        pincode, gate, gotra, language, tradition, notes, gstin, company, gate_pass,
        extras, extras_list, created_at
      ) VALUES (
        :id, :user_id, :type, :status, :pooja_id, :pooja_name, :booking_date, :date_label, :muhurat,
-       :pandit_id, :pandit_name, :city, :place, :base_amount, :extras_amount, :gst_amount,
+       :pandit_id, :pandit_name, :city, :place, :base_amount, :discount_amount, :extras_amount, :gst_amount,
        :total_amount, :payment_method, :payment_status, :pay_now, :balance, :amount_paid,
        :upi_id, :otp, :customer_name, :customer_phone, :customer_email, :address, :society,
        :pincode, :gate, :gotra, :language, :tradition, :notes, :gstin, :company, :gate_pass,

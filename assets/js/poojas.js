@@ -41,6 +41,7 @@
   }
 
   function card(p) {
+    var q = quote(p.price);
     return '<article class="card ritual-card card--hover">' +
       '<div class="ritual-card__art">' +
       (p.popular ? '<span class="ritual-card__fav">Most booked</span>' : '') +
@@ -52,11 +53,34 @@
       '<div class="ritual-card__meta"><span>' + A.icon('clock') + A.esc(p.duration) + '</span><span>' + A.icon('shield') + 'Verified pandit</span></div>' +
       '<p class="ritual-card__desc">' + A.esc(p.desc) + '</p>' +
       (p.id === 'satyanarayan' ? '<a class="link-arrow ritual-card__guide" href="puja-guide.html">Free step-by-step guide ' + A.icon('arrow') + '</a>' : '') +
-      '<div class="ritual-card__foot"><div class="price">' + A.INR(p.price) + '<small>all inclusive <span class="mrp">' + A.INR(p.mrp) + '</span></small></div>' +
+      '<div class="ritual-card__foot">' + priceBlock(p, q) +
       '<div class="pooja-actions">' +
       '<button class="btn btn--ghost btn--sm" data-detail="' + p.id + '">Details</button>' +
       '<a class="ritual-card__add" href="booking.html?pooja=' + p.id + '">Book ' + A.icon('arrow') + '</a>' +
       '</div></div></div></article>';
+  }
+
+  function quote(list) {
+    return (window.VPPromo && window.VPPromo.price)
+      ? window.VPPromo.price(list)
+      : { list: list, price: list, discount: 0, active: false };
+  }
+
+  function promoBadge() {
+    return (window.VPPromo && window.VPPromo.copy)
+      ? window.VPPromo.copy('badge')
+      : '20% OFF';
+  }
+
+  function priceBlock(p, q) {
+    q = q || quote(p.price);
+    if (!q.discount) {
+      return '<div class="price">' + A.INR(q.price) +
+        '<small>all inclusive <span class="mrp">' + A.INR(p.mrp) + '</span></small></div>';
+    }
+    return '<div class="price">' + A.INR(q.price) +
+      '<small>all inclusive <s class="promo-strike">' + A.INR(q.list) + '</s></small>' +
+      '<span class="price__promo"><span class="promo-badge promo-badge--sm" data-promo-badge>' + promoBadge() + '</span></span></div>';
   }
 
   function renderCats() {
@@ -79,6 +103,7 @@
   function openDetail(id) {
     var p = D.POOJAS.filter(function (x) { return x.id === id; })[0];
     if (!p) return;
+    var q = quote(p.price);
     var html = '<div class="modal__head"><div><span class="kicker">' + A.esc(p.cat) + '</span><h2 class="fs-15">' + A.esc(p.name) + '</h2><div class="hi dev">' + A.esc(p.hi) + '</div></div>' +
       '<button class="close-x" data-modal-close aria-label="Close">' + A.icon('close') + '</button></div>' +
       '<div class="modal__body">' +
@@ -95,7 +120,10 @@
       '<div class="pooja-chiprow">' + p.samagri.map(function (s) { return '<span class="chip chip--sm">' + A.esc(s) + '</span>'; }).join('') + '</div>' +
       '<div class="note-strip note-strip--mt18">' + A.icon('pin') + '<span>Available across Gurugram, NCR and <span data-city-count>1,057</span> cities, districts and famous places. Society gate-pass and smokeless havan options at checkout.</span></div>' +
       (p.id === 'satyanarayan' ? '<div class="note-strip note-strip--gold">' + A.icon('spark') + '<span><b>Want to understand the vidhi first?</b><br>Open the <a href="puja-guide.html">free 8-step Satyanarayan puja guide</a> — mantras, samagri, katha, havan counter and a printable sankalp.</span></div>' : '') +
-      '<div class="modal-price"><div><div class="price">' + A.INR(p.price) + '<small>all inclusive · GST extra</small></div><span class="tiny muted">Mrp ' + A.INR(p.mrp) + ' · you save ' + A.INR(p.mrp - p.price) + '</span></div>' +
+      '<div class="modal-price"><div><div class="price">' + A.INR(q.price) +
+      '<small>all inclusive · GST extra' + (q.discount ? ' <s class="promo-strike">' + A.INR(q.list) + '</s>' : '') + '</small>' +
+      (q.discount ? '<span class="price__promo"><span class="promo-badge promo-badge--sm" data-promo-badge>' + promoBadge() + '</span></span>' : '') +
+      '</div><span class="tiny muted">Mrp ' + A.INR(p.mrp) + ' · you save ' + A.INR(p.mrp - q.price) + '</span></div>' +
       '<a class="btn btn--primary" href="booking.html?pooja=' + p.id + '">Book this pooja ' + A.icon('arrow') + '</a></div>' +
       '</div>';
     A.openModal(html, { width: '600px' });
@@ -136,4 +164,6 @@
 
   renderCats();
   render();
+  // The live launch counter may change the displayed price after first paint.
+  document.addEventListener('vp:promo', render);
 })();

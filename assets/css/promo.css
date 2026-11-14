@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Launch offer — 20% off every pooja for the first 100 bookings.
+   Uses the same temple palette as style.css: maroon, gold and warm cream.
+   ========================================================================== */
+
+/* ------------------------------------------------------------- shared bits */
+.promo-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:999px;
+  background:linear-gradient(135deg,#f3d27a,var(--gold));
+  color:#3d2708;font-family:var(--sans);font-size:.66rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+  vertical-align:middle;line-height:1.35;
+}
+.promo-badge--sm{font-size:.6rem;padding:2px 6px;letter-spacing:.05em}
+.promo-strike{
+  font-family:var(--sans);font-size:.72rem;font-weight:400;
+  color:var(--ink-faint);text-decoration:line-through;margin-left:5px;
+}
+.promo-save{color:var(--green);font-weight:600}
+.promo-off .promo-badge,
+.promo-off .promo-strike{display:none !important}
+
+/* ---------------------------------------------------------- home teaser band */
+.promo-teaser{position:relative;z-index:3;margin-top:-46px;padding-bottom:4px}
+.promo-teaser__card{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1fr) 236px;
+  gap:34px;align-items:center;
+  padding:34px 38px;
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(201,162,39,.5);
+  background:linear-gradient(118deg,#3b0d16 0%,var(--maroon) 48%,#8a2c3b 100%);
+  color:#fff;
+  box-shadow:0 30px 70px -32px rgba(66,15,24,.72);
+}
+.promo-teaser__card::before{
+  content:'';position:absolute;width:420px;height:420px;right:-130px;top:-190px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(224,138,46,.42),transparent 66%);
+  pointer-events:none;
+}
+.promo-teaser__card::after{
+  content:'';position:absolute;left:-90px;bottom:-180px;width:360px;height:360px;
+  border-radius:50%;border:1px solid rgba(201,162,39,.24);
+  box-shadow:0 0 0 34px rgba(201,162,39,.05),0 0 0 76px rgba(201,162,39,.035);
+  pointer-events:none;
+}
+.promo-teaser--ended .promo-teaser__card{
+  background:linear-gradient(118deg,#3a2018 0%,#5b3a2c 55%,#7a5341 100%);
+  border-color:rgba(201,162,39,.3);
+}
+.promo-teaser__copy{position:relative;z-index:1;min-width:0}
+.promo-teaser__kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:.68rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);
+}
+.promo-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--saffron);
+  box-shadow:0 0 0 4px rgba(224,138,46,.2);
+  animation:promo-pulse 2.4s ease-in-out infinite;
+}
+@keyframes promo-pulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(224,138,46,.18)}
+  50%{box-shadow:0 0 0 7px rgba(224,138,46,.06)}
+}
+.promo-teaser__title{
+  margin:10px 0 0;color:#fff;
+  font-family:var(--serif);font-size:clamp(1.75rem,3.4vw,2.6rem);
+  line-height:1.1;letter-spacing:-.01em;
+}
+.promo-teaser__num{
+  font-family:var(--serif);color:#f6d98d;
+  text-shadow:0 8px 30px rgba(224,138,46,.35);
+  white-space:nowrap;
+}
+.promo-teaser__sub{
+  margin:12px 0 0;max-width:620px;
+  font-size:.92rem;line-height:1.65;color:rgba(255,255,255,.78);
+}
+.promo-teaser__facts{
+  display:flex;flex-wrap:wrap;gap:8px 18px;
+  margin:16px 0 0;padding:0;list-style:none;
+}
+.promo-teaser__facts li{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.76rem;color:rgba(255,255,255,.82);
+}
+.promo-teaser__facts li::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--gold-soft);flex:none;
+}
+.promo-teaser__cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.promo-teaser__note{
+  margin:14px 0 0;font-size:.7rem;line-height:1.55;
+  color:rgba(255,255,255,.55);
+}
+.promo-teaser__meter{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:22px 18px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,253,249,.09);
+  backdrop-filter:blur(8px);
+}
+.promo-meter__eyebrow{
+  font-family:var(--sans);font-size:.6rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);
+}
+.promo-meter__num{
+  display:block;margin-top:6px;
+  font-family:var(--serif);font-size:3.1rem;line-height:1;color:#fff;
+  font-variant-numeric:tabular-nums;
+}
+.promo-meter__label{
+  margin-top:4px;font-size:.68rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);
+}
+.promo-meter__bar{
+  width:100%;height:6px;margin:16px 0 10px;
+  border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden;
+}
+.promo-meter__bar span{
+  display:block;width:0;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,#f6d98d,var(--saffron));
+  transition:width .55s cubic-bezier(.2,.7,.2,1);
+}
+.promo-meter__claimed{
+  font-size:.68rem;color:rgba(255,255,255,.68);line-height:1.4;
+}
+
+/* ------------------------------------------------------------ compact strip */
+.promo-strip-wrap{padding-top:18px}
+.promo-strip{
+  display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;
+  padding:12px 18px;
+  border-radius:16px;
+  border:1px solid rgba(201,162,39,.45);
+  background:linear-gradient(100deg,#fff8ea,#fdf1d6);
+  box-shadow:var(--shadow-sm);
+}
+.promo-strip p{
+  flex:1;min-width:220px;margin:0;
+  font-size:.82rem;line-height:1.55;color:var(--ink-soft);
+}
+.promo-strip p b{color:var(--maroon-deep)}
+.promo-strip__count{
+  font-size:.72rem;font-weight:600;letter-spacing:.02em;
+  color:var(--maroon-deep);white-space:nowrap;
+}
+.promo-strip__count b{font-family:var(--serif);font-size:1.02rem;font-weight:400}
+.promo-strip .btn{flex:none}
+
+/* -------------------------------------------------- booking summary discount */
+.summary-line--promo{color:var(--green)}
+.summary-line--promo b{color:var(--green);font-weight:700}
+.summary-line--promo .promo-badge{vertical-align:1px}
+.summary-line--promo[hidden]{display:none}
+.price__promo{display:block;margin-top:6px}
+.studio-budget__row--promo{color:var(--green)}
+.studio-budget__row--promo b{color:var(--green)}
+
+/* --------------------------------------------------------------- responsive */
+@media (max-width:900px){
+  .promo-teaser{margin-top:-30px}
+  .promo-teaser__card{
+    grid-template-columns:1fr;gap:22px;padding:28px;
+  }
+  .promo-teaser__meter{
+    flex-direction:row;flex-wrap:wrap;justify-content:center;
+    gap:6px 14px;padding:16px 18px;text-align:left;
+  }
+  .promo-meter__eyebrow{width:100%;text-align:center}
+  .promo-meter__num{font-size:2.4rem;margin:0}
+  .promo-meter__label{margin:0 0 0 2px}
+  .promo-meter__bar{order:3;width:100%;margin:6px 0 2px}
+  .promo-meter__claimed{order:4;width:100%;text-align:center}
+}
+@media (max-width:560px){
+  .promo-teaser{margin-top:-22px}
+  .promo-teaser__card{padding:24px 20px;border-radius:20px}
+  .promo-teaser__title{font-size:clamp(1.55rem,7vw,2rem)}
+  .promo-teaser__facts{flex-direction:column;gap:7px}
+  .promo-teaser__cta .btn{width:100%;text-align:center;justify-content:center}
+  .promo-strip{padding:12px 14px;align-items:flex-start}
+  .promo-strip .promo-badge{margin-top:2px}
+  .promo-strip p{min-width:0}
+  .promo-strip__count{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .promo-dot{animation:none}
+  .promo-meter__bar span{transition:none}
+}
+@media print{
+  .promo-teaser,.promo-strip-wrap,.summary-line--promo,.promo-badge,.promo-strike{display:none !important}
+}

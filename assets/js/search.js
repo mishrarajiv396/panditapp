@@ -114,9 +114,12 @@
     items = [];
 
     D.POOJAS.forEach(function (p) {
+      var q = (window.VPPromo && window.VPPromo.price)
+        ? window.VPPromo.price(p.price)
+        : { price: p.price, list: p.price, discount: 0 };
       items.push(makeItem('Poojas', {
         title: p.name,
-        sub: [p.cat, p.duration, 'from ' + A.INR(p.price)].filter(Boolean).join(' · '),
+        sub: [p.cat, p.duration, 'from ' + A.INR(q.price) + (q.discount ? ' (was ' + A.INR(q.list) + ')' : '')].filter(Boolean).join(' · '),
         href: 'poojas.html?q=' + encodeURIComponent(p.name),
         icon: 'fire',
         keys: [p.hi, p.cat, (p.tags || []).join(' '), p.desc].join(' '),
@@ -497,6 +500,8 @@
       if (e.key === 'Escape') { e.preventDefault(); close(); }
     });
   }
+
+  document.addEventListener('vp:promo', function () { items = null; });
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

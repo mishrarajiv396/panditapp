@@ -172,7 +172,46 @@ data to MySQL whenever the API is reachable:
   admin approves it in the **Reviews** tab of the dashboard.
 - `assets/js/api.js` now loads on every page that renders the shared shell, so
   the header booking dialog works from anywhere. `sw.js` cache version is
-  `vp-static-v49`.
+  `vp-static-v60`.
+
+### Launch offer — 20% off every pooja (14 Nov 2026)
+
+The launch campaign is a real, server-priced discount, not a banner:
+
+- **Rule** — 20% off the current list price of every pooja for the first 100
+  confirmed bookings. Cancelled and refunded bookings release their slot, so
+  the counter is the number of live bookings in MySQL. Shop products and
+  astrology / Vastu consultations are excluded. No promo code is needed.
+- **Pricing** — the ritual fee becomes `round(list × 0.8)`; add-ons keep their
+  own prices, and 18% GST is charged on the discounted ritual fee plus add-ons.
+  Example: ₹5,100 list → ₹4,080 ritual fee, ₹1,020 launch discount, ₹734 GST,
+  ₹4,814 total. `server/src/routes/bookings.js` computes this again at write
+  time from the `poojas` table, so a stale or modified browser cannot change
+  the amount charged.
+- **Backend** — `server/src/offer.js` owns the offer constants, the live count
+  query and the discount quote; `GET /api/offer` returns the counter with
+  `Cache-Control: no-store`. `bookings.discount_amount` stores the discount
+  (added by `server/scripts/migrate.js`), and booking responses expose
+  `base`, `listBase`, `discount`, `extras`, `gst` and `total`.
+- **Frontend** — `assets/js/promo.js` is the single browser-side source for
+  the price helper, teaser, compact strips, live meter and English/Hindi copy.
+  `assets/css/promo.css` styles them with the existing maroon/gold palette.
+  The homepage teaser sits between the hero and trust bar; `poojas.html` and
+  `booking.html` carry compact strips, and the booking summary has a discount
+  line. Featured cards, the catalogue and modal, the muhurat studio budget,
+  site search, WhatsApp text and the printable receipt all show the same
+  discounted amount.
+- **Ended state** — when `claimed` reaches 100 the API reports `active: false`
+  and every page re-renders from the `vp:promo` event: badges and strike-through
+  prices disappear, the teaser switches to a completion message, and the
+  counter shows 0 slots left. The counter is never invented: before the first
+  `/api/offer` response the UI shows the 100-slot limit rather than a fake
+  number, and it refreshes on focus and once a minute.
+- **Bilingual** — the copy table in `promo.js` covers both languages; offer
+  containers use `data-no-i18n` so the generic DOM translator does not fold
+  English and Hindi together. The server-side values are language-neutral.
+- `sw.js` was bumped to `vp-static-v60` and `promo.css` / `promo.js` were added
+  to `CORE`.
 
 ### Production hardening
 
@@ -401,6 +440,25 @@ Tested in headless Chromium against the static server at 320, 390, 768 and
   Leaflet without a reload.
 - OSM tiles loaded 12/12 with HTTP 200 in the browser; the live map stayed in
   map mode at every tested width.
+
+### Launch offer (14 Nov 2026)
+
+- **Server source of truth:** `POST /api/bookings` priced Satyanarayan Katha
+  (list ₹5,100) at ₹4,080 ritual fee, ₹1,020 launch discount, ₹734 GST and
+  ₹4,814 total while the counter was live. The temporary test row was deleted
+  and `/api/offer` returned to `claimed: 1`, `remaining: 99`, `active: true`.
+- **Browser parity:** headless Chromium at 1440, 390 and 320 px on
+  `index.html`, `poojas.html`, `booking.html` and `muhurat.html` showed the
+  same ₹4,080 / ₹5,100 / 20% values in cards, the booking dropdown, summary,
+  studio market line and budget; the live counter read "99 of 100 launch slots
+  left" and no page had horizontal overflow.
+- **Hindi parity:** after switching language, every offer string, badge,
+  discount label and studio duration was Devanagari with no leftover English
+  words, including after a simulated `vp:promo` refresh.
+- **Ended state:** overriding `/api/offer` with `claimed: 100,
+  remaining: 0, active: false` removed all badges, restored the ₹5,100 ritual
+  fee + ₹918 GST = ₹6,018 total, hid the discount line, and changed the teaser
+  and strips to their completion copy.
 
 ### Real-device checklist (not run in headless Chromium)
 

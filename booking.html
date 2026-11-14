@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/experience.css">
 <link rel="stylesheet" href="assets/css/map.css">
+<link rel="stylesheet" href="assets/css/promo.css">
 </head>
 <body>
 
@@ -36,6 +37,16 @@
       </div>
     </div>
   </section>
+
+  <div class="promo-strip-wrap">
+    <div class="container">
+      <div class="promo-strip" data-promo-strip data-no-i18n>
+        <span class="promo-badge" data-promo-badge>20% OFF</span>
+        <p data-promo-strip-text><b>Launch offer applied:</b> 20% off every pooja for the first 100 bookings. No code needed.</p>
+        <span class="promo-strip__count" data-promo-strip-count><b>First 100</b> bookings</span>
+      </div>
+    </div>
+  </div>
 
   <section class="section">
     <div class="container">
@@ -245,6 +256,7 @@
               <div class="summary-line"><span>City</span><b id="sumCity">Gurugram</b></div>
               <div class="summary-line"><span>Pandit</span><b id="sumPandit">Best match</b></div>
               <div class="summary-line"><span>Ritual fee</span><b id="sumBase">₹0</b></div>
+              <div class="summary-line summary-line--promo" id="sumDiscount" hidden><span><span id="sumDiscountLabel">Launch offer</span> <span class="promo-badge promo-badge--sm" data-promo-badge>20% OFF</span></span><b id="sumDiscountVal">—</b></div>
               <div class="summary-line"><span>Add-ons</span><b id="sumExtras">₹0</b></div>
               <div class="summary-line"><span>GST (18%)</span><b id="sumGst">₹0</b></div>
               <div class="summary-line total"><span>Total</span><b id="sumTotal">₹0</b></div>
@@ -282,6 +294,7 @@
 <script src="assets/js/app.js"></script>
 <script src="assets/js/search.js" defer></script>
 <script src="assets/js/api.js"></script>
+<script src="assets/js/promo.js"></script>
 <script src="assets/js/booking.js"></script>
 <script src="assets/js/map.js"></script>
 <script src="assets/js/experience.js"></script>

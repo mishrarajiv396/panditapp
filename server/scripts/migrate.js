@@ -64,6 +64,7 @@ async function main() {
     // CREATE TABLE IF NOT EXISTS does not add columns to tables that already
     // exist, so patch the customer-account links in for older databases.
     await ensureColumn(conn, 'bookings', 'user_id', 'INT UNSIGNED DEFAULT NULL AFTER id');
+    await ensureColumn(conn, 'bookings', 'discount_amount', 'INT UNSIGNED NOT NULL DEFAULT 0 AFTER base_amount');
     await ensureColumn(conn, 'orders', 'user_id', 'INT UNSIGNED DEFAULT NULL AFTER id');
 
     const [bookingIndex] = await conn.query(

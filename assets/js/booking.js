@@ -19,6 +19,21 @@
      string, so the whole sentence still reads naturally. */
   function tr(s) { return isHi() ? A.translateString(s) : s; }
 
+  /* The launch price shown here mirrors server/src/offer.js exactly:
+     round(list * 0.8). The server still recomputes it when the booking is
+     created, so a stale tab can never overcharge. */
+  function launchQuote(list) {
+    return (window.VPPromo && window.VPPromo.price)
+      ? window.VPPromo.price(list)
+      : { list: list, price: list, discount: 0, active: false };
+  }
+  function offerLabel() { return T('Launch offer', 'लॉन्च ऑफ़र'); }
+  function promoBadge() {
+    return (window.VPPromo && window.VPPromo.copy)
+      ? window.VPPromo.copy('badge')
+      : '20% OFF';
+  }
+
   var params = new URLSearchParams(location.search);
   var savedCity = A.store.get('vp_city', 'Gurugram');
 
@@ -167,7 +182,7 @@
     sel.innerHTML = groups.map(function (cat) {
       var items = D.POOJAS.filter(function (p) { return p.cat === cat; });
       return '<optgroup label="' + A.esc(tr(cat)) + '">' + items.map(function (p) {
-        return '<option value="' + p.id + '">' + A.esc(tr(p.name)) + ' — ' + A.INR(p.price) + ' · ' + A.esc(tr(p.duration)) + '</option>';
+        return '<option value="' + p.id + '">' + A.esc(tr(p.name)) + ' — ' + A.INR(launchQuote(p.price).price) + ' · ' + A.esc(tr(p.duration)) + '</option>';
       }).join('') + '</optgroup>';
     }).join('');
     var wanted = params.get('pooja');
@@ -181,6 +196,14 @@
       history.replaceState(null, '', u);
       renderSummary();
       renderPoojaHint();
+    });
+  }
+
+  function refreshPoojaOptions() {
+    $$('#poojaSelect option').forEach(function (opt) {
+      var p = poojaById(opt.value);
+      if (!p) return;
+      opt.textContent = tr(p.name) + ' — ' + A.INR(launchQuote(p.price).price) + ' · ' + tr(p.duration);
     });
   }
 
@@ -430,8 +453,11 @@
   function renderSummary() {
     var p = state.pooja;
     if (!p) return;
+    var q = launchQuote(p.price);
     $('#sumPooja').textContent = p.name;
-    $('#sumMeta').textContent = tr(p.duration) + ' · ' + tr(p.cat) + T(' · save ', ' · बचत ') + A.INR(p.mrp - p.price);
+    $('#sumMeta').textContent = tr(p.duration) + ' · ' + tr(p.cat) + ' · ' +
+      (q.discount ? offerLabel() + ' ' + q.percent + '% · ' : '') +
+      T('save ', 'बचत ') + A.INR(p.mrp - q.price);
     var m = state.muhurat;
     var dp = parseDate(state.date);
     var dateTxt = dp.d + ' ' + (isHi() ? HI_MONTHS_SHORT[dp.m - 1] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dp.m - 1]);
@@ -439,11 +465,20 @@
     $('#sumCity').textContent = A.placeName(state.city.name);
     $('#sumPandit').textContent = state.pandit ? state.pandit.name.replace('Pt. ', '').replace('Pandita ', '') : T('Best match', 'सर्वोत्तम मिलान');
     var extra = extrasTotal();
-    var gst = Math.round((p.price + extra) * 0.18);
-    $('#sumBase').textContent = A.INR(p.price);
+    var gst = Math.round((q.price + extra) * 0.18);
+    var total = q.price + extra + gst;
+    $('#sumBase').textContent = A.INR(q.list);
+    var discountLine = $('#sumDiscount');
+    if (discountLine) {
+      discountLine.hidden = !q.discount;
+      var discountLabel = $('#sumDiscountLabel');
+      if (discountLabel) discountLabel.textContent = offerLabel();
+      var discountVal = $('#sumDiscountVal');
+      if (discountVal) discountVal.textContent = q.discount ? '− ' + A.INR(q.discount) : '—';
+    }
     $('#sumExtras').textContent = extra ? A.INR(extra) : '—';
     $('#sumGst').textContent = A.INR(gst);
-    $('#sumTotal').textContent = A.INR(p.price + extra + gst);
+    $('#sumTotal').textContent = A.INR(total);
     renderPoojaHint();
     renderPayNow();
   }
@@ -451,9 +486,10 @@
   function renderPayNow() {
     var line = $('#payNowLine');
     if (!line || !state.pooja) return;
+    var q = launchQuote(state.pooja.price);
     var extra = extrasTotal();
-    var gst = Math.round((state.pooja.price + extra) * 0.18);
-    var total = state.pooja.price + extra + gst;
+    var gst = Math.round((q.price + extra) * 0.18);
+    var total = q.price + extra + gst;
     var method = currentPayment();
     var now = payNowAmount(total, method);
     if (method === '25% now') {
@@ -471,8 +507,11 @@
   function renderPoojaHint() {
     var p = state.pooja;
     if (!p) return;
+    var q = launchQuote(p.price);
     $('#poojaHint').innerHTML = '<b>' + A.esc(p.name) + '</b> · ' + A.esc(tr(p.duration)) + ' · ' + A.esc(tr(p.cat)) +
-      ' · ' + T('all-inclusive ', 'सर्व-समावेशी ') + A.INR(p.price) + ' <a href="poojas.html?q=' + encodeURIComponent(p.name.split(' ')[0]) + '" class="link-underline">' + T('what’s included?', 'क्या शामिल है?') + '</a>';
+      ' · ' + T('all-inclusive ', 'सर्व-समावेशी ') + A.INR(q.price) +
+      (q.discount ? ' <s class="promo-strike">' + A.INR(q.list) + '</s> <span class="promo-badge promo-badge--sm" data-promo-badge>' + promoBadge() + '</span>' : '') +
+      ' <a href="poojas.html?q=' + encodeURIComponent(p.name.split(' ')[0]) + '" class="link-underline">' + T('what’s included?', 'क्या शामिल है?') + '</a>';
   }
 
   /* ------------------------------------------------------------------- flow */
@@ -550,8 +589,9 @@
     state.payment = payment;
 
     var extra = extrasTotal();
-    var gst = Math.round((state.pooja.price + extra) * 0.18);
-    var total = state.pooja.price + extra + gst;
+    var q = launchQuote(state.pooja.price);
+    var gst = Math.round((q.price + extra) * 0.18);
+    var total = q.price + extra + gst;
     var payNow = payNowAmount(total, payment);
     var id = 'VP-' + String(Date.now()).slice(-6);
     var otp = randomOtp();
@@ -565,7 +605,8 @@
       panditId: state.pandit ? state.pandit.id : '',
       city: state.city.name,
       place: state.city.name + (customer.society ? ' · ' + customer.society : ''),
-      base: state.pooja.price, extras: extra, gst: gst, total: total,
+      base: q.price, listBase: q.list, discount: q.discount,
+      extras: extra, gst: gst, total: total,
       payment: payment, paymentStatus: 'Pending', paymentRef: '',
       payNow: payNow, balance: total - payNow, amountPaid: 0, upi: OWNER_UPI,
       otp: otp, customer: customer,
@@ -720,6 +761,11 @@
     renderMuhurat();
     renderSummary();
     if (A.onLang) A.onLang(function () { renderDates(); renderMuhurat(); renderSummary(); });
+    // Live launch-offer answer: re-price the dropdown and the summary once.
+    document.addEventListener('vp:promo', function () {
+      refreshPoojaOptions();
+      renderSummary();
+    });
     initNav();
   }
 

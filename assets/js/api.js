@@ -138,6 +138,8 @@
     enabled: Boolean(BASE),
     request: request,
     health: function () { return request('/health'); },
+    // Live launch offer. Never cached: the counter changes with every booking.
+    offer: function () { return request('/offer'); },
 
     /* ------------------------------------------------------------ catalogue */
     poojas: function () { return cached('poojas', '/poojas'); },
