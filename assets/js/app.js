@@ -429,7 +429,7 @@
     '</svg>';
 
   /* ----------------------------------------------------------------- header */
-  /* Six primary links plus a "More" menu keep the bar inside its 1180px
+  /* Eight primary links plus a "More" menu keep the bar inside its 1180px
      container. Everything else (home, about, puja guide, rashifal, cities,
      matching, reviews, policies) lives in that menu on desktop and in the
      expanded mobile list. */
@@ -439,6 +439,7 @@
     ['pandits.html', 'Pandits'],
     ['kundli.html', 'Kundli'],
     ['panchang.html', 'Panchang'],
+    ['muhurat.html', 'Muhurat'],
     ['calendar.html', 'Calendar'],
     ['shop.html', 'Samagri']
   ];
@@ -674,7 +675,7 @@
     if ($('#siteFooter')) return;
     var cols = [
       ['Rituals', [['Satyanarayan Katha', 'poojas.html?q=satyanarayan'], ['Griha Pravesh', 'poojas.html?q=griha'], ['Rudrabhishek', 'poojas.html?q=rudra'], ['Navgrah Shanti', 'poojas.html?q=navgrah'], ['All poojas', 'poojas.html']]],
-      ['Tools', [['Daily wisdom', 'index.html#daily-wisdom'], ['Satyanarayan puja guide', 'puja-guide.html'], ['Kundli generator', 'kundli.html'], ['Today’s panchang', 'panchang.html'], ['Festival calendar', 'calendar.html'], ['Daily rashifal', 'horoscope.html'], ['City directory', 'cities.html'], ['Kundli matching', 'matching.html'], ['Samagri shop', 'shop.html']]],
+      ['Tools', [['Daily wisdom', 'index.html#daily-wisdom'], ['Satyanarayan puja guide', 'puja-guide.html'], ['Kundli generator', 'kundli.html'], ['Today’s panchang', 'panchang.html'], ['Muhurat Studio', 'muhurat.html'], ['Festival calendar', 'calendar.html'], ['Daily rashifal', 'horoscope.html'], ['City directory', 'cities.html'], ['Kundli matching', 'matching.html'], ['Samagri shop', 'shop.html']]],
       ['Company', [['Services', 'services.html'], ['Astrology', 'services.html#astrology'], ['Vastu Shastra', 'services.html#vastu'], ['Numerology', 'services.html#numerology'], ['Pooja Paath', 'services.html#pooja-paath'], ['About us', 'about.html'], ['Our pandits', 'pandits.html'], ['Reviews', 'reviews.html'], ['Punya-Flow recycling', 'about.html#punyaflow'], ['Corporate poojas', 'about.html#corporate'], ['Contact', 'about.html#contact'], ['Policies', 'policies.html']]]
     ];
     var html =

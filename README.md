@@ -49,6 +49,7 @@ upi://pay?pa=rajivlochanmishra952-1@okhdfcbank&pn=Rajiv%20Lochan%20Mishra&cu=INR
 - `horoscope.html` — daily rashifal for all 12 moon signs, computed from the Moon’s real transit house, tithi, nakshatra, yoga and paksha for the selected city and date. Each card shows a strength score, and the detail panel adds lucky colour/number/direction, gemstone, mantra, favourable choghadiya windows and Rahu Kaal to avoid. No random text.
 - `kundli.html` — the birth chart includes the panchang at the birth moment (tithi, nakshatra, yoga, karana), lagna nakshatra/pada, dasha balance, moon phase and the city's coordinates/UTC offset.
 - `calendar.html` — computed festival calendar with `.ics` export: “Add 2026 festivals”, “Add next 90 days” and “Add to calendar” on any selected date. Each event carries a one-day-before alarm for the phone’s calendar app; the file is built in the browser and works offline.
+- `muhurat.html` — **Muhurat Studio**, the planning workspace that runs the real panchang engine instead of a printed table. Pick a ritual, city, guest count, gotra, budget and required extras; it scans the next 7–90 days, scores every day against that ritual's own rules (tithi, nakshatra, yoga, karana, paksha, vara, Bhadra, Panchak, Rahu/Gulika/Yamaganda, Abhijit and choghadiya), then shows the best date, the best 2-hour window, why other dates lost, the full panchang strip, a printable runbook timeline, scaled samagri quantities, a GST-inclusive budget, and `.ics`/Google Calendar/WhatsApp/copy/print automation with one-day-before and two-hour-before reminders. Every scan is stored locally, refreshes when the day changes, and deep-links to `booking.html?pooja=…&date=…`. Works in English and Hindi.
 - `manifest.webmanifest` + `sw.js` — PWA install and offline cache.
 
 ### 3D + mobile experience layer
@@ -274,6 +275,30 @@ UPI) to prove every surface follows the file:
   errors and no horizontal overflow at 360 px.
 - Previously verified: 8 puja steps, havan counter, samagri ticks, sankalp,
   dark mode, persistence after reload, and the calendar `.ics` export.
+
+### Muhurat Studio (14 Nov 2026)
+
+Tested in headless Chromium at 320 px, 390 px and 1280 px against the static
+server, with the real panchang engine and a scratch browser profile:
+
+- **All checks passed**, 0 console errors, 0 unhandled rejections.
+- Layout: scroll width equals the viewport at all three widths; no element
+  extends past the right edge (off-canvas drawer and the horizontally
+  scrollable tab strip excluded by design). Mobile form is one column, desktop
+  is the 352 px rail plus an 800 px main column inside the 1180 px container.
+- Default scan (Satyanarayan Katha, Gurugram, 45 days) chose
+  **16 November 2026**, score **81 / 100**, window **06:44 – 08:05 AM (Amrit)**,
+  Shukla Saptami, Shravana nakshatra. 8 clean windows rendered, 4 tabs, 7
+  samagri lines.
+- Tabs switch panes; selecting the second window rebuilt the best card to
+  **14 December 2026 · 07:05 – 08:23 AM (Amrit)** with exactly one selection.
+- Hindi toggle switches `document.lang` to `hi` and re-renders headings, form
+  labels and dimensions in Devanagari.
+- `.ics` export produced a valid 808-byte `VCALENDAR` containing `VEVENT`,
+  both `VALARM` reminders and `DTSTART:20261116T011447Z` (06:44 IST).
+- WhatsApp handoff URL and the full plan text were generated; copy and print
+  handlers are wired; the state persisted every form field, tab and tick.
+- `booking.html?pooja=…&date=…` selects the pooja and clamps/accepts the date.
 
 ### Real-device checklist (not run in headless Chromium)
 

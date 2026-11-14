@@ -22,6 +22,7 @@
     { title: 'Free kundli', sub: 'Birth chart, dasha, doshas and remedies', href: 'kundli.html', icon: 'compass', keys: 'kundli janam patrika birth chart dasha dosha horoscope' },
     { title: 'Kundli matching', sub: '36-guna Ashtakoota compatibility', href: 'matching.html', icon: 'heart', keys: 'matching gun milan compatibility vivah marriage ashtakoota' },
     { title: 'Today’s panchang', sub: 'Tithi, nakshatra, Rahu Kaal, muhurat', href: 'panchang.html', icon: 'sun', keys: 'panchang tithi nakshatra rahu kaal muhurat choghadiya today' },
+    { title: 'Muhurat Studio', sub: 'Find the best day and build the full ritual plan', href: 'muhurat.html', icon: 'compass', keys: 'muhurat studio shubh time finder planner samagri budget reminder ritual plan' },
     { title: 'Festival calendar', sub: 'Vrat, ekadashi, purnima and festivals', href: 'calendar.html', icon: 'calendar', keys: 'calendar festival vrat ekadashi purnima 2026' },
     { title: 'Daily rashifal', sub: 'All 12 moon signs in Hindi and English', href: 'horoscope.html', icon: 'star', keys: 'rashifal horoscope rashi zodiac daily aaj ka' },
     { title: 'City directory', sub: '1,057 districts, tirths and famous places', href: 'cities.html', icon: 'pin', keys: 'city district famous place temple tirth travel panchang' },

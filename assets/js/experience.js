@@ -306,7 +306,8 @@
         { label: 'Daily wisdom', desc: 'One Sanskrit line a day with Hindi and English', href: 'index.html#daily-wisdom', icon: 'star', keys: 'daily wisdom quote motivation subhashita sanskrit hindi english' },
         { label: 'Daily rashifal', desc: 'All 12 moon signs, in Hindi and English', href: 'horoscope.html', icon: 'star', keys: 'rashifal horoscope rashi zodiac daily' },
         { label: 'Festival calendar', desc: 'Vrat, ekadashi, purnima and 2026 festivals', href: 'calendar.html', icon: 'calendar', keys: 'festival calendar vrat ekadashi purnima 2026' },
-        { label: 'Choghadiya & muhurat', desc: 'Pick an auspicious window for any ritual', href: 'panchang.html#muhurat', icon: 'clock', keys: 'choghadiya muhurat shubh time' }
+        { label: 'Choghadiya & muhurat', desc: 'Pick an auspicious window for any ritual', href: 'panchang.html#muhurat', icon: 'clock', keys: 'choghadiya muhurat shubh time' },
+        { label: 'Muhurat Studio', desc: 'Scan 90 days, then auto-build the ritual plan', href: 'muhurat.html', icon: 'compass', keys: 'muhurat studio finder planner shubh time samagri budget reminder' }
       ]
     },
     {

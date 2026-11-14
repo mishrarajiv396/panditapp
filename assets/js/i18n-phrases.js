@@ -160,3 +160,28 @@ window.VP_PHRASES = {"(121 reviews)":"(121 समीक्षाएँ)","(143 r
     P[k] = add[k];
   });
 })();
+
+/* Curated additions: Muhurat Studio (home teaser + studio page head). */
+(function () {
+  var P = window.VP_PHRASES || (window.VP_PHRASES = {});
+  var add = {
+    "Muhurat Studio": "मुहूर्त स्टूडियो",
+    "New · Muhurat Studio": "नया · मुहूर्त स्टूडियो",
+    "Find the right day. Build the whole ritual.": "सही दिन चुनें। पूरी पूजा की योजना बनाएँ।",
+    "Choose any of the 100 poojas and your city. The studio scans up to 90 sunrises, removes Rahu Kaal, Gulika, Yamaganda and Bhadra, scores every clean window for that specific ritual, then turns the winner into a timeline, a family-sized samagri list, an honest budget and calendar reminders.": "100 पूजाओं में से कोई भी चुनें और अपना शहर बताएँ। स्टूडियो 90 सूर्योदय तक देखता है, राहु काल, गुलिक, यमगंडा और भद्रा हटाता है, उस विशेष पूजा के लिए हर शुद्ध समय को अंक देता है, और फिर विजेता को समय-सारणी, परिवार के अनुसार सामग्री सूची, पारदर्शी बजट और कैलेंडर रिमाइंडर में बदल देता है।",
+    "Ritual-aware scoring — marriage, griha pravesh, katha and shanti use different rules": "पूजा के अनुसार अंकन — विवाह, गृह प्रवेश, कथा और शांति के नियम अलग-अलग हैं",
+    "Scaled samagri checklist that saves on your device": "परिवार के अनुसार सामग्री सूची, जो आपके डिवाइस में सुरक्षित रहती है",
+    "One-tap .ics, Google Calendar and WhatsApp handoff": "एक टैप में .ics, Google Calendar और WhatsApp पर भेजें",
+    "Open Muhurat Studio": "मुहूर्त स्टूडियो खोलें",
+    "Try it with Satyanarayan": "सत्यनारायण के साथ देखें",
+    "Free, bilingual, no signup. Computed from the live panchang.": "निःशुल्क, द्विभाषी, साइनअप नहीं। लाइव पंचांग से गणना।",
+    "Find the right day. Then see the whole ritual.": "सही दिन चुनें। फिर पूरी पूजा देखें।",
+    "Choose a pooja, your city and a date range. The studio scans every sunrise, filters Rahu Kaal, Gulika, Yamaganda and Bhadra, ranks the clean windows for that specific ritual, and turns the winner into a complete plan — timeline, samagri scaled for your family, an honest budget and calendar reminders.": "पूजा, अपना शहर और तारीखों का दायरा चुनें। स्टूडियो हर सूर्योदय देखता है, राहु काल, गुलिक, यमगंडा और भद्रा छाँटता है, उस पूजा के लिए शुद्ध समयों को क्रम देता है, और विजेता को पूरी योजना में बदल देता है — समय-सारणी, परिवार के अनुसार सामग्री, पारदर्शी बजट और कैलेंडर रिमाइंडर।",
+    "Live panchang engine": "लाइव पंचांग इंजन",
+    "100 rituals · 9 traditions": "100 पूजाएँ · 9 परंपराएँ",
+    "Free · no signup · works offline": "निःशुल्क · साइनअप नहीं · ऑफ़लाइन काम करता है"
+  };
+  Object.keys(add).forEach(function (k) {
+    P[k] = add[k];
+  });
+})();
