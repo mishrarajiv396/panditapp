@@ -13,8 +13,10 @@
 <link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" data-leaflet-css>
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/experience.css">
+<link rel="stylesheet" href="assets/css/map.css">
 </head>
 <body>
 
@@ -437,6 +439,31 @@
     </div>
   </section>
 
+  <!-- ============================================================ COVERAGE -->
+  <section class="section map-section" id="coverage">
+    <div class="container">
+      <div class="sec-head sec-head--center reveal">
+        <span class="kicker kicker--center">Service area</span>
+        <h2>Gurugram &amp; NCR coverage</h2>
+        <p>Eight travel zones, one Gurugram base. Pick a zone to see the localities we cover, the honest travel time from our base and whether same-day is possible. Distances are measured from Gurugram, not guessed.</p>
+      </div>
+
+      <div class="map-card" data-map="coverage" data-no-i18n>
+        <div class="map-card__bar" data-map-bar></div>
+        <div class="map-card__grid">
+          <div class="map-stage">
+            <div class="map-canvas" data-map-canvas></div>
+            <div class="map-schematic" data-map-schematic hidden></div>
+            <div class="map-loading" data-map-loading></div>
+            <p class="map-note hide" data-map-note></p>
+          </div>
+          <div class="map-panel" data-map-panel></div>
+        </div>
+        <div class="map-card__foot" data-map-foot></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================================================ FAQ -->
   <section class="section">
     <div class="container">
@@ -482,6 +509,7 @@
 <script src="assets/js/search.js" defer></script>
 <script src="assets/js/chart.js" defer></script>
 <script src="assets/js/home.js" defer></script>
+<script src="assets/js/map.js" defer></script>
 <script src="assets/js/daily-wisdom.js" defer></script>
 <script src="assets/js/experience.js" defer></script>
 </body>

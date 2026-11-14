@@ -1,6 +1,6 @@
 /* Coverage & location maps — Leaflet 1.9.4 (vendored), lazy loaded, with an
-   offline schematic fallback. Two placements only:
-     [data-map="coverage"]  pandits.html — Gurugram & NCR service area
+   offline schematic fallback. Three placements:
+     [data-map="coverage"]  pandits.html & index.html — Gurugram & NCR service area
      [data-map="booking"]   booking.html — visual location confirmation
    Leaflet is only fetched when a card scrolls into view. Booking coordinates
    are never added to the payload; the pin is a visual check for the buyer. */

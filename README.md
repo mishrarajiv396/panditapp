@@ -347,14 +347,15 @@ walking every visible text node:
 
 ### Coverage & location maps (14 Nov 2026)
 
-Two Leaflet 1.9.4 maps, vendored at `assets/vendor/leaflet/` (no CDN, CSP
+Three Leaflet 1.9.4 maps, vendored at `assets/vendor/leaflet/` (no CDN, CSP
 `script-src 'self'` unchanged). The library is fetched lazily by
 `assets/js/map.js` only when a card scrolls into view; a plain SVG schematic
 takes over if Leaflet, the tiles or the network fail, and the bar keeps a
 manual **Schematic view / Live map** toggle.
 
-- `pandits.html` — **Gurugram & NCR coverage** section. Eight travel zones
-  around the Gurugram base (`28.4595, 77.0266`) with real haversine distances:
+- `pandits.html` and `index.html` — **Gurugram & NCR coverage** section. Eight
+  travel zones around the Gurugram base (`28.4595, 77.0266`) with real haversine
+  distances:
   Gurugram core (base), New Gurugram 6.1 km, Sohna Road 6.5 km, Manesar
   14.3 km, Delhi 21.1 km, Faridabad 29.0 km, Noida 36.6 km, Ghaziabad
   39.1 km. Each zone lists its localities, honest travel time, availability
@@ -383,13 +384,13 @@ manual **Schematic view / Live map** toggle.
 Tested in headless Chromium against the static server at 320, 390, 768 and
 1280 px:
 
-- **64/64 layout & interaction checks, 13/13 deeper interaction checks and
-  12/12 fallback checks** passed with 0 JS errors: lazy load (no `window.L`
-  before scroll), 8 zone pins and circles, zone selection, distance/cut-off
-  copy, booking CTA storing `vp_city`, pin drag and map tap, reset/locate,
-  address match to DLF Phase 4, add-area dedupe, city change recentre,
-  schematic SVG click and Enter-key selection, live (no reload) Hindi toggle,
-  Hindi parity, and no horizontal overflow at any width.
+- **34/34 homepage checks, 64/64 layout & interaction checks, 13/13 deeper
+  interaction checks and 12/12 fallback checks** passed with 0 JS errors: lazy
+  load (no `window.L` before scroll), 8 zone pins and circles, zone selection,
+  distance/cut-off copy, booking CTA storing `vp_city`, pin drag and map tap,
+  reset/locate, address match to DLF Phase 4, add-area dedupe, city change
+  recentre, schematic SVG click and Enter-key selection, live (no reload) Hindi
+  toggle, Hindi parity, and no horizontal overflow at any width.
 - Booking payload purity: after a full confirm flow the saved `vp_bookings`
   record has no `lat`/`lng` keys and no coordinate pair; only the typed
   address is shared, exactly as before this change.
