@@ -304,6 +304,7 @@
       items: [
         { label: 'Today’s panchang', desc: 'Tithi, nakshatra, Rahu Kaal, muhurat', href: 'panchang.html', icon: 'sun', keys: 'panchang tithi nakshatra rahu muhurat today' },
         { label: 'Daily wisdom', desc: 'One Sanskrit line a day with Hindi and English', href: 'index.html#daily-wisdom', icon: 'star', keys: 'daily wisdom quote motivation subhashita sanskrit hindi english' },
+        { label: 'Mantra & aarti library', desc: 'Devanagari, meaning, voice and a 108-bead japa counter', href: 'mantra.html', icon: 'book', keys: 'mantra aarti japa mala gayatri devanagari chant listen' },
         { label: 'Daily rashifal', desc: 'All 12 moon signs, in Hindi and English', href: 'horoscope.html', icon: 'star', keys: 'rashifal horoscope rashi zodiac daily' },
         { label: 'Festival calendar', desc: 'Vrat, ekadashi, purnima and 2026 festivals', href: 'calendar.html', icon: 'calendar', keys: 'festival calendar vrat ekadashi purnima 2026' },
         { label: 'Choghadiya & muhurat', desc: 'Pick an auspicious window for any ritual', href: 'panchang.html#muhurat', icon: 'clock', keys: 'choghadiya muhurat shubh time' },

@@ -23,6 +23,7 @@
     { "name": "Seva & UPI", "short_name": "Seva", "url": "./puja-guide.html#seva", "description": "Seva details and the owner's UPI QR" },
     { "name": "Today’s Panchang", "short_name": "Panchang", "url": "./panchang.html", "description": "Tithi, nakshatra, Rahu Kaal and muhurat" },
     { "name": "Muhurat Studio", "short_name": "Muhurat", "url": "./muhurat.html", "description": "Find the best muhurat and auto-build the ritual plan" },
+    { "name": "Mantra & Aarti Library", "short_name": "Mantras", "url": "./mantra.html", "description": "Devanagari, meaning, voice recitation and a japa counter" },
     { "name": "Book a Pooja", "short_name": "Book", "url": "./poojas.html", "description": "Browse rituals and verified pandits" },
     { "name": "Services", "short_name": "Services", "url": "./services.html", "description": "Astrology, Vastu, numerology and pooja paath" }
   ]

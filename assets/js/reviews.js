@@ -111,11 +111,11 @@
     empty.hidden = !showEmpty;
     if (showEmpty) {
       if (filtered) {
-        title.textContent = 'No reviews match this filter.';
-        text.textContent = 'Try another rating or pooja — or share your own experience.';
+        title.textContent = A.t('No reviews match this filter.');
+        text.textContent = A.t('Try another rating or pooja — or share your own experience.');
       } else {
-        title.textContent = 'No reviews yet.';
-        text.textContent = 'Be the first family to share how your ritual went — it takes less than a minute.';
+        title.textContent = A.t('No reviews yet.');
+        text.textContent = A.t('Be the first family to share how your ritual went — it takes less than a minute.');
       }
     }
 
@@ -146,7 +146,7 @@
       state.offset = 0;
       $('#reviewList').innerHTML = '';
       $('#reviewMore').hidden = true;
-      setListStatus('Loading reviews…');
+      setListStatus(A.t('Loading reviews…'));
     }
 
     if (!ready()) {
@@ -154,7 +154,7 @@
       state.total = 0;
       renderSummary(null);
       renderList([], false);
-      setListStatus('Reviews are temporarily unavailable because the review service is not connected. You can still write a review below.');
+      setListStatus(A.t('Reviews are temporarily unavailable because the review service is not connected. You can still write a review below.'));
       return;
     }
 
@@ -180,7 +180,7 @@
       renderList(rows, append);
       state.offset += rows.length;
     }).catch(function () {
-      setListStatus('Could not load reviews. Please refresh the page.');
+      setListStatus(A.t('Could not load reviews. Please refresh the page.'));
     }).then(function () {
       state.loading = false;
     });
@@ -275,7 +275,7 @@
     var checked = document.querySelector('input[name="rating"]:checked');
     var value = checked ? Number(checked.value) : 5;
     var label = $('#rvRatingLabel');
-    if (label) label.textContent = value + ' out of 5';
+    if (label) label.textContent = A.isHi() ? value + ' / 5' : value + ' out of 5';
   }
 
   function setStatus(message, type) {
@@ -316,13 +316,13 @@
         website: $('#rvWebsite').value
       };
 
-      if (payload.name.length < 2) return setStatus('Please share your name.', 'error');
-      if (payload.message.length < 10) return setStatus('Please write at least 10 characters about your experience.', 'error');
-      if (!ready()) return setStatus('The review service is not connected right now, so this cannot be sent. Please try again later.', 'error');
+      if (payload.name.length < 2) return setStatus(A.t('Please share your name.'), 'error');
+      if (payload.message.length < 10) return setStatus(A.t('Please write at least 10 characters about your experience.'), 'error');
+      if (!ready()) return setStatus(A.t('The review service is not connected right now, so this cannot be sent. Please try again later.'), 'error');
 
       var button = $('#rvSubmit');
       button.disabled = true;
-      button.textContent = 'Sending…';
+      button.textContent = A.t('Sending…');
       setStatus('');
 
       API.createReview(payload).then(function (res) {
@@ -330,18 +330,18 @@
           form.reset();
           ratingLabel();
           if (count) count.textContent = '0';
-          setStatus('Thank you! Your review is queued for moderation and will appear here once it is approved — usually within 24 hours.', 'ok');
+          setStatus(A.t('Thank you! Your review is queued for moderation and will appear here once it is approved — usually within 24 hours.'), 'ok');
           form.scrollIntoView({ block: 'center', behavior: 'smooth' });
         } else if (res.status === 429) {
-          setStatus('Too many reviews from this connection. Please try again in a few minutes.', 'error');
+          setStatus(A.t('Too many reviews from this connection. Please try again in a few minutes.'), 'error');
         } else {
           setStatus(apiMessage(res), 'error');
         }
       }).catch(function () {
-        setStatus('Could not send the review. Please check your connection and try again.', 'error');
+        setStatus(A.t('Could not send the review. Please check your connection and try again.'), 'error');
       }).then(function () {
         button.disabled = false;
-        button.textContent = 'Submit for review';
+        button.textContent = A.t('Submit for review');
       });
     });
   }

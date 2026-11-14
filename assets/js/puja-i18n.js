@@ -1027,6 +1027,9 @@
     'Seva': 'सेवा',
     'Guided puja, your way': 'पूजा, आपके अपने तरीके से',
     'Call or WhatsApp': 'कॉल या WhatsApp करें',
+    'WhatsApp': 'व्हाट्सएप',
+    'Om Namo Bhagavate Vasudevaya Svaha.': 'ॐ नमो भगवते वासुदेवाय स्वाहा।',
+    'Om Namo Bhagavate Vasudevaya Svaha': 'ॐ नमो भगवते वासुदेवाय स्वाहा',
     'Rajiv Lochan Mishra': 'राजीव लोचन मिश्रा',
     'Gurugram, Haryana': 'गुरुग्राम, हरियाणा',
     'Add dates to calendar': 'तिथियाँ कैलेंडर में जोड़ें'

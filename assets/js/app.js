@@ -209,6 +209,12 @@
     if ((m = /^(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})$/.exec(s))) {
       return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3];
     }
+    if ((m = /^(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4}),\s*(\d{1,2}):(\d{2})\s*(am|pm)$/i.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3] + ', ' + m[4] + ':' + m[5] + ' ' + (/^am$/i.test(m[6]) ? 'पूर्वाह्न' : 'अपराह्न');
+    }
+    if ((m = /^(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4}),\s*(\d{1,2}):(\d{2})\s*(am|pm)$/i.exec(s))) {
+      return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3] + ', ' + m[4] + ':' + m[5] + ' ' + (/^am$/i.test(m[6]) ? 'पूर्वाह्न' : 'अपराह्न');
+    }
     if ((m = /^(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})$/.exec(s))) {
       return m[1] + ' ' + GREG_MONTHS[m[2]] + ' ' + m[3];
     }
@@ -449,6 +455,7 @@
     ['index.html', 'Home'],
     ['about.html', 'About'],
     ['puja-guide.html', 'Puja Guide'],
+    ['mantra.html', 'Mantra Library'],
     ['horoscope.html', 'Rashifal'],
     ['cities.html', 'Cities'],
     ['matching.html', 'Matching'],
@@ -675,7 +682,7 @@
     if ($('#siteFooter')) return;
     var cols = [
       ['Rituals', [['Satyanarayan Katha', 'poojas.html?q=satyanarayan'], ['Griha Pravesh', 'poojas.html?q=griha'], ['Rudrabhishek', 'poojas.html?q=rudra'], ['Navgrah Shanti', 'poojas.html?q=navgrah'], ['All poojas', 'poojas.html']]],
-      ['Tools', [['Daily wisdom', 'index.html#daily-wisdom'], ['Satyanarayan puja guide', 'puja-guide.html'], ['Kundli generator', 'kundli.html'], ['Today’s panchang', 'panchang.html'], ['Muhurat Studio', 'muhurat.html'], ['Festival calendar', 'calendar.html'], ['Daily rashifal', 'horoscope.html'], ['City directory', 'cities.html'], ['Kundli matching', 'matching.html'], ['Samagri shop', 'shop.html']]],
+      ['Tools', [['Daily wisdom', 'index.html#daily-wisdom'], ['Satyanarayan puja guide', 'puja-guide.html'], ['Mantra & aarti library', 'mantra.html'], ['Kundli generator', 'kundli.html'], ['Today’s panchang', 'panchang.html'], ['Muhurat Studio', 'muhurat.html'], ['Festival calendar', 'calendar.html'], ['Daily rashifal', 'horoscope.html'], ['City directory', 'cities.html'], ['Kundli matching', 'matching.html'], ['Samagri shop', 'shop.html']]],
       ['Company', [['Services', 'services.html'], ['Astrology', 'services.html#astrology'], ['Vastu Shastra', 'services.html#vastu'], ['Numerology', 'services.html#numerology'], ['Pooja Paath', 'services.html#pooja-paath'], ['About us', 'about.html'], ['Our pandits', 'pandits.html'], ['Reviews', 'reviews.html'], ['Punya-Flow recycling', 'about.html#punyaflow'], ['Corporate poojas', 'about.html#corporate'], ['Contact', 'about.html#contact'], ['Policies', 'policies.html']]]
     ];
     var html =

@@ -24,7 +24,7 @@
         <img src="assets/img/icon.svg" alt="" width="46" height="46">
         <span><strong>Satyanarayan Puja</strong><small>Seva dashboard</small></span>
       </a>
-      <h1>Welcome back</h1>
+      <h2>Welcome back</h2>
       <p class="admin-login__sub">Bookings, payments, pandit applications and shop orders — all in one place.</p>
       <form id="loginForm" novalidate>
         <label class="admin-field">
@@ -38,7 +38,7 @@
         <p class="admin-error" id="loginError" role="alert" hidden></p>
         <button class="admin-btn admin-btn--primary admin-btn--wide" type="submit" id="loginBtn">Sign in</button>
       </form>
-      <p class="admin-login__hint">Default demo login: <b>admin@panditapp.local</b> / <b>Admin@2026</b><br>Change it from <b>Account &amp; settings</b> after your first sign-in.</p>
+      <p class="admin-login__hint" id="adminHint">Sign in with your admin credentials. Access is logged and rate-limited.</p>
       <a class="admin-back" href="index.html">← Back to website</a>
     </div>
   </div>
@@ -102,7 +102,7 @@
         <div class="admin-toolbar">
           <div class="admin-search">
             <span>⌕</span>
-            <input type="search" id="bookingSearch" placeholder="Search name, phone, booking ID or pooja…">
+            <input type="search" id="bookingSearch" placeholder="Search name, phone, booking ID or pooja…" aria-label="Search bookings">
           </div>
           <div class="admin-toolbar__group">
             <select id="bookingFilter" aria-label="Filter payment status">
@@ -246,11 +246,11 @@
             </header>
             <div class="admin-theme-row">
               <div><b>Dark mode</b><span>Warm, low-light temple palette.</span></div>
-              <button class="admin-switch" id="themeSwitch" type="button" role="switch" aria-checked="false"><span></span></button>
+              <button class="admin-switch" id="themeSwitch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"><span></span></button>
             </div>
             <div class="admin-theme-row">
               <div><b>Auto-refresh</b><span>Reload data every 60 seconds.</span></div>
-              <button class="admin-switch is-on" id="autoSwitch" type="button" role="switch" aria-checked="true"><span></span></button>
+              <button class="admin-switch is-on" id="autoSwitch" type="button" role="switch" aria-checked="true" aria-label="Auto-refresh"><span></span></button>
             </div>
           </article>
 
@@ -293,5 +293,17 @@
 
   <script src="assets/js/api.js"></script>
   <script src="assets/js/admin.js"></script>
+  <script>
+    /* Local development only: show the seeded credentials on loopback hosts.
+       On a public domain the hint above stays generic. */
+    (function () {
+      var h = document.getElementById('adminHint');
+      if (!h) return;
+      var host = location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1' || host === '' || /\.local$/.test(host)) {
+        h.innerHTML = 'Local setup: <b>admin@panditapp.local</b> / <b>Admin@2026</b><br>Change it from <b>Account &amp; settings</b> right after your first sign-in.';
+      }
+    })();
+  </script>
 </body>
 </html>

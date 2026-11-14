@@ -23,6 +23,7 @@
     { title: 'Kundli matching', sub: '36-guna Ashtakoota compatibility', href: 'matching.html', icon: 'heart', keys: 'matching gun milan compatibility vivah marriage ashtakoota' },
     { title: 'Today’s panchang', sub: 'Tithi, nakshatra, Rahu Kaal, muhurat', href: 'panchang.html', icon: 'sun', keys: 'panchang tithi nakshatra rahu kaal muhurat choghadiya today' },
     { title: 'Muhurat Studio', sub: 'Find the best day and build the full ritual plan', href: 'muhurat.html', icon: 'compass', keys: 'muhurat studio shubh time finder planner samagri budget reminder ritual plan' },
+    { title: 'Mantra & aarti library', sub: '16 mantras, 4 aartis, meaning and japa counter', href: 'mantra.html', icon: 'book', keys: 'mantra aarti japa mala gayatri mahamrityunjay om jai jagdish chanting sanskrit devanagari' },
     { title: 'Festival calendar', sub: 'Vrat, ekadashi, purnima and festivals', href: 'calendar.html', icon: 'calendar', keys: 'calendar festival vrat ekadashi purnima 2026' },
     { title: 'Daily rashifal', sub: 'All 12 moon signs in Hindi and English', href: 'horoscope.html', icon: 'star', keys: 'rashifal horoscope rashi zodiac daily aaj ka' },
     { title: 'City directory', sub: '1,057 districts, tirths and famous places', href: 'cities.html', icon: 'pin', keys: 'city district famous place temple tirth travel panchang' },

@@ -50,6 +50,7 @@ upi://pay?pa=rajivlochanmishra952-1@okhdfcbank&pn=Rajiv%20Lochan%20Mishra&cu=INR
 - `kundli.html` — the birth chart includes the panchang at the birth moment (tithi, nakshatra, yoga, karana), lagna nakshatra/pada, dasha balance, moon phase and the city's coordinates/UTC offset.
 - `calendar.html` — computed festival calendar with `.ics` export: “Add 2026 festivals”, “Add next 90 days” and “Add to calendar” on any selected date. Each event carries a one-day-before alarm for the phone’s calendar app; the file is built in the browser and works offline.
 - `muhurat.html` — **Muhurat Studio**, the planning workspace that runs the real panchang engine instead of a printed table. Pick a ritual, city, guest count, gotra, budget and required extras; it scans the next 7–90 days, scores every day against that ritual's own rules (tithi, nakshatra, yoga, karana, paksha, vara, Bhadra, Panchak, Rahu/Gulika/Yamaganda, Abhijit and choghadiya), then shows the best date, the best 2-hour window, why other dates lost, the full panchang strip, a printable runbook timeline, scaled samagri quantities, a GST-inclusive budget, and `.ics`/Google Calendar/WhatsApp/copy/print automation with one-day-before and two-hour-before reminders. Every scan is stored locally, refreshes when the day changes, and deep-links to `booking.html?pooja=…&date=…`. Works in English and Hindi.
+- `mantra.html` — **Mantra & Aarti Library**: 16 core Vedic mantras and 4 evening aartis with Devanagari text, a readable transliteration, plain-language meaning (English + Hindi) and the traditional moment to chant each one. A weekday-aware “mantra of the day” card, deity/search filters, browser voice recitation (`hi-IN`), one-tap copy, WhatsApp/booking handoff, a 108-bead japa counter with 11/27/54/108 round targets, 12-bead progress, round history and per-device saving, plus a full-screen aarti mode with keyboard navigation. No server calls; everything runs from the local data file and `localStorage`.
 - `manifest.webmanifest` + `sw.js` — PWA install and offline cache.
 
 ### 3D + mobile experience layer
@@ -299,6 +300,50 @@ server, with the real panchang engine and a scratch browser profile:
 - WhatsApp handoff URL and the full plan text were generated; copy and print
   handlers are wired; the state persisted every form field, tab and tick.
 - `booking.html?pooja=…&date=…` selects the pooja and clamps/accepts the date.
+
+### Mantra & Aarti Library (14 Nov 2026)
+
+Tested in headless Chromium against the static server at 320, 390, 768, 1024,
+1280 and 1440 px, plus a scripted interaction pass:
+
+- **20 cards render** (16 mantras + 4 aartis), 12 filter chips, 16 Devanagari
+  blocks, the weekday “mantra of the day” card and the japa panel.
+- Layout: scroll width equals the viewport at every width; 1 column below
+  1080 px and 2 columns above. No duplicate IDs, no unlabelled controls, no
+  empty buttons and no console errors or unhandled rejections.
+- Deity filter (Hanuman) returns 1 card; searching `gayatri` returns 1; an
+  impossible search shows the empty state at 0 cards.
+- Japa: selecting a card, three increments and a target change to 27 updates
+  the ring, count, beads, active target and `vp_japa_v1` in `localStorage`;
+  reset returns the count to 0; `Finish round` advances the round counter.
+- Aarti mode opens with 6 verses for *Om Jai Jagdish Hare*, `1 / 4`, and
+  next/prev/close all work; body scroll locks while it is open.
+- Hindi toggle switches `document.lang`, the H1, intro, pills, breadcrumb, nav
+  item, search placeholder, chips, card titles, japa buttons and the note — all
+  verified as Devanagari, with 0 replacement characters.
+- Navigation: the page is the active item, appears in the header “More” menu,
+  the footer Tools column, site search (`mantra` returns it first), the
+  facilities sheet, `sitemap.xml`, the PWA shortcuts and the offline cache
+  (`vp-static-v58`).
+
+### Full-site Hindi coverage (14 Nov 2026)
+
+Re-audited all 17 indexable pages in headless Chromium with `vp_lang=hi`,
+walking every visible text node:
+
+- Every page now reports **100% Devanagari UI copy**. The only remaining Latin
+  strings are legitimate non-translatables: the owner email
+  (`rajivlochanmishra952@gmail.com`), the UPI ID
+  (`rajivlochanmishra952-1@okhdfcbank`), one mantra transliteration shown
+  beside its Devanagari line, and the technical `HTTP 404` API status.
+- Added dictionary entries for the new mantra band, footer/nav/search labels,
+  reviews form states, samagri items, `cities`, the choghadiya names
+  (`(Amrit)` etc.), `Google Calendar`, `WhatsApp` and the payment apps.
+- Added a numeric date-time pattern so scan results read
+  `16 नवंबर 2026, 06:44 पूर्वाह्न` instead of the English form.
+- The Satyanarayan guide's own dictionary now translates the standalone
+  WhatsApp buttons inside `#pjMain`, which the site-wide layer deliberately
+  skips.
 
 ### Real-device checklist (not run in headless Chromium)
 

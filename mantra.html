@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mantra &amp; Aarti Library — Devanagari, Meaning and 108-Bead Japa | Vedic Pooja</title>
+<meta name="description" content="A free bilingual mantra and aarti library: 16 Vedic mantras and 4 aartis with Devanagari text, transliteration, meaning, when to chant, voice recitation and a 108-bead japa counter that works offline.">
+<link rel="canonical" href="https://panditapp.onrender.com/mantra.html">
+<meta name="theme-color" content="#6d1f2c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mantra &amp; Aarti Library — chant it right, then count it">
+<meta property="og:description" content="Devanagari, transliteration and meaning for 16 core mantras and 4 aartis — with a 108-bead japa counter, voice recitation and aarti focus mode.">
+<meta property="og:url" content="https://panditapp.onrender.com/mantra.html">
+<meta property="og:site_name" content="Vedic Pooja">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/marcellus-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/experience.css">
+<link rel="stylesheet" href="assets/css/mantra.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Mantra & Aarti Library",
+  "url": "https://panditapp.onrender.com/mantra.html",
+  "description": "Devanagari text, transliteration, meaning and a japa counter for 16 core Vedic mantras and 4 aartis.",
+  "isPartOf": { "@type": "WebSite", "name": "Vedic Pooja", "url": "https://panditapp.onrender.com/" },
+  "about": ["Mantra", "Aarti", "Japa", "Hindu ritual"]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+  <section class="page-head mantra-head">
+    <div class="mantra-head__rings" aria-hidden="true"></div>
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <span>Mantra Library</span></div>
+      <span class="kicker kicker--gold">Mantra &amp; Aarti Library · मंत्र और आरती संग्रह</span>
+      <h1>Chant it right. Then count it.</h1>
+      <p>Sixteen core Vedic mantras and four evening aartis — each with Devanagari, a readable transliteration, a plain-language meaning and the moment it is traditionally used. Listen aloud, add it to your japa round, and keep your count on this device. No signup, no ads, works offline.</p>
+      <div class="mantra-head__live">
+        <span class="mantra-pill"><span class="dot"></span> 16 mantras · 4 aartis</span>
+        <span class="mantra-pill">Devanagari + transliteration</span>
+        <span class="mantra-pill">108-bead japa counter</span>
+        <span class="mantra-pill">Listen aloud · offline</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container mantra-shell">
+
+      <div class="today-card" id="mantraToday" aria-live="polite"></div>
+
+      <div class="mantra-toolbar">
+        <div class="mantra-search">
+          <label class="sr-only" for="mantraSearch">Search mantras and aartis</label>
+          <input type="search" id="mantraSearch" placeholder="Search a deity, mantra or syllable…" autocomplete="off">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        </div>
+        <div class="mantra-chips" id="mantraChips" role="group" aria-label="Filter by deity"></div>
+      </div>
+
+      <div class="mantra-grid" id="mantraGrid" aria-live="polite"></div>
+      <p class="mantra-empty" id="mantraEmpty" hidden></p>
+
+      <section class="japa" id="japa" aria-labelledby="japaTitle">
+        <div class="japa__ring" id="japaRing" role="button" tabindex="-1" aria-label="Add one japa">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="japaGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e08a2e"/>
+                <stop offset="1" stop-color="#c9a227"/>
+              </linearGradient>
+            </defs>
+            <circle class="japa__track" cx="60" cy="60" r="52"/>
+            <circle class="japa__bar" id="japaBar" cx="60" cy="60" r="52"/>
+          </svg>
+          <div class="japa__count"><b id="japaCount">0</b><span id="japaTarget">/ 108</span></div>
+        </div>
+        <div class="japa__body">
+          <p class="japa__eyebrow">Japa counter · जप काउंटर</p>
+          <h2 id="japaTitle">Om Gam Ganapataye Namah</h2>
+          <p class="japa__dev" id="japaDev" lang="hi">ॐ गं गणपतये नमः</p>
+          <div class="japa__beads" id="japaBeads" aria-hidden="true"></div>
+          <div class="japa__actions">
+            <button class="btn btn--primary" id="japaAdd" type="button">Count 1</button>
+            <button class="btn btn--ghost" id="japaListen" type="button">Listen</button>
+            <button class="btn btn--ghost" id="japaFinish" type="button">Finish round</button>
+            <button class="btn btn--ghost" id="japaReset" type="button">Reset</button>
+          </div>
+          <div class="japa__targets" role="group" aria-label="Round length">
+            <span>Round</span>
+            <button type="button" data-target="11">11</button>
+            <button type="button" data-target="27">27</button>
+            <button type="button" data-target="54">54</button>
+            <button type="button" data-target="108" class="is-active">108</button>
+          </div>
+          <p class="japa__rounds" id="japaRounds">0 rounds done</p>
+        </div>
+      </section>
+
+      <div class="mantra-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span><b>Tradition varies.</b> Pronunciation, count and sequence differ by family and region. Use this library as a clean reference, and follow your own pandit for a sanskar. Mantras are traditional and in the public domain.</span>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<div class="aarti-modal" id="aartiModal" hidden>
+  <div class="aarti-modal__backdrop" data-close-aarti></div>
+  <div class="aarti-modal__card" role="dialog" aria-modal="true" aria-labelledby="aartiTitle">
+    <header class="aarti-modal__head">
+      <h2 id="aartiTitle"></h2>
+      <small id="aartiCount"></small>
+      <button class="aarti-modal__close" type="button" data-close-aarti aria-label="Close aarti">×</button>
+    </header>
+    <div class="aarti-modal__body" id="aartiBody"></div>
+    <footer class="aarti-modal__foot">
+      <p class="aarti-modal__meaning" id="aartiMeaning"></p>
+      <div class="aarti-modal__nav">
+        <button type="button" data-aarti-prev>← Previous</button>
+        <button type="button" data-aarti-next>Next →</button>
+        <span class="spacer"></span>
+        <button type="button" id="aartiListen" class="is-primary">Listen</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="assets/js/astro.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site-settings.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/i18n-phrases.js"></script>
+<script src="assets/js/i18n-astro.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/search.js" defer></script>
+<script src="assets/js/experience.js" defer></script>
+<script src="assets/js/mantra.js" defer></script>
+</body>
+</html>
