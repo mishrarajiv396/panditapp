@@ -10,8 +10,9 @@ const config = require('../config');
  * theme bootstrap and the puja-guide data) and inline style attributes mean
  * 'unsafe-inline' is still required for scripts and styles; everything else
  * (third-party scripts, objects, framing by other origins, base hijacking)
- * is blocked. HSTS and upgrade-insecure-requests are production-only so
- * http://localhost keeps working during development.
+ * is blocked. The one image exception is OpenStreetMap raster tiles for the
+ * coverage and location-confirmation maps. HSTS and upgrade-insecure-requests
+ * are production-only so http://localhost keeps working during development.
  */
 function securityHeaders(req, res, next) {
   res.set('X-Content-Type-Options', 'nosniff');
@@ -28,7 +29,7 @@ function securityHeaders(req, res, next) {
     "object-src 'none'",
     "frame-ancestors 'self'",
     "form-action 'self'",
-    "img-src 'self' data: blob:",
+    "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
     "font-src 'self'",
     "style-src 'self' 'unsafe-inline'",
     "script-src 'self' 'unsafe-inline'",

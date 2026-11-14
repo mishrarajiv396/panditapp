@@ -3,7 +3,7 @@
    load. The cache is only used when the network is unavailable. */
 'use strict';
 
-var VERSION = 'vp-static-v58';
+var VERSION = 'vp-static-v59';
 var RUNTIME = 'vp-runtime-v2';
 
 var CORE = [
@@ -39,6 +39,14 @@ var CORE = [
   './assets/css/auth.css',
   './assets/css/services.css',
   './assets/css/fonts.css',
+  './assets/css/map.css',
+  './assets/vendor/leaflet/leaflet.css',
+  './assets/vendor/leaflet/leaflet.js',
+  './assets/vendor/leaflet/images/layers.png',
+  './assets/vendor/leaflet/images/layers-2x.png',
+  './assets/vendor/leaflet/images/marker-icon.png',
+  './assets/vendor/leaflet/images/marker-icon-2x.png',
+  './assets/vendor/leaflet/images/marker-shadow.png',
   './assets/fonts/inter-400.woff2',
   './assets/fonts/marcellus-400.woff2',
   './assets/fonts/tiro-devanagari-400.woff2',
@@ -70,6 +78,7 @@ var CORE = [
   './assets/js/kundli.js',
   './assets/js/matching.js',
   './assets/js/booking.js',
+  './assets/js/map.js',
   './assets/js/shop.js',
   './assets/js/about.js',
   './assets/js/reviews.js',

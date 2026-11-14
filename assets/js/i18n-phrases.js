@@ -992,3 +992,17 @@ window.VP_PHRASES = {"(121 reviews)":"(121 समीक्षाएँ)","(143 r
   var P = window.VP_PHRASES || (window.VP_PHRASES = {});
   P["Free, bilingual, works offline. No signup."] = "निःशुल्क, द्विभाषी, ऑफ़लाइन। साइनअप नहीं।";
 })();
+
+
+/* Curated additions: coverage map section (pandits.html). Map internals are
+   translated directly in map.js with App.t(en, hi), so only the static
+   section copy lives here. */
+(function () {
+  var P = window.VP_PHRASES || (window.VP_PHRASES = {});
+  var add = {
+    "Service area": "सेवा क्षेत्र",
+    "Gurugram & NCR coverage": "गुरुग्राम और एनसीआर कवरेज",
+    "Eight travel zones, one Gurugram base. Pick a zone to see the localities we cover, the honest travel time from our base and whether same-day is possible. Distances are measured from Gurugram, not guessed.": "आठ यात्रा क्षेत्र, एक गुरुग्राम आधार। कोई क्षेत्र चुनें और देखें कि हम कौन-से इलाके कवर करते हैं, हमारे आधार से यात्रा का वास्तविक समय क्या है और उसी दिन संभव है या नहीं। दूरियाँ गुरुग्राम से मापी गई हैं, अनुमान से नहीं।"
+  };
+  Object.keys(add).forEach(function (k) { P[k] = add[k]; });
+})();

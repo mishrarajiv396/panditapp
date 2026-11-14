@@ -345,6 +345,62 @@ walking every visible text node:
   WhatsApp buttons inside `#pjMain`, which the site-wide layer deliberately
   skips.
 
+### Coverage & location maps (14 Nov 2026)
+
+Two Leaflet 1.9.4 maps, vendored at `assets/vendor/leaflet/` (no CDN, CSP
+`script-src 'self'` unchanged). The library is fetched lazily by
+`assets/js/map.js` only when a card scrolls into view; a plain SVG schematic
+takes over if Leaflet, the tiles or the network fail, and the bar keeps a
+manual **Schematic view / Live map** toggle.
+
+- `pandits.html` — **Gurugram & NCR coverage** section. Eight travel zones
+  around the Gurugram base (`28.4595, 77.0266`) with real haversine distances:
+  Gurugram core (base), New Gurugram 6.1 km, Sohna Road 6.5 km, Manesar
+  14.3 km, Delhi 21.1 km, Faridabad 29.0 km, Noida 36.6 km, Ghaziabad
+  39.1 km. Each zone lists its localities, honest travel time, availability
+  from the 4:00 pm IST same-day cut-off, and a booking CTA that stores the
+  zone city in `vp_city` before opening `booking.html`.
+- `booking.html` — **Location confirmation** card inside step 2. The pin
+  starts at the selected city centre, follows the address field when a known
+  locality is typed, can be dragged or tapped, supports “Use my location”,
+  “Reset pin” and “Add area to address”. The nearest known area, distance
+  rings and coverage status are shown in the side panel. Coordinates are
+  display-only — the booking payload in `booking.js` is untouched and no
+  lat/lng is stored or sent.
+- Tiles come from OpenStreetMap, so `img-src` in
+  `server/src/middleware/security.js` now allows
+  `https://tile.openstreetmap.org https://*.tile.openstreetmap.org`.
+  Attribution stays visible in the Leaflet control and in the card footer.
+  `Permissions-Policy` already allowed `geolocation=(self)`; denial is handled
+  with a toast and the pin/zone controls remain usable.
+- Offline cache bumped to `vp-static-v59`, with `map.css`, `map.js`, the
+  Leaflet CSS/JS and its marker images added to `CORE`.
+- Every string is bilingual through `App.t(en, hi)`; the three static section
+  phrases are in `i18n-phrases.js`. Nothing uses fake coordinates: entries
+  missing from `PanditData.CITIES` live in an `EXTRA_PLACES` list and are
+  labelled “approx. area” in the booking panel.
+
+Tested in headless Chromium against the static server at 320, 390, 768 and
+1280 px:
+
+- **64/64 layout & interaction checks, 13/13 deeper interaction checks and
+  12/12 fallback checks** passed with 0 JS errors: lazy load (no `window.L`
+  before scroll), 8 zone pins and circles, zone selection, distance/cut-off
+  copy, booking CTA storing `vp_city`, pin drag and map tap, reset/locate,
+  address match to DLF Phase 4, add-area dedupe, city change recentre,
+  schematic SVG click and Enter-key selection, live (no reload) Hindi toggle,
+  Hindi parity, and no horizontal overflow at any width.
+- Booking payload purity: after a full confirm flow the saved `vp_bookings`
+  record has no `lat`/`lng` keys and no coordinate pair; only the typed
+  address is shared, exactly as before this change.
+- Fallback paths verified by blocking `leaflet.js` (immediate schematic), by
+  blocking OSM tiles (automatic schematic after four tile errors, with an
+  explanatory note) and with `navigator.onLine === false` (offline note).
+  When the connection returns, the **Live map** toggle retries and initialises
+  Leaflet without a reload.
+- OSM tiles loaded 12/12 with HTTP 200 in the browser; the live map stayed in
+  map mode at every tested width.
+
 ### Real-device checklist (not run in headless Chromium)
 
 1. Open the deployed HTTPS site on an Android phone and an iPhone.
